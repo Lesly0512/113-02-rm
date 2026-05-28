@@ -206,6 +206,7 @@ tr:nth-child(even) td{background:var(--gray);}
       </div>
     </div>
 
+    <a href="#s6" class="nav-main" style="justify-content:flex-start;">結論</a>
     <div class="nav-grp">
       <span class="nav-main" onclick="tg('g5',this,'#s5')">五、AI 實驗紀錄<span class="nav-arr">▶</span></span>
       <div class="nav-subs" id="g5">
@@ -1090,6 +1091,55 @@ JP3 0.28 0.34 0.43 0.43 0.54 1.00</span></div>
 <!-- ═══ end R 統計模擬 ═══ -->
 </div>
 
+<!-- 五、結論 -->
+<div class="sec" id="s6">
+<h2>結論</h2>
+
+<p>交叉延宕設計是目前縱貫研究中少數能夠同時估計兩個變數<strong>雙向因果方向</strong>的方法。相較於橫斷面研究只能確認相關、傳統迴歸只能預測方向，CLPM 與 RI-CLPM 讓研究者得以在控制前期分數的前提下，釐清究竟是 X 在前驅動了 Y，還是 Y 反過來影響了 X，甚至兩者互相強化——這正是人力資源管理研究中許多核心議題（投入 vs. 績效、壓力 vs. 倦怠、信任 vs. 合作）長期懸而未決的關鍵。</p>
+
+<p>然而，方法的嚴謹並不等於執行的容易。尤其在企業情境下，縱貫研究面臨的現實障礙往往比學術假設複雜得多：</p>
+
+<!-- HR 三大挑戰 -->
+<div style="display:flex;flex-direction:column;gap:14px;margin:16px 0;">
+
+  <div style="border:1.5px solid #f0a500;border-radius:8px;overflow:hidden;">
+    <div style="background:#fff8e1;padding:10px 16px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:20px;">⚠️</span>
+      <span style="font-weight:700;color:#8a6000;">挑戰一：追蹤流失（Panel Attrition）</span>
+    </div>
+    <div style="padding:12px 16px;font-size:.9em;line-height:1.75;">
+      三波橫跨十二個月的縱貫研究中，<strong>員工離職是最難控制的威脅</strong>。一般企業的年離職率若達 15～20%，僅自然流失就可能損失近四分之一樣本。更棘手的是，離職往往不是隨機的——低投入、低績效的員工反而更可能率先離開，形成<strong>選擇性流失偏誤（attrition bias）</strong>，讓留下的樣本系統性偏高，低估變項負向端的動態效果。統計上可以用 FIML（完全訊息最大概似法）處理遺漏值，但無法完全消除此偏誤，研究者應於論文中明確討論其影響。
+    </div>
+  </div>
+
+  <div style="border:1.5px solid #e05353;border-radius:8px;overflow:hidden;">
+    <div style="background:#fff0f0;padding:10px 16px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:20px;">🔄</span>
+      <span style="font-weight:700;color:#b02020;">挑戰二：組織異動與環境干擾</span>
+    </div>
+    <div style="padding:12px 16px;font-size:.9em;line-height:1.75;">
+      十二個月內足以發生許多足以打斷變項自然動態的組織事件：<strong>部門重組、主管更換、薪酬調整、策略轉型</strong>。這類<strong>歷史事件效應（history effect）</strong>在純問卷縱貫設計中難以完全排除，只能事後以控制變數（如「過去六個月感受到的組織變動程度」）部分調控，並在討論中坦誠其為研究限制。若能與 HR 部門合作取得客觀的人事異動紀錄，則可作為共變數納入模型，提升結果的可信度。
+    </div>
+  </div>
+
+  <div style="border:1.5px solid #5a7fc7;border-radius:8px;overflow:hidden;">
+    <div style="background:#f0f4fc;padding:10px 16px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:20px;">📋</span>
+      <span style="font-weight:700;color:#1F3864;">挑戰三：測量可行性與填卷疲勞</span>
+    </div>
+    <div style="padding:12px 16px;font-size:.9em;line-height:1.75;">
+      要讓同一批員工在三個時間點都認真填問卷，需要<strong>高層背書、主管協助動員，以及對員工的回饋承諾</strong>（例如告知整體研究摘要）。若工作績效採主管評量，還需確保三波評分者一致，以及跨部門的績效標準具有可比性。實務上，測量間隔的選擇也影響研究效度：間隔太短，效果尚未顯現；間隔太長，中介過程模糊。<strong>理論上推論的因果時間落差（causal lag）與實際測量間隔是否吻合</strong>，是交叉延宕研究設計前最關鍵、也最常被忽略的決策之一。
+    </div>
+  </div>
+
+</div>
+
+<div style="background:#F0F7FF;border:1.5px solid #BDD7EE;border-radius:8px;padding:14px 20px;margin-top:20px;font-size:.9em;line-height:1.8;color:#1F3864;">
+  <strong>📌 方法論的核心提醒：</strong>CLPM 與 RI-CLPM 並非萬能，它們的說服力建立在「<em>資料蒐集設計的嚴謹性</em>」之上。三波以上、合理的測量間隔、夠大的樣本、低流失率，缺一不可。模型再精細，若資料品質不佳，估計出的因果方向仍是脆弱的。交叉延宕設計是通往因果推論的重要橋梁，但它是起點，而非終點。
+</div>
+
+</div>
+<!-- end 結論 -->
 <!-- 五、AI 實驗紀錄 -->
 <div class="sec" id="s5">
 <h2>五、AI 實驗紀錄</h2>
@@ -1309,6 +1359,8 @@ JP3 0.28 0.34 0.43 0.43 0.54 1.00</span></div>
 
 </div>
 
+
+<!-- 六、結論 -->
 <!-- 參考文獻 -->
 <div class="sec" id="refs">
 <h2>參考文獻</h2>
