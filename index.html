@@ -202,6 +202,7 @@ tr:nth-child(even) td{background:var(--gray);}
       <div class="nav-subs" id="g4">
         <a href="#s4a" class="sub">研究目的</a>
         <a href="#s4b" class="sub">研究問題</a>
+        <a href="#s4c" class="sub">互動統計模擬</a>
       </div>
     </div>
 
@@ -803,6 +804,290 @@ tr:nth-child(even) td{background:var(--gray);}
 <div class="rq"><div class="rl">RQ2</div>在控制 T₁ 工作投入後，T₁ 工作績效是否能顯著正向預測 T₂ 工作投入？（交叉路徑二：績效→投入）</div>
 <div class="rq"><div class="rl">RQ3</div>T₁-T₂ 期間的交叉延宕效果能否在 T₂-T₃ 重複出現，顯示跨時間的效果穩定性？</div>
 <div class="rq"><div class="rl">RQ4</div>在使用 RI-CLPM 控制個體間穩定差異後，工作投入與工作績效的個體內交叉延宕效果是否仍然存在？</div>
+<span id="s4c" style="display:block;position:relative;top:-80px;"></span>
+<!-- ═══ R 統計模擬互動區 ═══ -->
+<div id="sim-sec" style="margin-top:32px;border:2px solid #BDD7EE;border-radius:10px;overflow:hidden;">
+<div style="background:linear-gradient(135deg,#1F3864 0%,#2E75B6 100%);padding:14px 22px;display:flex;align-items:center;gap:12px;">
+  <div style="font-size:24px;line-height:1;flex-shrink:0;">🖥️</div>
+  <div>
+    <div style="color:#fff;font-weight:700;font-size:1.05em;">互動模擬：以 R（lavaan）執行交叉延宕分析</div>
+    <div style="color:#BDD7EE;font-size:.82em;margin-top:2px;">模擬資料 N = 312，三波縱貫，各間隔 6 個月 — 點選步驟依序體驗</div>
+  </div>
+</div>
+<div style="padding:18px 22px;">
+<!-- ─ Tab bar ─ -->
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;border-bottom:2px solid #e0e8f5;padding-bottom:12px;">
+  <button id="stb0" onclick="simSw(0)" class="stab stab-on">① 載入資料</button>
+  <button id="stb1" onclick="simSw(1)" class="stab">② 執行 CLPM</button>
+  <button id="stb2" onclick="simSw(2)" class="stab">③ 執行 RI-CLPM</button>
+  <button id="stb3" onclick="simSw(3)" class="stab">④ 兩模型比較</button>
+</div>
+
+<!-- ─ Panel 0: 載入資料 ─ -->
+<div id="stp0">
+<p style="font-size:.88em;color:#555;margin:0 0 10px;">載入 <code>lavaan</code>、<code>psych</code> 套件，讀取模擬三波資料，檢視描述統計與相關矩陣。</p>
+<div class="r-con"><span class="rp">&gt; </span><span class="rk">library</span>(lavaan); <span class="rk">library</span>(psych)
+<span class="rc"># 載入三波縱貫資料（工作投入 WE + 工作績效 JP）</span>
+<span class="rp">&gt; </span>we_jp <span class="ro">&lt;-</span> <span class="rk">read.csv</span>(<span class="rs">"we_jp_3wave.csv"</span>)
+<span class="rp">&gt; </span><span class="rk">dim</span>(we_jp)
+<span class="ro">[1] 312   6</span>
+<span class="rp">&gt; </span><span class="rk">names</span>(we_jp)
+<span class="ro">[1] "WE1" "WE2" "WE3" "JP1" "JP2" "JP3"</span>
+<span class="rp">&gt; </span><span class="rk">head</span>(we_jp, <span class="rn">4</span>)
+<span class="ro">  WE1  WE2  WE3  JP1  JP2  JP3
+1 4.17 3.98 4.31 3.82 3.91 4.04
+2 5.02 4.78 5.11 4.21 4.35 4.47
+3 3.45 3.67 3.52 3.14 3.28 3.41
+4 4.89 4.62 4.73 4.08 4.19 4.22</span>
+<span class="rp">&gt; </span><span class="rk">round</span>(<span class="rk">describe</span>(we_jp)[,<span class="rk">c</span>(<span class="rs">"n"</span>,<span class="rs">"mean"</span>,<span class="rs">"sd"</span>,<span class="rs">"skew"</span>,<span class="rs">"kurtosis"</span>)], <span class="rn">2</span>)
+<span class="ro">     n  mean   sd  skew kurtosis
+WE1 312  4.21 0.83 -0.12    -0.08
+WE2 312  4.18 0.79 -0.09    -0.11
+WE3 312  4.24 0.81 -0.14    -0.06
+JP1 312  3.79 0.72 -0.21     0.14
+JP2 312  3.83 0.68 -0.18     0.09
+JP3 312  3.87 0.71 -0.23     0.11</span></div>
+
+<div style="margin:14px 0 6px;font-size:.88em;font-weight:600;color:#1F3864;">🔗 相關矩陣</div>
+<div class="r-con"><span class="rp">&gt; </span><span class="rk">round</span>(<span class="rk">cor</span>(we_jp), <span class="rn">2</span>)
+<span class="ro">     WE1  WE2  WE3  JP1  JP2  JP3
+WE1 1.00 0.58 0.47 0.39 0.32 0.28
+WE2 0.58 1.00 0.61 0.31 0.41 0.34
+WE3 0.47 0.61 1.00 0.27 0.36 0.43
+JP1 0.39 0.31 0.27 1.00 0.51 0.43
+JP2 0.32 0.41 0.36 0.51 1.00 0.54
+JP3 0.28 0.34 0.43 0.43 0.54 1.00</span></div>
+<div style="font-size:.78em;color:#888;margin-top:4px;">所有相關均達 p &lt; .01 顯著水準（N = 312）</div>
+</div>
+
+<!-- ─ Panel 1: CLPM ─ -->
+<div id="stp1" style="display:none;">
+<p style="font-size:.88em;color:#555;margin:0 0 10px;">以 <code>lavaan</code> 指定 CLPM 模型語法，使用 ML 估計法配適，並讀取配適指標與標準化路徑係數。</p>
+<div class="r-con"><span class="rc"># ── Classic Cross-Lagged Panel Model ─────────────────────────</span>
+<span class="rp">&gt; </span>model_clpm <span class="ro">&lt;-</span> <span class="rs">'
+  # 自迴歸路徑（Autoregressive paths）
+  WE2 ~ a1*WE1 + b1*JP1
+  WE3 ~ a2*WE2 + b2*JP2
+  JP2 ~ c1*JP1 + d1*WE1
+  JP3 ~ c2*JP2 + d2*WE2
+
+  # 殘差同步相關（Synchronous correlations）
+  WE2 ~~ JP2
+  WE3 ~~ JP3
+
+  # T1 初始共變
+  WE1 ~~ JP1
+'</span>
+<span class="rp">&gt; </span>fit_clpm <span class="ro">&lt;-</span> <span class="rk">sem</span>(model_clpm, data<span class="ro">=</span>we_jp, estimator<span class="ro">=</span><span class="rs">"ML"</span>)
+<span class="rp">&gt; </span><span class="rk">summary</span>(fit_clpm, fit.measures<span class="ro">=</span><span class="rk">TRUE</span>, standardized<span class="ro">=</span><span class="rk">TRUE</span>)</div>
+
+<button class="sim-btn" id="simbtn-clpm" onclick="simRun('clpm')">▶ 執行分析（Click me!）</button>
+
+<div id="simout-clpm" style="display:none;">
+  <div style="margin:12px 0 6px;font-size:.88em;font-weight:600;color:#1F3864;">📐 配適指標（Model Fit）</div>
+  <table class="sim-tbl">
+    <thead><tr><th>指標</th><th>數值</th><th>建議標準</th><th>判斷</th></tr></thead>
+    <tbody>
+      <tr><td>χ²(df)</td><td>18.43 (12)</td><td>p &gt; .05</td><td><span class="fit-ok">✓ p = .101</span></td></tr>
+      <tr><td>χ²/df</td><td>1.536</td><td>&lt; 3.0</td><td><span class="fit-ok">✓ 良好</span></td></tr>
+      <tr><td>CFI</td><td>.984</td><td>≥ .95</td><td><span class="fit-ok">✓ 優良</span></td></tr>
+      <tr><td>TLI</td><td>.971</td><td>≥ .95</td><td><span class="fit-ok">✓ 優良</span></td></tr>
+      <tr><td>RMSEA [90% CI]</td><td>.041 [.000, .073]</td><td>&lt; .060</td><td><span class="fit-ok">✓ 良好</span></td></tr>
+      <tr><td>SRMR</td><td>.038</td><td>&lt; .080</td><td><span class="fit-ok">✓ 良好</span></td></tr>
+    </tbody>
+  </table>
+
+  <div style="margin:14px 0 6px;font-size:.88em;font-weight:600;color:#1F3864;">📋 標準化路徑係數（Standardized Estimates）</div>
+  <table class="sim-tbl">
+    <thead><tr><th>路徑</th><th>類型</th><th>β</th><th>SE</th><th>z</th><th>p</th><th>sig.</th></tr></thead>
+    <tbody>
+      <tr class="row-ar"><td>WE₁ → WE₂</td><td>自迴歸</td><td>.521</td><td>.052</td><td>10.02</td><td>&lt;.001</td><td class="s3">***</td></tr>
+      <tr class="row-ar"><td>WE₂ → WE₃</td><td>自迴歸</td><td>.498</td><td>.054</td><td>9.22</td><td>&lt;.001</td><td class="s3">***</td></tr>
+      <tr class="row-ar"><td>JP₁ → JP₂</td><td>自迴歸</td><td>.483</td><td>.055</td><td>8.78</td><td>&lt;.001</td><td class="s3">***</td></tr>
+      <tr class="row-ar"><td>JP₂ → JP₃</td><td>自迴歸</td><td>.461</td><td>.057</td><td>8.09</td><td>&lt;.001</td><td class="s3">***</td></tr>
+      <tr class="row-cl hl"><td><b>WE₁ → JP₂</b></td><td><b>交叉延宕</b></td><td><b>.183</b></td><td>.068</td><td>2.69</td><td>.007</td><td class="s2">**</td></tr>
+      <tr class="row-cl hl"><td><b>WE₂ → JP₃</b></td><td><b>交叉延宕</b></td><td><b>.211</b></td><td>.071</td><td>2.97</td><td>.003</td><td class="s2">**</td></tr>
+      <tr class="row-cl"><td>JP₁ → WE₂</td><td>交叉延宕</td><td>.092</td><td>.071</td><td>1.30</td><td>.195</td><td class="ns">ns</td></tr>
+      <tr class="row-cl"><td>JP₂ → WE₃</td><td>交叉延宕</td><td>.108</td><td>.073</td><td>1.48</td><td>.139</td><td class="ns">ns</td></tr>
+    </tbody>
+  </table>
+  <div class="sim-note sim-note-green">
+    <b>CLPM 結論：</b>WE→JP 的交叉路徑在兩個時段均顯著（β = .18/.21，p &lt; .01）；JP→WE 方向均不顯著（p &gt; .10）。支持「工作投入→工作績效」的單向預測。
+  </div>
+</div>
+</div>
+
+<!-- ─ Panel 2: RI-CLPM ─ -->
+<div id="stp2" style="display:none;">
+<p style="font-size:.88em;color:#555;margin:0 0 10px;">RI-CLPM 加入隨機截距，分離個體間（between-person）穩定特質差異與個體內（within-person）動態波動。</p>
+<div class="r-con"><span class="rc"># ── Random Intercept Cross-Lagged Panel Model ────────────────</span>
+<span class="rp">&gt; </span>model_ri <span class="ro">&lt;-</span> <span class="rs">'
+  # ── 隨機截距（Between-person stable traits）
+  RI_WE =~ 1*WE1 + 1*WE2 + 1*WE3
+  RI_JP =~ 1*JP1 + 1*JP2 + 1*JP3
+
+  # ── 個體內偏差（Within-person deviations）
+  WE2w ~ a1*WE1w + b1*JP1w
+  WE3w ~ a2*WE2w + b2*JP2w
+  JP2w ~ c1*JP1w + d1*WE1w
+  JP3w ~ c2*JP2w + d2*WE2w
+
+  # ── T1 個體內成分設定
+  WE1w ~~ WE1w; JP1w ~~ JP1w; WE1w ~~ JP1w
+
+  # ── 殘差同步相關（within-person）
+  WE2w ~~ JP2w; WE3w ~~ JP3w
+
+  # ── 隨機截距相關
+  RI_WE ~~ RI_JP
+  RI_WE ~~ 0*WE1w + 0*JP1w
+  RI_JP ~~ 0*WE1w + 0*JP1w
+'</span>
+<span class="rp">&gt; </span>fit_ri <span class="ro">&lt;-</span> <span class="rk">sem</span>(model_ri, data<span class="ro">=</span>we_jp, estimator<span class="ro">=</span><span class="rs">"ML"</span>)
+<span class="rp">&gt; </span><span class="rk">summary</span>(fit_ri, fit.measures<span class="ro">=</span><span class="rk">TRUE</span>, standardized<span class="ro">=</span><span class="rk">TRUE</span>)</div>
+
+<button class="sim-btn" id="simbtn-ri" onclick="simRun('ri')">▶ 執行分析（Click me!）</button>
+
+<div id="simout-ri" style="display:none;">
+  <div style="margin:12px 0 6px;font-size:.88em;font-weight:600;color:#1F3864;">📐 配適指標（Model Fit）</div>
+  <table class="sim-tbl">
+    <thead><tr><th>指標</th><th>數值</th><th>建議標準</th><th>判斷</th></tr></thead>
+    <tbody>
+      <tr><td>χ²(df)</td><td>11.24 (8)</td><td>p &gt; .05</td><td><span class="fit-ok">✓ p = .188</span></td></tr>
+      <tr><td>χ²/df</td><td>1.405</td><td>&lt; 3.0</td><td><span class="fit-ok">✓ 良好</span></td></tr>
+      <tr><td>CFI</td><td>.991</td><td>≥ .95</td><td><span class="fit-ok">✓ 優良</span></td></tr>
+      <tr><td>TLI</td><td>.982</td><td>≥ .95</td><td><span class="fit-ok">✓ 優良</span></td></tr>
+      <tr><td>RMSEA [90% CI]</td><td>.034 [.000, .068]</td><td>&lt; .060</td><td><span class="fit-ok">✓ 良好</span></td></tr>
+      <tr><td>SRMR</td><td>.031</td><td>&lt; .080</td><td><span class="fit-ok">✓ 良好</span></td></tr>
+    </tbody>
+  </table>
+
+  <div style="margin:14px 0 6px;font-size:.88em;font-weight:600;color:#1F3864;">📋 個體內標準化路徑係數（Within-person）</div>
+  <table class="sim-tbl">
+    <thead><tr><th>路徑</th><th>類型</th><th>β（within）</th><th>SE</th><th>z</th><th>p</th><th>sig.</th></tr></thead>
+    <tbody>
+      <tr class="row-ar"><td>WE₁ → WE₂</td><td>自迴歸</td><td>.312</td><td>.071</td><td>4.39</td><td>&lt;.001</td><td class="s3">***</td></tr>
+      <tr class="row-ar"><td>WE₂ → WE₃</td><td>自迴歸</td><td>.287</td><td>.074</td><td>3.88</td><td>&lt;.001</td><td class="s3">***</td></tr>
+      <tr class="row-ar"><td>JP₁ → JP₂</td><td>自迴歸</td><td>.294</td><td>.073</td><td>4.03</td><td>&lt;.001</td><td class="s3">***</td></tr>
+      <tr class="row-ar"><td>JP₂ → JP₃</td><td>自迴歸</td><td>.271</td><td>.076</td><td>3.57</td><td>&lt;.001</td><td class="s3">***</td></tr>
+      <tr class="row-cl hl"><td><b>WE₁ → JP₂</b></td><td><b>交叉延宕</b></td><td><b>.142</b></td><td>.068</td><td>2.09</td><td>.037</td><td class="s1">*</td></tr>
+      <tr class="row-cl hl"><td><b>WE₂ → JP₃</b></td><td><b>交叉延宕</b></td><td><b>.158</b></td><td>.071</td><td>2.23</td><td>.026</td><td class="s1">*</td></tr>
+      <tr class="row-cl"><td>JP₁ → WE₂</td><td>交叉延宕</td><td>.063</td><td>.069</td><td>0.91</td><td>.362</td><td class="ns">ns</td></tr>
+      <tr class="row-cl"><td>JP₂ → WE₃</td><td>交叉延宕</td><td>.074</td><td>.072</td><td>1.03</td><td>.304</td><td class="ns">ns</td></tr>
+    </tbody>
+  </table>
+  <div class="sim-note sim-note-green">
+    <b>RI-CLPM 結論：</b>控制個體間穩定差異後，WE→JP 的個體內效果仍顯著（β = .14/.16，p &lt; .05），效果略小於 CLPM，反映部分效果源自特質差異。JP→WE 仍不顯著。
+  </div>
+</div>
+</div>
+
+<!-- ─ Panel 3: 比較 ─ -->
+<div id="stp3" style="display:none;">
+<p style="font-size:.88em;color:#555;margin:0 0 12px;">彙整 CLPM 與 RI-CLPM 的配適指標與關鍵交叉路徑係數，並解讀模型差異的實質意義。</p>
+
+<div style="margin:0 0 6px;font-size:.88em;font-weight:600;color:#1F3864;">📊 配適指標比較</div>
+<table class="sim-tbl">
+  <thead><tr><th>指標</th><th>CLPM</th><th>RI-CLPM</th><th>比較</th></tr></thead>
+  <tbody>
+    <tr><td>χ²(df)</td><td>18.43 (12)</td><td>11.24 (8)</td><td>RI-CLPM 更精簡</td></tr>
+    <tr><td>CFI</td><td>.984</td><td>.991</td><td>RI-CLPM ↑ .007</td></tr>
+    <tr><td>RMSEA</td><td>.041</td><td>.034</td><td>RI-CLPM ↓ .007</td></tr>
+    <tr><td>SRMR</td><td>.038</td><td>.031</td><td>RI-CLPM ↓ .007</td></tr>
+  </tbody>
+</table>
+
+<div style="margin:14px 0 6px;font-size:.88em;font-weight:600;color:#1F3864;">📋 關鍵交叉延宕路徑比較</div>
+<table class="sim-tbl">
+  <thead><tr><th>路徑</th><th>CLPM β</th><th>RI-CLPM β<br><small>（within-person）</small></th><th>差異說明</th></tr></thead>
+  <tbody>
+    <tr class="hl"><td><b>WE → JP（T1→T2）</b></td><td><b>.183**</b></td><td><b>.142*</b></td><td>部分來自個體間特質差異</td></tr>
+    <tr class="hl"><td><b>WE → JP（T2→T3）</b></td><td><b>.211**</b></td><td><b>.158*</b></td><td>同上；效果跨時間穩定</td></tr>
+    <tr><td>JP → WE（T1→T2）</td><td>.092 ns</td><td>.063 ns</td><td>兩模型均不顯著</td></tr>
+    <tr><td>JP → WE（T2→T3）</td><td>.108 ns</td><td>.074 ns</td><td>同上</td></tr>
+    <tr class="row-ar"><td>WE 自迴歸</td><td>.52/.50***</td><td>.31/.29***</td><td>移除 between 成分後穩定性降低</td></tr>
+    <tr class="row-ar"><td>JP 自迴歸</td><td>.48/.46***</td><td>.29/.27***</td><td>同上</td></tr>
+  </tbody>
+</table>
+
+<div class="sim-note sim-note-blue" style="margin-top:14px;">
+  <b>📌 整合解讀：</b>CLPM 與 RI-CLPM 均支持「工作投入 → 工作績效」的單向動態效果，但在 RI-CLPM 排除個體間穩定差異後，效果仍顯著（僅略微縮小），說明確有個體內的動態影響機制。本結果不支持雙向互惠（增益螺旋）假設，較符合 JD-R 模型的觀點——高工作投入者透過個人資源持續轉化為較佳工作績效。
+</div>
+<div style="margin-top:10px;font-size:.8em;color:#888;text-align:right;">* p &lt; .05 &nbsp; ** p &lt; .01 &nbsp; *** p &lt; .001 &nbsp; ns: 不顯著</div>
+</div>
+
+</div><!-- end padding div -->
+</div><!-- end sim-sec -->
+<style>
+.stab{background:#f0f4fa;color:#333;border:1px solid #c8d5e8;padding:7px 15px;border-radius:5px;cursor:pointer;font-size:.84em;font-family:inherit;transition:all .2s;}
+.stab:hover{background:#dce8f8;border-color:#2E75B6;}
+.stab-on{background:#2E75B6!important;color:#fff!important;border-color:#2E75B6!important;}
+.r-con{background:#1e1e1e;color:#d4d4d4;font-family:'Courier New',Courier,monospace;font-size:.80em;padding:14px 18px;border-radius:6px;overflow-x:auto;white-space:pre;line-height:1.75;margin-bottom:4px;border:1px solid #333;}
+.rp{color:#569cd6;font-weight:bold;}
+.rc{color:#6a9955;}
+.rk{color:#4ec9b0;}
+.rs{color:#ce9178;}
+.ro{color:#9cdcfe;}
+.rn{color:#b5cea8;}
+.sim-tbl{width:100%;border-collapse:collapse;font-size:.84em;margin:2px 0 4px;}
+.sim-tbl th{background:#1F3864;color:#fff;padding:7px 10px;text-align:left;}
+.sim-tbl td{padding:5px 10px;border-bottom:1px solid #e4ecf5;}
+.sim-tbl tr:hover td{background:#f0f5ff;}
+.row-ar td{background:#f7f9fc;}
+.row-cl td{background:#fff;}
+.hl td{background:#fffbe6!important;}
+.fit-ok{color:#2e7d32;font-weight:600;}
+.s3{color:#c00;font-weight:bold;}
+.s2{color:#c00;font-weight:bold;}
+.s1{color:#d46b00;font-weight:bold;}
+.ns{color:#888;}
+.sim-btn{background:#2E75B6;color:#fff;border:none;padding:9px 24px;border-radius:5px;cursor:pointer;font-size:.88em;margin:10px 0 6px;font-family:inherit;letter-spacing:.03em;display:inline-flex;align-items:center;gap:6px;transition:background .2s;}
+.sim-btn:hover{background:#1F3864;}
+.sim-btn:disabled{background:#999;cursor:default;}
+.sim-note{padding:11px 16px;margin-top:12px;font-size:.87em;border-radius:0 6px 6px 0;line-height:1.6;}
+.sim-note-green{background:#e8f5e9;border-left:4px solid #43A047;}
+.sim-note-blue{background:#EBF3FB;border-left:4px solid #2E75B6;}
+</style>
+<script>
+(function(){
+  function simSw(n){
+    for(var i=0;i<4;i++){
+      var p=document.getElementById('stp'+i);
+      var b=document.getElementById('stb'+i);
+      if(p)p.style.display=(i===n)?'block':'none';
+      if(b){
+        if(i===n){b.classList.add('stab-on');}
+        else{b.classList.remove('stab-on');}
+      }
+    }
+  }
+  window.simSw=simSw;
+
+  function simRun(key){
+    var btn=document.getElementById('simbtn-'+key);
+    var out=document.getElementById('simout-'+key);
+    if(!btn||!out)return;
+    btn.disabled=true;
+    var frames=['⏳ 讀取資料...','⚙️ 建立模型...','📐 迭代估計...','✅ 配適完成！'];
+    var fi=0;
+    btn.textContent=frames[0];
+    var itv=setInterval(function(){
+      fi++;
+      if(fi<frames.length){btn.textContent=frames[fi];}
+      else{
+        clearInterval(itv);
+        out.style.display='block';
+        out.style.opacity='0';
+        out.style.transition='opacity .5s ease';
+        setTimeout(function(){out.style.opacity='1';},30);
+        btn.textContent='✅ 分析完成';
+      }
+    },560);
+  }
+  window.simRun=simRun;
+})();
+</script>
+<!-- ═══ end R 統計模擬 ═══ -->
 </div>
 
 <!-- 五、AI 實驗紀錄 -->
