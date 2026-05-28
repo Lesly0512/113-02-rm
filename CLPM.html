@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>交叉延宕設計 — 博士資格考擬答</title>
+<style>
+:root{--navy:#1F3864;--blue:#2E75B6;--light:#D9E4F0;--gray:#F5F6FA;--bdr:#BDD7EE;--sw:240px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Noto Serif TC","Georgia",serif;font-size:15px;color:#222;background:#fff;display:flex;}
+/* ── Sidebar ── */
+#sb{width:var(--sw);height:100vh;background:var(--navy);position:fixed;top:0;left:0;
+    display:flex;flex-direction:column;z-index:100;overflow:hidden;}
+#sb .logo{padding:16px 14px 12px;border-bottom:1px solid rgba(255,255,255,.15);flex-shrink:0;}
+#sb .logo strong{display:block;color:#fff;font-size:13px;margin-bottom:2px;}
+#sb .logo span{color:rgba(255,255,255,.6);font-size:11px;}
+#sb nav{flex:1;overflow-y:auto;padding-bottom:16px;}
+#sb nav::-webkit-scrollbar{width:4px;}
+#sb nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:2px;}
+nav a{display:block;padding:6px 14px;color:rgba(255,255,255,.78);text-decoration:none;
+      font-size:12.5px;border-left:3px solid transparent;transition:.15s;line-height:1.45;}
+nav a:hover,nav a.active{background:rgba(255,255,255,.12);color:#fff;border-left-color:#7EC8E3;}
+nav .lbl{font-size:9.5px;color:rgba(255,255,255,.38);letter-spacing:.12em;padding:10px 14px 3px;text-transform:uppercase;}
+nav .sub{padding-left:26px;font-size:11.5px;}
+/* ── Progress ── */
+#prog{position:fixed;top:0;left:var(--sw);right:0;height:3px;background:var(--bdr);z-index:200;}
+#pbar{height:100%;background:var(--blue);width:0;transition:.08s;}
+/* ── Main ── */
+#main{margin-left:var(--sw);flex:1;max-width:880px;padding:36px 44px 80px;}
+h1.pt{font-size:23px;color:var(--navy);margin-bottom:4px;font-weight:700;}
+.sub-title{color:var(--blue);font-size:13px;margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid var(--bdr);}
+h2{font-size:18px;color:#fff;background:var(--navy);padding:9px 16px;border-radius:4px;margin:36px 0 14px;}
+h3{font-size:15.5px;color:var(--blue);margin:20px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--bdr);}
+h4{font-size:14px;color:var(--navy);margin:14px 0 6px;font-weight:700;}
+p{line-height:1.88;margin-bottom:10px;text-align:justify;}
+.sec{margin-bottom:52px;}
+/* boxes */
+.box{background:var(--light);border-left:4px solid var(--blue);padding:11px 16px;margin:12px 0;border-radius:0 5px 5px 0;font-size:14px;line-height:1.75;}
+.box.warn{background:#FFF8E1;border-left-color:#F9A825;}
+.box.grn{background:#E8F5E9;border-left-color:#43A047;}
+.qbox{background:#FFFDE7;border:2px solid #F9A825;border-radius:6px;padding:16px 20px;margin-bottom:26px;}
+.qbox .ql{font-size:11px;color:#B07800;letter-spacing:.07em;margin-bottom:6px;font-weight:600;}
+.qbox p{font-size:14px;margin:0;}
+/* lists */
+ol,ul{margin:6px 0 10px 22px;line-height:1.85;}
+li{margin-bottom:5px;}
+/* tables */
+.tw{overflow-x:auto;margin:12px 0;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:var(--navy);color:#fff;padding:8px 10px;text-align:center;font-size:13px;}
+td{padding:7px 10px;border:1px solid var(--bdr);vertical-align:top;line-height:1.65;}
+tr:nth-child(even) td{background:var(--gray);}
+/* tabs */
+.tabs{display:flex;gap:3px;margin:20px 0 0;flex-wrap:wrap;}
+.tb{padding:7px 14px;border:2px solid var(--bdr);background:#fff;border-radius:5px 5px 0 0;
+    cursor:pointer;font-size:13px;font-family:inherit;color:#333;transition:.15s;}
+.tb:hover{background:var(--light);}
+.tb.on{background:var(--blue);color:#fff;border-color:var(--blue);}
+.tc{display:none;border:2px solid var(--bdr);border-radius:0 5px 5px 5px;padding:20px;background:#fff;}
+.tc.on{display:block;}
+/* RQ */
+.rq{background:var(--gray);border-left:4px solid var(--blue);padding:10px 14px;margin:8px 0;border-radius:0 5px 5px 0;}
+.rq .rl{font-weight:700;color:var(--navy);font-size:12px;}
+/* SVG diagrams */
+.fig{margin:18px 0;text-align:center;}
+.fig svg{max-width:100%;height:auto;}
+.fig .cap{font-size:12px;color:#666;margin-top:6px;font-style:italic;}
+/* 擬答流程 steps */
+.steps{margin:20px 0;}
+.step{display:flex;gap:16px;margin-bottom:14px;align-items:flex-start;}
+.step-num{flex-shrink:0;width:34px;height:34px;border-radius:50%;background:var(--navy);
+  color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.step-body{flex:1;background:var(--gray);border:1px solid var(--bdr);border-radius:5px;
+  padding:10px 14px;font-size:14px;line-height:1.78;}
+.step-body strong{color:var(--navy);}
+.step-body .sub-steps{margin:8px 0 0 0;padding:0;list-style:none;}
+.step-body .sub-steps li{display:flex;gap:10px;padding:5px 10px;background:#fff;
+  border-left:3px solid var(--blue);border-radius:0 4px 4px 0;margin-bottom:5px;font-size:13px;}
+.step-body .sub-steps li .tag{color:var(--blue);font-weight:700;flex-shrink:0;}
+.step-connector{width:2px;background:var(--bdr);height:10px;margin-left:16px;}
+.ai-badge{display:inline-block;background:var(--blue);color:#fff;font-size:10px;padding:1px 6px;
+  border-radius:10px;vertical-align:middle;margin-left:4px;font-weight:600;letter-spacing:.03em;}
+.ans-badge{display:inline-block;background:var(--navy);color:#fff;font-size:11px;padding:2px 8px;
+  border-radius:3px;font-weight:700;margin:0 2px;}
+
+/* ── Responsive sidebar ── */
+#ham{display:none;position:fixed;top:12px;left:12px;z-index:300;
+  background:var(--navy);border:none;color:#fff;width:38px;height:38px;
+  border-radius:6px;cursor:pointer;font-size:20px;align-items:center;justify-content:center;}
+#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99;}
+@media(max-width:800px){
+  #ham{display:flex;}
+  #sb{transform:translateX(-100%);transition:transform .25s;}
+  #sb.open{transform:translateX(0);}
+  #overlay.open{display:block;}
+  #main{margin-left:0 !important;padding:52px 20px 60px;}
+  #prog{left:0;}
+}
+/* ── Experiment cards ── */
+.exp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:14px 0 20px;}
+.exp-card{background:var(--gray);border:1px solid var(--bdr);border-radius:7px;
+  padding:13px 15px 12px;position:relative;}
+.exp-card:hover{border-color:var(--blue);box-shadow:0 2px 8px rgba(46,117,182,.1);}
+.exp-card .ec-num{position:absolute;top:-1px;left:-1px;width:26px;height:26px;
+  border-radius:7px 0 6px 0;background:var(--navy);color:#fff;font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;}
+.exp-card .ec-title{font-size:13.5px;font-weight:700;color:var(--navy);margin:18px 0 5px;}
+.exp-card .ec-body{font-size:13px;line-height:1.72;color:#333;}
+.exp-card .ec-foot{margin-top:9px;}
+.phase-hdr{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--blue);border-bottom:2px solid var(--bdr);padding-bottom:5px;margin:22px 0 10px;}
+/* answer matrix */
+.ans-matrix{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0;}
+.ans-cell{border:1px solid var(--bdr);border-radius:5px;padding:7px 9px;font-size:12.5px;text-align:center;}
+.ans-cell .al{font-weight:700;font-size:14px;color:var(--navy);}
+.ans-cell .as{font-size:11px;color:#666;margin-top:2px;}
+.ans-cell.hi{background:var(--light);border-color:var(--blue);}
+/* rubric */
+.rubric-pts{text-align:center;font-weight:700;color:var(--blue);white-space:nowrap;}
+.rubric-dim{font-weight:700;color:var(--navy);}
+/* diff table */
+.diff-more td:nth-child(2){background:#E3F2FD;}
+.diff-only-h td:nth-child(3){background:#FFF8E1;}
+.diff-neutral td{background:var(--gray);}
+/* refs links */
+#refs p a{color:#1F3864;text-decoration:none;}
+#refs p a:hover{text-decoration:underline;color:var(--blue);}
+
+/* ── Accordion nav ── */
+.nav-grp{}
+.nav-main{display:flex;align-items:center;justify-content:space-between;cursor:pointer;
+  padding:6px 14px;color:rgba(255,255,255,.78);text-decoration:none;font-size:12.5px;
+  border-left:3px solid transparent;transition:.15s;line-height:1.45;}
+.nav-main:hover,.nav-main.active{background:rgba(255,255,255,.12);color:#fff;border-left-color:#7EC8E3;}
+.nav-arr{font-size:9px;opacity:.6;transition:transform .18s;flex-shrink:0;margin-left:4px;}
+.nav-arr.open{transform:rotate(90deg);}
+.nav-subs{max-height:0;overflow:hidden;transition:max-height .22s ease;}
+.nav-subs.open{max-height:300px;}
+</style>
+</head>
+<body>
+
+<button id="ham" onclick="toggleSB()">☰</button>
+<div id="overlay" onclick="toggleSB()"></div>
+<div id="sb">
+  <div class="logo">
+    <strong>交叉延宕設計</strong>
+    <span>博士資格考擬答 ・ 于湘玫</span>
+  </div>
+  <nav id="nav">
+    <div class="lbl">導覽</div>
+    <a href="#s0" class="nav-main" style="justify-content:flex-start;">📋 考試題目</a>
+
+    <div class="nav-grp">
+      <span class="nav-main" onclick="tg('g1',this,'#s1')">一、何謂交叉延宕設計<span class="nav-arr">▶</span></span>
+      <div class="nav-subs" id="g1">
+        <a href="#s1a" class="sub">三類核心路徑</a>
+        <a href="#s1b" class="sub">歷史脈絡</a>
+      </div>
+    </div>
+
+    <div class="nav-grp">
+      <span class="nav-main" onclick="tg('g2',this,'#s2')">二、適用時機<span class="nav-arr">▶</span></span>
+      <div class="nav-subs" id="g2">
+        <a href="#s2a" class="sub">適合的情境</a>
+        <a href="#s2b" class="sub">不適合的情境</a>
+        <a href="#s2c" class="sub">時間間隔考量</a>
+      </div>
+    </div>
+
+    <div class="nav-grp">
+      <span class="nav-main" onclick="tg('g3',this,'#s3')">三、統計檢驗方法<span class="nav-arr">▶</span></span>
+      <div class="nav-subs" id="g3">
+        <a href="#s3a" class="sub">方法一：CLPC</a>
+        <a href="#s3b" class="sub">方法二：CLPA</a>
+        <a href="#s3c" class="sub">方法三：SEM-CLPM</a>
+        <a href="#s3d" class="sub">方法四：RI-CLPM</a>
+        <a href="#s3e" class="sub">四種方法比較</a>
+      </div>
+    </div>
+
+    <div class="nav-grp">
+      <span class="nav-main" onclick="tg('g4',this,'#s4')">四、研究主題設計<span class="nav-arr">▶</span></span>
+      <div class="nav-subs" id="g4">
+        <a href="#s4a" class="sub">研究目的</a>
+        <a href="#s4b" class="sub">研究問題</a>
+      </div>
+    </div>
+
+    <div class="nav-grp">
+      <span class="nav-main" onclick="tg('g5',this,'#s5')">五、AI 實驗紀錄<span class="nav-arr">▶</span></span>
+      <div class="nav-subs" id="g5">
+        <a href="#s5a" class="sub">實驗設計與評分標準</a>
+        <a href="#s5b" class="sub">版本比較</a>
+      </div>
+    </div>
+
+    <a href="#refs" class="nav-main" style="justify-content:flex-start;">📚 參考文獻</a>
+  </nav>
+</div>
+
+<div id="prog"><div id="pbar"></div></div>
+
+<div id="main">
+
+<!-- 試題 -->
+<div id="s0" class="sec">
+<div class="qbox">
+  <div class="ql">▍ 考試題目</div>
+  <p>何謂交叉延宕設計（cross-lagged design）？適用的時機或情境為何？可以使用何統計檢驗方法（至少列出兩個）？各如何判讀其統計結果？最後請擬一個研究主題，及寫出研究目的和至少兩個研究問題。</p>
+</div>
+<h1 class="pt">交叉延宕設計（Cross-Lagged Panel Design）</h1>
+<div class="sub-title">國立臺灣師範大學 科技應用與人力資源發展學系 ・ 113學年度第2學期 博士資格考-研究法擬答</div>
+</div>
+
+<!-- 一 -->
+<div class="sec" id="s1">
+<h2>一、何謂交叉延宕設計</h2>
+<p>交叉延宕設計（cross-lagged design）乃一種<strong>縱貫研究設計</strong>，主要探討兩個或兩個（含）以上變項之間在時間上的相互影響方向。</p>
+<p>其所探討的核心問題是：<strong>究竟是 X 先影響 Y 還是 Y 先影響 X？</strong>以人力資源領域為例，可以探討員工工作投入是否影響後續工作績效，或工作績效是否反過來影響後續工作投入。</p>
+<p>研究設計上，研究者至少需在兩個時間點重複測量同一批受試者的兩個變項，例如在 T₁ 測量 X₁、Y₁，在 T₂ 測量 X₂、Y₂。</p>
+
+<!-- SVG 1: 基本 CLPM 概念圖 -->
+<div class="fig">
+<svg viewBox="0 0 540 270" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#333"/></marker>
+  <marker id="ahr" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0,0 3,8 6" fill="#333"/></marker>
+</defs>
+<!-- Time labels -->
+<text x="95" y="24" font-size="13" text-anchor="middle" font-family="serif" font-weight="bold">T₁：前一時間點</text>
+<text x="420" y="24" font-size="13" text-anchor="middle" font-family="serif" font-weight="bold">T₂：後一時間點</text>
+<!-- Boxes -->
+<rect x="40" y="38" width="110" height="48" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="95" y="67" font-size="15" text-anchor="middle" font-family="serif">X₁</text>
+<rect x="40" y="170" width="110" height="48" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="95" y="199" font-size="15" text-anchor="middle" font-family="serif">Y₁</text>
+<rect x="365" y="38" width="110" height="48" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="420" y="67" font-size="15" text-anchor="middle" font-family="serif">X₂</text>
+<rect x="365" y="170" width="110" height="48" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="420" y="199" font-size="15" text-anchor="middle" font-family="serif">Y₂</text>
+<!-- Autoregressive top -->
+<line x1="150" y1="55" x2="365" y2="55" stroke="#333" stroke-width="1.2" marker-end="url(#ah)"/>
+<text x="258" y="47" font-size="11" text-anchor="middle" font-family="serif">自迴歸效果</text>
+<!-- Autoregressive bottom -->
+<line x1="150" y1="205" x2="365" y2="205" stroke="#333" stroke-width="1.2" marker-end="url(#ah)"/>
+<text x="258" y="225" font-size="11" text-anchor="middle" font-family="serif">自迴歸效果</text>
+<!-- Cross-lagged X1→Y2 -->
+<line x1="150" y1="72" x2="365" y2="180" stroke="#333" stroke-width="1.2" marker-end="url(#ah)"/>
+<!-- Cross-lagged Y1→X2 -->
+<line x1="150" y1="183" x2="365" y2="75" stroke="#333" stroke-width="1.2" marker-end="url(#ah)"/>
+<text x="258" y="131" font-size="11" text-anchor="middle" font-family="serif">交叉延宕效果</text>
+<!-- Sync left: X1↔Y1 -->
+<path d="M40,72 C0,72 0,186 40,186" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#ahr)" marker-end="url(#ah)"/>
+<text x="10" y="124" font-size="10" text-anchor="middle" font-family="serif">同步</text>
+<text x="10" y="137" font-size="10" text-anchor="middle" font-family="serif">相關</text>
+<!-- Sync right: X2↔Y2 -->
+<path d="M475,72 C515,72 515,186 475,186" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#ahr)" marker-end="url(#ah)"/>
+<text x="508" y="124" font-size="10" text-anchor="middle" font-family="serif">同步</text>
+<text x="508" y="137" font-size="10" text-anchor="middle" font-family="serif">相關</text>
+</svg>
+<div class="cap">圖1：交叉延宕面板模型（CLPM）的三類核心路徑</div>
+</div>
+
+<div id="s1a"></div>
+<h3>分析時同時估計的三類關係</h3>
+<ol>
+  <li><strong>自迴歸效果（autoregressive effect）</strong>：X₁→X₂、Y₁→Y₂，反映同一變項在時間上的穩定性，也是控制個體原有基準線的必要路徑。</li>
+  <li><strong>同步相關（synchronous correlation）</strong>：X₁和Y₁、X₂和Y₂之間的共變，反映兩變項在時間截面上的關聯。</li>
+  <li><strong>交叉延宕效果（cross-lagged effect）</strong>：X₁→Y₂、Y₁→X₂，此為最關鍵的路徑，回答在控制 Y₁ 後，X₁ 是否仍能顯著預測 Y₂。</li>
+</ol>
+<div class="box">交叉延宕設計能提供時間先後與方向性的推論依據，但不等同於強因果宣稱。在缺乏實驗隨機分派的前提下，仍可能存在未觀測的第三變項干擾。</div>
+
+<div id="s1b"></div>
+<h3>歷史脈絡</h3>
+<div class="tw"><table>
+  <tr><th>學者</th><th>年代</th><th>貢獻</th></tr>
+  <tr><td>Campbell &amp; Stanley</td><td>1963</td><td>將交叉延宕設計系統化為準實驗研究方法論框架</td></tr>
+  <tr><td>Kenny</td><td>1975</td><td>形式化統計框架，提出同步性與平穩性等使用前提</td></tr>
+  <tr><td>Hamaker et al.</td><td>2015</td><td>批判傳統 CLPM 混淆個體間差異與個體內動態，提出 RI-CLPM</td></tr>
+  <tr><td>Mulder &amp; Hamaker</td><td>2021</td><td>RI-CLPM 的三種模型延伸</td></tr>
+</table></div>
+</div>
+
+<!-- 二 -->
+<div class="sec" id="s2">
+<h2>二、適用的時機或情境</h2>
+<div id="s2a"></div>
+<h3>✅ 適合使用的情境</h3>
+<ol>
+  <li><strong>釐清影響方向與時間順序：</strong>資源保存理論預測高投入者累積資源後提升績效（Hobfoll, 1989）；社會認知理論預測成功績效強化自我效能感進而回饋至投入（Bandura, 1986）。兩個理論方向相反，橫斷研究無法判斷孰先孰後。</li>
+  <li><strong>理論上存在雙向或螺旋關係：</strong>JD-R 理論預測資源促進投入、高投入又創造資源，形成增益螺旋（Bakker &amp; Demerouti, 2007），需縱貫資料驗證。</li>
+  <li><strong>分析會隨時間改變的研究變項：</strong>研究變項需具狀態性特質（state-like）。Luthans 等人（2007）明確區分：狀態性構念（工作投入、組織承諾、心理資本）具可塑性；特質性構念（大五人格）相對穩定，自迴歸係數過高，較不適合。</li>
+  <li><strong>無法進行實驗操弄時強化方向性推論：</strong>倫理或實務上無法隨機分派時，縱貫追蹤提供比橫斷更強的方向性推論。</li>
+</ol>
+<div id="s2b"></div>
+<h3>❌ 不適合使用的情境</h3>
+<ol>
+  <li><strong>只有單一橫斷面資料：</strong>根本無法估計自迴歸效果或交叉延宕路徑（Kenny, 1975）。</li>
+  <li><strong>資料來自事後回溯記憶：</strong>回溯式填答是共同方法偏誤的主要來源，人為膨脹跨時間相關（Podsakoff et al., 2003）。</li>
+  <li><strong>兩個變項均屬高度穩定特質：</strong>自迴歸係數接近 .90，殘差變異空間極小（Rogosa, 1980；Hamaker et al., 2015）。</li>
+  <li><strong>次級資料缺乏對稱的重複測量：</strong>兩個構念的測量時間點不一致，強行套用導致模型設定錯誤。</li>
+  <li><strong>時間間隔與理論因果歷程不匹配：</strong>不當的時間間隔是效果消失或方向錯誤的主要原因（Dormann &amp; Griffin, 2015）。</li>
+</ol>
+<div id="s2c"></div>
+<h3>時間間隔的理論考量</h3>
+<p>Mitchell 與 James（2001）指出，時間間隔的選擇應同時考量兩個面向：<strong>起始時間</strong>（自因至果出現的最短時距）與<strong>持續期間</strong>（效果達峰後開始衰退前的維持長度）。若測量間隔短於起始時間，路徑係數被低估；若長於持續時間，效果可能已衰退（Cole &amp; Maxwell, 2003）。</p>
+<div class="tw"><table>
+  <tr><th>構念類型</th><th>代表構念</th><th>變動層次</th><th>建議間隔</th><th>理論依據</th></tr>
+  <tr><td>慢速狀態性構念</td><td>工作投入／工作滿意度／組織承諾</td><td>月際</td><td>3–6 個月</td><td>心理資本理論（Luthans et al., 2007）</td></tr>
+  <tr><td>資源耗損／積累歷程</td><td>職業倦怠／慢性工作壓力</td><td>跨季／年</td><td>6–12 個月</td><td>資源保存理論（Hobfoll, 1989）</td></tr>
+  <tr><td>高頻動態構念</td><td>每日情緒／工作事件／瞬時幸福感</td><td>日際</td><td>數天至數週</td><td>情感事件理論（Weiss &amp; Cropanzano, 1996）</td></tr>
+</table></div>
+</div>
+
+<!-- 三 -->
+<div class="sec" id="s3">
+<h2>三、統計檢驗方法</h2>
+<p>依資料結構與研究問題的複雜程度，可採用以下四種方法。點選標籤切換：</p>
+<div class="tabs">
+  <button class="tb on" onclick="sw('m1',this)">方法一：CLPC</button>
+  <button class="tb" onclick="sw('m2',this)">方法二：CLPA</button>
+  <button class="tb" onclick="sw('m3',this)">方法三：SEM-CLPM</button>
+  <button class="tb" onclick="sw('m4',this)">方法四：RI-CLPM</button>
+</div>
+
+<!-- M1 -->
+<span id="s3a" style="display:block;position:relative;top:-80px;"></span><div id="m1" class="tc on">
+<h4>傳統交叉延宕相關分析（CLPC）</h4>
+<p>根據 Kenny（1975）、Rogosa（1980）、Cook &amp; Campbell（1979），進行前須滿足四項基本假設：</p>
+<div class="tw"><table>
+  <tr><th>#</th><th>假設</th><th>說明</th></tr>
+  <tr><td>1</td><td>同時相關須達 .30 以上</td><td>若 X 與 Y 同一時間無顯著相關，無法建立合理因果模型</td></tr>
+  <tr><td>2</td><td>重測信度須相等</td><td>兩變項穩定程度差異太大，交叉相關比較失真</td></tr>
+  <tr><td>3</td><td>同時測量</td><td>所有變項應在同一時點測量</td></tr>
+  <tr><td>4</td><td>因果穩定性</td><td>因果結構在不同時間點應保持一致</td></tr>
+</table></div>
+<!-- SVG 2: CLPC diagram -->
+<div class="fig">
+<svg viewBox="0 0 560 290" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="ah2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#333"/></marker>
+  <marker id="ah2r" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0,0 3,8 6" fill="#333"/></marker>
+</defs>
+<text x="100" y="22" font-size="12" text-anchor="middle" font-family="serif" font-weight="bold">T₁：前一時間點</text>
+<text x="430" y="22" font-size="12" text-anchor="middle" font-family="serif" font-weight="bold">T₂：後一時間點</text>
+<rect x="44" y="36" width="112" height="50" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="100" y="65" font-size="14" text-anchor="middle" font-family="serif">X₁</text>
+<rect x="44" y="168" width="112" height="50" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="100" y="197" font-size="14" text-anchor="middle" font-family="serif">Y₁</text>
+<rect x="376" y="36" width="112" height="50" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="432" y="65" font-size="14" text-anchor="middle" font-family="serif">X₂</text>
+<rect x="376" y="168" width="112" height="50" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="432" y="197" font-size="14" text-anchor="middle" font-family="serif">Y₂</text>
+<!-- r(X1,X2) autoregressive -->
+<line x1="156" y1="52" x2="376" y2="52" stroke="#333" stroke-width="1.2" marker-end="url(#ah2)"/>
+<text x="266" y="44" font-size="10" text-anchor="middle" font-family="serif">自迴歸效果 r(X₁,X₂)</text>
+<!-- r(Y1,Y2) autoregressive -->
+<line x1="156" y1="205" x2="376" y2="205" stroke="#333" stroke-width="1.2" marker-end="url(#ah2)"/>
+<text x="266" y="226" font-size="10" text-anchor="middle" font-family="serif">自迴歸效果 r(Y₁,Y₂)</text>
+<!-- cross-lagged X1→Y2 r(X1,Y2) -->
+<line x1="156" y1="72" x2="376" y2="178" stroke="#333" stroke-width="1.2" marker-end="url(#ah2)"/>
+<text x="266" y="119" font-size="10" text-anchor="middle" font-family="serif">X₁→Y₂：r(X₁,Y₂)</text>
+<!-- cross-lagged Y1→X2 r(Y1,X2) -->
+<line x1="156" y1="182" x2="376" y2="76" stroke="#333" stroke-width="1.2" marker-end="url(#ah2)"/>
+<text x="266" y="152" font-size="10" text-anchor="middle" font-family="serif">Y₁→X₂：r(X₂,Y₁)</text>
+<!-- sync left -->
+<path d="M44,70 C4,70 4,188 44,188" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#ah2r)" marker-end="url(#ah2)"/>
+<text x="14" y="126" font-size="9" text-anchor="middle" font-family="serif">同步</text>
+<text x="14" y="139" font-size="9" text-anchor="middle" font-family="serif">相關</text>
+<text x="14" y="152" font-size="9" text-anchor="middle" font-family="serif">r(X₁,Y₁)</text>
+<!-- sync right -->
+<path d="M488,70 C528,70 528,188 488,188" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#ah2r)" marker-end="url(#ah2)"/>
+<text x="518" y="126" font-size="9" text-anchor="middle" font-family="serif">同步</text>
+<text x="518" y="139" font-size="9" text-anchor="middle" font-family="serif">相關</text>
+<text x="518" y="152" font-size="9" text-anchor="middle" font-family="serif">r(X₂,Y₂)</text>
+</svg>
+<div class="cap">圖2：CLPC 路徑圖——比較 r(X₁,Y₂) 與 r(X₂,Y₁) 的大小</div>
+</div>
+<h4>統計結果判讀</h4>
+<div class="tw"><table>
+  <tr><th>統計結果</th><th>初步解釋</th></tr>
+  <tr><td>r(X₁,Y₂) ≠ 0 且 r(X₂,Y₁) = 0</td><td>X較具時間先導性，初步支持 X→Y 的方向性預測</td></tr>
+  <tr><td>r(X₁,Y₂) = 0 且 r(X₂,Y₁) ≠ 0</td><td>Y較具時間先導性，初步支持 Y→X 的方向性預測</td></tr>
+  <tr><td>r(X₁,Y₂) &gt; r(X₂,Y₁) 且皆顯著</td><td>X→Y 的方向性預測效果較強</td></tr>
+  <tr><td>r(X₁,Y₂) = r(X₂,Y₁) ≠ 0</td><td>可能存在雙向互惠的跨時間預測關係</td></tr>
+  <tr><td>r(X₁,Y₂) = r(X₂,Y₁) = 0 但有同步相關</td><td>應考慮第三變項干擾，屬虛假相關</td></tr>
+</table></div>
+<div class="box warn"><strong>限制：</strong>未能控制測量誤差、對重測信度差異敏感，且不等同於控制前期水準後的條件預測。</div>
+</div>
+
+<!-- M2 -->
+<span id="s3b" style="display:block;position:relative;top:-80px;"></span><div id="m2" class="tc">
+<h4>交叉延宕迴歸分析（CLPA）</h4>
+<p>是傳統 CLPC 的進階版本。參考李茂能（2024）統計書籍，在 AMOS 中以<strong>觀察變項為基礎（非潛在變項模式）</strong>建立的交叉延宕迴歸模型。適合資料指標明確且不進行潛在變項建構的情境。</p>
+<p>研究者同時估計兩條<strong>穩定性路徑</strong>（X₁→X₂、Y₁→Y₂）與兩條<strong>交叉延宕路徑</strong>（X₁→Y₂記作β₂、Y₁→X₂記作γ₂）。</p>
+<!-- SVG 3: CLPA/AMOS diagram -->
+<div class="fig">
+<svg viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="ah3" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#333"/></marker>
+  <marker id="ah3r" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0,0 3,8 6" fill="#333"/></marker>
+</defs>
+<text x="112" y="22" font-size="12" text-anchor="middle" font-family="serif" font-weight="bold">Time 1</text>
+<text x="400" y="22" font-size="12" text-anchor="middle" font-family="serif" font-weight="bold">Time 2</text>
+<!-- X1, Y1, X2, Y2 boxes -->
+<rect x="56" y="48" width="112" height="52" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="112" y="78" font-size="15" text-anchor="middle" font-family="serif">X1</text>
+<rect x="56" y="200" width="112" height="52" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="112" y="230" font-size="15" text-anchor="middle" font-family="serif">Y1</text>
+<rect x="344" y="48" width="112" height="52" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="400" y="78" font-size="15" text-anchor="middle" font-family="serif">X2</text>
+<rect x="344" y="200" width="112" height="52" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="400" y="230" font-size="15" text-anchor="middle" font-family="serif">Y2</text>
+<!-- e1, e2 circles -->
+<ellipse cx="540" cy="74" rx="34" ry="28" fill="#DCDCDC" stroke="#333" stroke-width="1.2"/>
+<text x="540" y="79" font-size="14" text-anchor="middle" font-family="serif">e1</text>
+<ellipse cx="540" cy="226" rx="34" ry="28" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="540" y="231" font-size="14" text-anchor="middle" font-family="serif">e2</text>
+<!-- Beta1: X1→X2 -->
+<line x1="168" y1="62" x2="344" y2="62" stroke="#333" stroke-width="1.2" marker-end="url(#ah3)"/>
+<text x="256" y="54" font-size="11" text-anchor="middle" font-family="serif">Beta1</text>
+<!-- Gamma1: Y1→Y2 -->
+<line x1="168" y1="234" x2="344" y2="234" stroke="#333" stroke-width="1.2" marker-end="url(#ah3)"/>
+<text x="256" y="250" font-size="11" text-anchor="middle" font-family="serif">Gamma1</text>
+<!-- Beta2: X1→Y2 (crossing) -->
+<line x1="168" y1="84" x2="344" y2="214" stroke="#333" stroke-width="1.2" marker-end="url(#ah3)"/>
+<text x="242" y="143" font-size="11" text-anchor="middle" font-family="serif">Beta2</text>
+<!-- Gamma2: Y1→X2 (crossing) -->
+<line x1="168" y1="214" x2="344" y2="84" stroke="#333" stroke-width="1.2" marker-end="url(#ah3)"/>
+<text x="272" y="162" font-size="11" text-anchor="middle" font-family="serif">Gamma2</text>
+<!-- e1→X2 -->
+<line x1="506" y1="74" x2="456" y2="74" stroke="#333" stroke-width="1.2" marker-end="url(#ah3)"/>
+<text x="481" y="67" font-size="11" text-anchor="middle" font-family="serif">1</text>
+<!-- e2→Y2 -->
+<line x1="506" y1="226" x2="456" y2="226" stroke="#333" stroke-width="1.2" marker-end="url(#ah3)"/>
+<text x="481" y="219" font-size="11" text-anchor="middle" font-family="serif">1</text>
+<!-- X1↔Y1 curved left -->
+<path d="M56,88 C14,88 14,210 56,210" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#ah3r)" marker-end="url(#ah3)"/>
+<!-- e1↔e2 curved right -->
+<path d="M540,102 C580,102 580,198 540,198" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#ah3r)" marker-end="url(#ah3)"/>
+<text x="540" y="155" font-size="10" text-anchor="middle" font-family="serif">Cross-lagged</text>
+<text x="540" y="168" font-size="10" text-anchor="middle" font-family="serif">Regression Model</text>
+</svg>
+<div class="cap">圖3：CLPA 在 AMOS 中的路徑圖（Cross-lagged Regression Model，參考李茂能, 2024）</div>
+</div>
+<div class="box"><strong>與 SEM-CLPM 的關鍵差異：</strong>CLPA 以觀察分數直接建立路徑模型，不含測量誤差分離；SEM-CLPM 加建 CFA 測量模型，路徑係數估計更精確但需多題項量表與更大樣本量。</div>
+<h4>統計結果判讀</h4>
+<div class="tw"><table>
+  <tr><th>β₂（X₁→Y₂）</th><th>γ₂（Y₁→X₂）</th><th>初步推論</th></tr>
+  <tr><td>顯著</td><td>不顯著</td><td>X較具時間先導性，初步支持 X→Y 的方向性預測</td></tr>
+  <tr><td>不顯著</td><td>顯著</td><td>Y較具時間先導性，初步支持 Y→X 的方向性預測</td></tr>
+  <tr><td colspan="2" style="text-align:center">兩者皆顯著（β₂ &gt; γ₂ 或相反）</td><td>可能存在雙向互惠的跨時間預測關係，但以數值較大的路徑為主導方向</td></tr>
+  <tr><td>兩者皆不顯著</td><td>但穩定路徑顯著</td><td>表示變項具高度自我穩定性，但無明確交叉影響，可能需考慮第三變項或延長時間間隔</td></tr>
+</table></div>
+</div>
+
+<!-- M3 -->
+<span id="s3c" style="display:block;position:relative;top:-80px;"></span><div id="m3" class="tc">
+<h4>交叉延宕結構方程模型（SEM-CLPM）</h4>
+<p>將潛在變項、測量誤差與時間穩定性納入模型中進行估計。可在 SEM 架構下（Mplus、R lavaan、AMOS）同時估計所有路徑並評估整體模型適配度。</p>
+<!-- SVG 4: SEM-CLPM -->
+<div class="fig">
+<svg viewBox="0 0 640 330" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="ah4" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#333"/></marker>
+  <marker id="ah4r" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0,0 3,8 6" fill="#333"/></marker>
+</defs>
+<text x="160" y="18" font-size="12" text-anchor="middle" font-family="serif" font-weight="bold">T₁：前一時間點</text>
+<text x="480" y="18" font-size="12" text-anchor="middle" font-family="serif" font-weight="bold">T₂：後一時間點</text>
+<!-- Latent X1, Y1 ovals -->
+<ellipse cx="160" cy="90" rx="50" ry="34" fill="#DCDCDC" stroke="#333" stroke-width="1.2"/>
+<text x="160" y="95" font-size="14" text-anchor="middle" font-family="serif">X₁</text>
+<ellipse cx="160" cy="240" rx="50" ry="34" fill="#DCDCDC" stroke="#333" stroke-width="1.2"/>
+<text x="160" y="245" font-size="14" text-anchor="middle" font-family="serif">Y₁</text>
+<!-- Latent X2, Y2 ovals -->
+<ellipse cx="480" cy="90" rx="50" ry="34" fill="#DCDCDC" stroke="#333" stroke-width="1.2"/>
+<text x="480" y="95" font-size="14" text-anchor="middle" font-family="serif">X₂</text>
+<ellipse cx="480" cy="240" rx="50" ry="34" fill="#DCDCDC" stroke="#333" stroke-width="1.2"/>
+<text x="480" y="245" font-size="14" text-anchor="middle" font-family="serif">Y₂</text>
+<!-- Indicators T1 -->
+<rect x="90" y="145" width="38" height="28" fill="#fff" stroke="#333" stroke-width="1"/>
+<text x="109" y="163" font-size="10" text-anchor="middle" font-family="serif">x₁₁</text>
+<rect x="132" y="145" width="38" height="28" fill="#fff" stroke="#333" stroke-width="1"/>
+<text x="151" y="163" font-size="10" text-anchor="middle" font-family="serif">x₁₂</text>
+<rect x="90" y="290" width="38" height="28" fill="#fff" stroke="#333" stroke-width="1"/>
+<text x="109" y="308" font-size="10" text-anchor="middle" font-family="serif">y₁₁</text>
+<rect x="132" y="290" width="38" height="28" fill="#fff" stroke="#333" stroke-width="1"/>
+<text x="151" y="308" font-size="10" text-anchor="middle" font-family="serif">y₁₂</text>
+<!-- Indicators T2 -->
+<rect x="410" y="145" width="38" height="28" fill="#fff" stroke="#333" stroke-width="1"/>
+<text x="429" y="163" font-size="10" text-anchor="middle" font-family="serif">x₂₁</text>
+<rect x="452" y="145" width="38" height="28" fill="#fff" stroke="#333" stroke-width="1"/>
+<text x="471" y="163" font-size="10" text-anchor="middle" font-family="serif">x₂₂</text>
+<rect x="410" y="290" width="38" height="28" fill="#fff" stroke="#333" stroke-width="1"/>
+<text x="429" y="308" font-size="10" text-anchor="middle" font-family="serif">y₂₁</text>
+<rect x="452" y="290" width="38" height="28" fill="#fff" stroke="#333" stroke-width="1"/>
+<text x="471" y="308" font-size="10" text-anchor="middle" font-family="serif">y₂₂</text>
+<!-- Measurement arrows T1 -->
+<line x1="145" y1="122" x2="116" y2="145" stroke="#555" stroke-width="1" marker-end="url(#ah4)"/>
+<line x1="158" y1="124" x2="151" y2="145" stroke="#555" stroke-width="1" marker-end="url(#ah4)"/>
+<line x1="145" y1="272" x2="116" y2="290" stroke="#555" stroke-width="1" marker-end="url(#ah4)"/>
+<line x1="158" y1="274" x2="151" y2="290" stroke="#555" stroke-width="1" marker-end="url(#ah4)"/>
+<!-- Measurement arrows T2 -->
+<line x1="466" y1="122" x2="437" y2="145" stroke="#555" stroke-width="1" marker-end="url(#ah4)"/>
+<line x1="478" y1="124" x2="471" y2="145" stroke="#555" stroke-width="1" marker-end="url(#ah4)"/>
+<line x1="466" y1="272" x2="437" y2="290" stroke="#555" stroke-width="1" marker-end="url(#ah4)"/>
+<line x1="478" y1="274" x2="471" y2="290" stroke="#555" stroke-width="1" marker-end="url(#ah4)"/>
+<!-- Autoregressive X1→X2 -->
+<line x1="210" y1="82" x2="430" y2="82" stroke="#333" stroke-width="1.2" marker-end="url(#ah4)"/>
+<text x="320" y="74" font-size="10" text-anchor="middle" font-family="serif">自迴歸效果</text>
+<!-- Autoregressive Y1→Y2 -->
+<line x1="210" y1="248" x2="430" y2="248" stroke="#333" stroke-width="1.2" marker-end="url(#ah4)"/>
+<text x="320" y="266" font-size="10" text-anchor="middle" font-family="serif">自迴歸效果</text>
+<!-- Cross-lagged X1→Y2 -->
+<line x1="205" y1="108" x2="435" y2="220" stroke="#333" stroke-width="1.2" marker-end="url(#ah4)"/>
+<!-- Cross-lagged Y1→X2 -->
+<line x1="205" y1="222" x2="435" y2="112" stroke="#333" stroke-width="1.2" marker-end="url(#ah4)"/>
+<text x="320" y="170" font-size="10" text-anchor="middle" font-family="serif">交叉延宕效果</text>
+<!-- Sync: X1↔Y1 -->
+<path d="M112,108 C72,108 72,222 112,222" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#ah4r)" marker-end="url(#ah4)"/>
+<text x="64" y="170" font-size="9" text-anchor="middle" font-family="serif">同步相關</text>
+<!-- Sync: X2↔Y2 -->
+<path d="M528,108 C568,108 568,222 528,222" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#ah4r)" marker-end="url(#ah4)"/>
+<text x="580" y="170" font-size="9" text-anchor="middle" font-family="serif">同步相關</text>
+<!-- Labels -->
+<text x="160" y="140" font-size="9" text-anchor="middle" fill="#666" font-family="serif">測量模型</text>
+<text x="480" y="140" font-size="9" text-anchor="middle" fill="#666" font-family="serif">測量模型</text>
+</svg>
+<div class="cap">圖4：SEM-CLPM 潛在變項路徑圖（含測量模型）</div>
+</div>
+<h4>縱貫測量不變性檢驗（依序確認）</h4>
+<ol>
+  <li><strong>形態不變性（configural）：</strong>不同時間點題項是否對應同一潛在構念。	例如，T1的工作投入由活力、奉獻、專注等題項構成，T2也應維持相同的構念結構。若形態不變性成立，代表研究者可以初步認為不同時間點測量的是同一個概念。</li>
+  <li><strong>因素負荷量不變性（metric）：</strong>各題項與潛在變項的關係跨時間是否相同。例如某一題在T1很能代表工作投入，但在T2卻幾乎不能代表工作投入，表示這題在不同時間點的測量意義可能改變。若因素負荷量不變性成立，才比較能合理比較不同時間點之間的路徑係數。</li>
+  <li><strong>截距不變性（scalar）：</strong>	不只負荷量相同，每道題的平均反應基準點也要相同。例如「我對工作充滿熱情」這題，假如T1的平均值是4.2、T2的平均值也要在控制潛在構念後沒有顯著偏移。如果截距不變性不成立，代表受測者對某些題目的作答方式隨時間改變了(例如更習慣給高分，或問卷疲勞)，這樣就無法合理比較T1和T2的潛在平均數，也會影響路徑係數的解讀。</li>
+</ol>
+<h4>整體模型適配度</h4>
+<div class="tw"><table>
+  <tr><th>指標</th><th>可接受</th><th>佳</th><th>說明</th></tr>
+  <tr><td>χ²/df</td><td>&lt; 3（大樣本 &lt; 5）</td><td>&lt; 2</td><td>樣本大時幾乎必然顯著，應搭配其他指標</td></tr>
+  <tr><td>CFI</td><td>≥ .90</td><td>≥ .95</td><td>比較適配指數</td></tr>
+  <tr><td>TLI</td><td>≥ .90</td><td>≥ .95</td><td>非規範適配指數</td></tr>
+  <tr><td>RMSEA</td><td>≤ .08</td><td>≤ .05</td><td>漸進均方根誤差</td></tr>
+  <tr><td>SRMR</td><td>≤ .08</td><td>≤ .05</td><td>標準化殘差均方根</td></tr>
+</table></div>
+<h4>自我迴歸路徑</h4>
+<p>自我迴歸係數反映各構念跨時間的穩定性。係數越高（如 ≥ .70），表示員工在此特質上的相對位置不易改變，殘差變異空間縮小，交叉延宕效果的偵測難度也提高。在人力資源研究中，若自我迴歸係數過高（接近 .90），研究者應評估是否有足夠的統計力偵測交叉路徑，並在設計階段進行樣本量估算。</p>
+
+<h4>交叉延宕路徑判讀（四種情境）</h4>
+<div class="tw"><table>
+  <tr><th>情境</th><th>路徑顯著性</th><th>推論方向</th></tr>
+  <tr><td>X₁→Y₂ 顯著，Y₁→X₂ 不顯著</td><td>β(X→Y) 顯著 p &lt; .05</td><td>X 相較 Y 較具時間先導性；仍不宜宣稱實驗因果</td></tr>
+  <tr><td>X₁→Y₂ 不顯著，Y₁→X₂ 顯著</td><td>β(Y→X) 顯著 p &lt; .05</td><td>Y 相較 X 較具時間先導性；仍不宜宣稱實驗因果</td></tr>
+  <tr><td>兩條路徑皆顯著</td><td>兩個 β 均顯著</td><td>雙向互惠；可設定等值限制比較相對強度</td></tr>
+  <tr><td>兩條路徑皆不顯著</td><td>兩個 β 均不顯著</td><td>此時間間隔下，兩變項無明確跨時間預測關係</td></tr>
+</table></div>
+<p>結論應以<strong>「方向性預測優勢」</strong>而非「實驗因果」表述。Cohen（1988）：.10 小效果，.30 中效果，.50 以上大效果；HR 縱貫研究的交叉延宕效果通常落在 .10 至 .25 之間。</p>
+</div>
+
+<!-- M4 -->
+<span id="s3d" style="display:block;position:relative;top:-80px;"></span><div id="m4" class="tc">
+<h4>隨機截距交叉延宕模型（RI-CLPM）</h4>
+<p>Hamaker 等人（2015）指出，傳統 CLPM 的路徑係數混合了個體間差異（between-person）與個體內動態（within-person）。RI-CLPM 透過加入隨機截距將個體的長期穩定特質分離，再估計個體內層次的動態交叉路徑。<strong>此模型需要至少三個時間波次。</strong></p>
+<div class="box grn"><strong>核心概念：</strong>傳統 CLPM 回答「高投入的人，績效是否也較高？」（個體間比較）；RI-CLPM 回答「某員工比平時更投入時，其後續績效是否也高於自己平時？」（個體內動態）</div>
+<!-- SVG 5: RI-CLPM -->
+<div class="fig">
+<svg viewBox="0 0 720 430" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="ah5" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#333"/></marker>
+  <marker id="ah5r" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0,0 3,8 6" fill="#333"/></marker>
+</defs>
+<!-- RI ovals -->
+<ellipse cx="160" cy="44" rx="54" ry="30" fill="#DCDCDC" stroke="#333" stroke-width="1.2"/>
+<text x="160" y="49" font-size="13" text-anchor="middle" font-family="serif">RI_X</text>
+<ellipse cx="560" cy="44" rx="54" ry="30" fill="#DCDCDC" stroke="#333" stroke-width="1.2"/>
+<text x="560" y="49" font-size="13" text-anchor="middle" font-family="serif">RI_Y</text>
+<!-- RI_X ↔ RI_Y -->
+<line x1="214" y1="44" x2="506" y2="44" stroke="#333" stroke-width="1.2" marker-start="url(#ah5r)" marker-end="url(#ah5)"/>
+<text x="360" y="36" font-size="10" text-anchor="middle" font-family="serif">個體間穩定差異（隨機截距）</text>
+<!-- T1, T2, T3 labels -->
+<text x="160" y="103" font-size="11" text-anchor="middle" font-family="serif" font-weight="bold">T1：前一時間點</text>
+<text x="360" y="103" font-size="11" text-anchor="middle" font-family="serif" font-weight="bold">T2：中間時間點</text>
+<text x="560" y="103" font-size="11" text-anchor="middle" font-family="serif" font-weight="bold">T3：後一時間點</text>
+<!-- Observed boxes X row -->
+<rect x="104" y="112" width="112" height="44" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="160" y="139" font-size="14" text-anchor="middle" font-family="serif">X1</text>
+<rect x="304" y="112" width="112" height="44" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="360" y="139" font-size="14" text-anchor="middle" font-family="serif">X2</text>
+<rect x="504" y="112" width="112" height="44" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="560" y="139" font-size="14" text-anchor="middle" font-family="serif">X3</text>
+<!-- Observed boxes Y row -->
+<rect x="104" y="230" width="112" height="44" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="160" y="257" font-size="14" text-anchor="middle" font-family="serif">Y1</text>
+<rect x="304" y="230" width="112" height="44" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="360" y="257" font-size="14" text-anchor="middle" font-family="serif">Y2</text>
+<rect x="504" y="230" width="112" height="44" fill="#DCDCDC" stroke="#333" stroke-width="1.2" rx="2"/>
+<text x="560" y="257" font-size="14" text-anchor="middle" font-family="serif">Y3</text>
+<!-- RI_X → observed X1,X2,X3 -->
+<line x1="160" y1="74" x2="160" y2="112" stroke="#333" stroke-width="1" marker-end="url(#ah5)"/>
+<line x1="185" y1="68" x2="345" y2="112" stroke="#333" stroke-width="1" marker-end="url(#ah5)"/>
+<line x1="196" y1="62" x2="530" y2="112" stroke="#333" stroke-width="1" marker-end="url(#ah5)"/>
+<!-- RI_Y → observed Y1,Y2,Y3 -->
+<line x1="535" y1="68" x2="175" y2="230" stroke="#333" stroke-width="1" marker-end="url(#ah5)"/>
+<line x1="548" y1="72" x2="375" y2="230" stroke="#333" stroke-width="1" marker-end="url(#ah5)"/>
+<line x1="560" y1="74" x2="560" y2="230" stroke="#333" stroke-width="1" marker-end="url(#ah5)"/>
+<!-- Within-person ovals wx -->
+<ellipse cx="160" cy="340" rx="40" ry="28" fill="#fff" stroke="#333" stroke-width="1.2"/>
+<text x="160" y="345" font-size="12" text-anchor="middle" font-family="serif">wx1</text>
+<ellipse cx="360" cy="340" rx="40" ry="28" fill="#fff" stroke="#333" stroke-width="1.2"/>
+<text x="360" y="345" font-size="12" text-anchor="middle" font-family="serif">wx2</text>
+<ellipse cx="560" cy="340" rx="40" ry="28" fill="#fff" stroke="#333" stroke-width="1.2"/>
+<text x="560" y="345" font-size="12" text-anchor="middle" font-family="serif">wx3</text>
+<!-- Within-person ovals wy -->
+<ellipse cx="160" cy="408" rx="40" ry="28" fill="#fff" stroke="#333" stroke-width="1.2"/>
+<text x="160" y="413" font-size="12" text-anchor="middle" font-family="serif">wy1</text>
+<ellipse cx="360" cy="408" rx="40" ry="28" fill="#fff" stroke="#333" stroke-width="1.2"/>
+<text x="360" y="413" font-size="12" text-anchor="middle" font-family="serif">wy2</text>
+<ellipse cx="560" cy="408" rx="40" ry="28" fill="#fff" stroke="#333" stroke-width="1.2"/>
+<text x="560" y="413" font-size="12" text-anchor="middle" font-family="serif">wy3</text>
+<!-- wx→X, wy→Y connections -->
+<line x1="160" y1="312" x2="160" y2="274" stroke="#555" stroke-width="1" marker-end="url(#ah5)"/>
+<line x1="360" y1="312" x2="360" y2="274" stroke="#555" stroke-width="1" marker-end="url(#ah5)"/>
+<line x1="560" y1="312" x2="560" y2="274" stroke="#555" stroke-width="1" marker-end="url(#ah5)"/>
+<line x1="160" y1="380" x2="160" y2="274" stroke="#555" stroke-width="1" marker-end="url(#ah5)"/>
+<line x1="360" y1="380" x2="360" y2="274" stroke="#555" stroke-width="1" marker-end="url(#ah5)"/>
+<line x1="560" y1="380" x2="560" y2="274" stroke="#555" stroke-width="1" marker-end="url(#ah5)"/>
+<!-- wx autoregressive -->
+<line x1="200" y1="338" x2="320" y2="338" stroke="#333" stroke-width="1.2" marker-end="url(#ah5)"/>
+<text x="260" y="330" font-size="9" text-anchor="middle" font-family="serif">自迴歸</text>
+<line x1="400" y1="338" x2="520" y2="338" stroke="#333" stroke-width="1.2" marker-end="url(#ah5)"/>
+<text x="460" y="330" font-size="9" text-anchor="middle" font-family="serif">自迴歸</text>
+<!-- wy autoregressive -->
+<line x1="200" y1="410" x2="320" y2="410" stroke="#333" stroke-width="1.2" marker-end="url(#ah5)"/>
+<text x="260" y="403" font-size="9" text-anchor="middle" font-family="serif">自迴歸</text>
+<line x1="400" y1="410" x2="520" y2="410" stroke="#333" stroke-width="1.2" marker-end="url(#ah5)"/>
+<text x="460" y="403" font-size="9" text-anchor="middle" font-family="serif">自迴歸</text>
+<!-- cross-lagged wx→wy2, wy→wx2 -->
+<line x1="196" y1="352" x2="322" y2="396" stroke="#333" stroke-width="1.2" marker-end="url(#ah5)"/>
+<line x1="196" y1="396" x2="322" y2="352" stroke="#333" stroke-width="1.2" marker-end="url(#ah5)"/>
+<text x="260" y="374" font-size="9" text-anchor="middle" font-family="serif">交叉延宕</text>
+<line x1="396" y1="352" x2="522" y2="396" stroke="#333" stroke-width="1.2" marker-end="url(#ah5)"/>
+<line x1="396" y1="396" x2="522" y2="352" stroke="#333" stroke-width="1.2" marker-end="url(#ah5)"/>
+<text x="460" y="374" font-size="9" text-anchor="middle" font-family="serif">交叉延宕</text>
+<!-- sync wx↔wy at each wave -->
+<path d="M160,368 C144,368 144,388 160,388" fill="none" stroke="#333" stroke-width="1" marker-start="url(#ah5r)" marker-end="url(#ah5)"/>
+<path d="M360,368 C344,368 344,388 360,388" fill="none" stroke="#333" stroke-width="1" marker-start="url(#ah5r)" marker-end="url(#ah5)"/>
+<path d="M560,368 C544,368 544,388 560,388" fill="none" stroke="#333" stroke-width="1" marker-start="url(#ah5r)" marker-end="url(#ah5)"/>
+<text x="130" y="379" font-size="8" text-anchor="middle" font-family="serif">同步相關</text>
+</svg>
+<div class="cap">圖5：RI-CLPM 三波設計路徑圖（分離個體間穩定差異與個體內動態）</div>
+</div>
+<h4>RI-CLPM 統計結果判讀（四層次）</h4>
+<p><strong>層次一：隨機截距變異數</strong> — 確認 Var(RI_X)、Var(RI_Y) 是否顯著。若顯著，代表個體間穩定差異存在，加入隨機截距合理。RI_X 與 RI_Y 的相關反映穩定的個體間關聯（不涉及動態因果）。</p>
+<p><strong>層次二：整體適配度與模型比較</strong> — 適配度指標同 SEM-CLPM。以 Δχ²、ΔAIC 比較 RI-CLPM 與傳統 CLPM，若 RI-CLPM 顯著較佳，支持控制個體間差異的必要性。</p>
+<p><strong>層次三：個體內交叉路徑（核心）</strong> — 詮釋語言需完全不同：「當某員工在某時間點的投入<em>高於自己的長期平均</em>，其後續績效是否也高於自己的長期平均？」若顯著，代表真實的個體內動態因果歷程。</p>
+<p><strong>層次四：與傳統 CLPM 比較診斷</strong></p>
+<div class="tw"><table>
+  <tr><th>CLPM 交叉路徑</th><th>RI-CLPM 個體內路徑</th><th>診斷意義</th></tr>
+  <tr><td>顯著</td><td>顯著（同方向）</td><td>個體內動態效果真實存在</td></tr>
+  <tr><td>顯著</td><td>不顯著</td><td>效果主要來自穩定個體間差異，非真實動態因果</td></tr>
+  <tr><td>顯著</td><td>顯著（<strong>反方向</strong>）</td><td>⚠️ Sign reversal：CLPM 結論方向錯誤（Hamaker et al., 2015 的核心警示）</td></tr>
+  <tr><td>不顯著</td><td>顯著</td><td>個體間差異壓制了個體內真實效果，RI-CLPM 揭露被遮蔽的動態歷程</td></tr>
+</table></div>
+</div>
+
+<!-- 比較表 -->
+<div id="s3e" style="margin-top:28px;">
+<h3>四種方法綜合比較</h3>
+<div class="tw"><table>
+  <tr><th>方法</th><th>主要統計依據</th><th>優點</th><th>侷限</th><th>工具</th></tr>
+  <tr><td>CLPC</td><td>Pearson r</td><td>簡單易操作；初步因果先導性判斷</td><td>易受測量誤差影響；無法控制前期水準</td><td>SPSS／手算</td></tr>
+  <tr><td>CLPA</td><td>標準化迴歸係數（β）觀察變項路徑</td><td>可控制前期穩定性；邏輯直觀；適合觀察變項</td><td>無法估計整體適配度；無法處理測量誤差</td><td>AMOS（路徑分析）</td></tr>
+  <tr><td>SEM-CLPM</td><td>潛在變項路徑係數（β）× 測量誤差控制 × 整體適配度</td><td>可控制誤差；評估整體適配度；理論嚴謹</td><td>建模複雜；路徑係數混合個體間與個體內效果</td><td>AMOS／Mplus／R lavaan</td></tr>
+  <tr><td>RI-CLPM</td><td>個體內（within-person）殘差路徑係數</td><td>分離個體間穩定差異與個體內動態；理論精確性最高</td><td>需至少三波資料；建模更複雜</td><td>Mplus／R（lavaan, ctsem）</td></tr>
+</table></div>
+</div>
+</div>
+
+<!-- 四 -->
+<div class="sec" id="s4">
+<h2>四、研究主題設計</h2>
+<div style="background:var(--light);border:2px solid var(--bdr);border-radius:7px;padding:18px 22px;margin-bottom:22px;text-align:center;">
+  <div style="font-size:11px;color:var(--blue);margin-bottom:5px;letter-spacing:.05em;">研究主題</div>
+  <div style="font-size:18px;font-weight:700;color:var(--navy);">工作投入與工作績效的雙向動態關係：<br>以三波縱貫資料驗證增益螺旋效應</div>
+</div>
+<h3>研究背景與動機</h3>
+<p>工作投入與工作績效之間的關係是人力資源管理研究的核心議題。過去多數研究採橫斷面設計，雖一致發現兩者具有正相關，卻無法釐清因果方向。從 JD-R 模型（Bakker &amp; Demerouti, 2007），高工作投入者因具備充沛個人資源，應表現出更高工作績效；然而從社會認知理論（Bandura, 1986），工作成功經驗能強化員工的自我效能感，進而提升後續工作投入。若兩個方向均成立，則兩者可能形成<strong>互相強化的增益螺旋</strong>（gain spiral）。</p>
+<p>本研究擬採三波縱貫追蹤設計（間隔各六個月，共十二個月），以 CLPM 與 RI-CLPM 系統性地檢驗此雙向動態關係。</p>
+
+<!-- 研究架構圖 -->
+<div class="fig">
+<svg viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Serif TC',serif">
+<defs>
+  <marker id="ra" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#333"/></marker>
+  <marker id="ra2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2E75B6"/></marker>
+  <marker id="ra2r" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0,0 3,8 6" fill="#2E75B6"/></marker>
+</defs>
+
+<!-- Time headers -->
+<text x="110" y="22" font-size="13" text-anchor="middle" font-weight="bold" fill="#1F3864">T₁</text>
+<text x="110" y="36" font-size="11" text-anchor="middle" fill="#666">（起始）</text>
+<text x="350" y="22" font-size="13" text-anchor="middle" font-weight="bold" fill="#1F3864">T₂</text>
+<text x="350" y="36" font-size="11" text-anchor="middle" fill="#666">（＋6 個月）</text>
+<text x="590" y="22" font-size="13" text-anchor="middle" font-weight="bold" fill="#1F3864">T₃</text>
+<text x="590" y="36" font-size="11" text-anchor="middle" fill="#666">（＋12 個月）</text>
+
+<!-- Boxes: 工作投入 row (top) -->
+<rect x="45"  y="55" width="130" height="52" fill="#DCDCDC" stroke="#333" stroke-width="1.3" rx="3"/>
+<text x="110" y="77" font-size="13" text-anchor="middle" fill="#111">工作投入</text>
+<text x="110" y="95" font-size="11" text-anchor="middle" fill="#555">Work Engagement</text>
+
+<rect x="285" y="55" width="130" height="52" fill="#DCDCDC" stroke="#333" stroke-width="1.3" rx="3"/>
+<text x="350" y="77" font-size="13" text-anchor="middle" fill="#111">工作投入</text>
+<text x="350" y="95" font-size="11" text-anchor="middle" fill="#555">Work Engagement</text>
+
+<rect x="525" y="55" width="130" height="52" fill="#DCDCDC" stroke="#333" stroke-width="1.3" rx="3"/>
+<text x="590" y="77" font-size="13" text-anchor="middle" fill="#111">工作投入</text>
+<text x="590" y="95" font-size="11" text-anchor="middle" fill="#555">Work Engagement</text>
+
+<!-- Boxes: 工作績效 row (bottom) -->
+<rect x="45"  y="200" width="130" height="52" fill="#DCDCDC" stroke="#333" stroke-width="1.3" rx="3"/>
+<text x="110" y="222" font-size="13" text-anchor="middle" fill="#111">工作績效</text>
+<text x="110" y="240" font-size="11" text-anchor="middle" fill="#555">Job Performance</text>
+
+<rect x="285" y="200" width="130" height="52" fill="#DCDCDC" stroke="#333" stroke-width="1.3" rx="3"/>
+<text x="350" y="222" font-size="13" text-anchor="middle" fill="#111">工作績效</text>
+<text x="350" y="240" font-size="11" text-anchor="middle" fill="#555">Job Performance</text>
+
+<rect x="525" y="200" width="130" height="52" fill="#DCDCDC" stroke="#333" stroke-width="1.3" rx="3"/>
+<text x="590" y="222" font-size="13" text-anchor="middle" fill="#111">工作績效</text>
+<text x="590" y="240" font-size="11" text-anchor="middle" fill="#555">Job Performance</text>
+
+<!-- Autoregressive paths (black, straight) -->
+<line x1="175" y1="81" x2="283" y2="81" stroke="#333" stroke-width="1.5" marker-end="url(#ra)"/>
+<line x1="415" y1="81" x2="523" y2="81" stroke="#333" stroke-width="1.5" marker-end="url(#ra)"/>
+<line x1="175" y1="226" x2="283" y2="226" stroke="#333" stroke-width="1.5" marker-end="url(#ra)"/>
+<line x1="415" y1="226" x2="523" y2="226" stroke="#333" stroke-width="1.5" marker-end="url(#ra)"/>
+<text x="229" y="73" font-size="10" text-anchor="middle" fill="#555">自迴歸</text>
+<text x="469" y="73" font-size="10" text-anchor="middle" fill="#555">自迴歸</text>
+<text x="229" y="245" font-size="10" text-anchor="middle" fill="#555">自迴歸</text>
+<text x="469" y="245" font-size="10" text-anchor="middle" fill="#555">自迴歸</text>
+
+<!-- Cross-lagged paths (blue) T1→T2 -->
+<line x1="175" y1="97"  x2="283" y2="202" stroke="#2E75B6" stroke-width="1.8" marker-end="url(#ra2)"/>
+<line x1="175" y1="210" x2="283" y2="105" stroke="#2E75B6" stroke-width="1.8" marker-end="url(#ra2)"/>
+<!-- Cross-lagged paths (blue) T2→T3 -->
+<line x1="415" y1="97"  x2="523" y2="202" stroke="#2E75B6" stroke-width="1.8" marker-end="url(#ra2)"/>
+<line x1="415" y1="210" x2="523" y2="105" stroke="#2E75B6" stroke-width="1.8" marker-end="url(#ra2)"/>
+
+<!-- Cross-lagged labels -->
+<text x="218" y="170" font-size="11" text-anchor="middle" fill="#2E75B6" font-weight="bold">β₂</text>
+<text x="241" y="148" font-size="11" text-anchor="middle" fill="#2E75B6" font-weight="bold">γ₂</text>
+<text x="458" y="170" font-size="11" text-anchor="middle" fill="#2E75B6" font-weight="bold">β₂</text>
+<text x="481" y="148" font-size="11" text-anchor="middle" fill="#2E75B6" font-weight="bold">γ₂</text>
+
+<!-- Synchronous correlations (double-headed, dashed) -->
+<line x1="110" y1="107" x2="110" y2="198" stroke="#888" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ra)"/>
+<line x1="350" y1="107" x2="350" y2="198" stroke="#888" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ra)"/>
+<line x1="590" y1="107" x2="590" y2="198" stroke="#888" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ra)"/>
+
+<!-- Legend -->
+<rect x="30" y="272" width="640" height="30" fill="#F5F6FA" stroke="#BDD7EE" stroke-width="1" rx="4"/>
+<line x1="50"  y1="287" x2="80"  y2="287" stroke="#333" stroke-width="1.5" marker-end="url(#ra)"/>
+<text x="86" y="291" font-size="11" fill="#333">自迴歸路徑</text>
+<line x1="185" y1="287" x2="215" y2="287" stroke="#2E75B6" stroke-width="1.8" marker-end="url(#ra2)"/>
+<text x="221" y="291" font-size="11" fill="#2E75B6" font-weight="bold">交叉延宕路徑（β₂：投入→績效；γ₂：績效→投入）</text>
+<line x1="560" y1="287" x2="590" y2="287" stroke="#888" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ra)"/>
+<text x="596" y="291" font-size="11" fill="#888">同步相關</text>
+</svg>
+<div class="cap">圖：三波縱貫研究架構圖（工作投入 ⇄ 工作績效）</div>
+</div>
+
+<div id="s4a"></div>
+<h3>研究目的</h3>
+<ul>
+  <li>在控制前期工作績效後，檢驗前期工作投入是否能顯著正向預測後期工作績效（投入→績效方向）。</li>
+  <li>在控制前期工作投入後，檢驗前期工作績效是否能顯著正向預測後期工作投入（績效→投入方向）。</li>
+  <li>判斷兩者之間是否存在雙向互惠的增益螺旋動態，並比較兩條交叉路徑的相對強度。</li>
+  <li>以 RI-CLPM 控制個體間穩定差異，檢驗個體內層次的動態交叉效果。</li>
+</ul>
+<div id="s4b"></div>
+<h3>研究問題</h3>
+<div class="rq"><div class="rl">RQ1</div>在控制 T₁ 工作績效後，T₁ 工作投入是否能顯著正向預測 T₂ 工作績效？（交叉路徑一：投入→績效）</div>
+<div class="rq"><div class="rl">RQ2</div>在控制 T₁ 工作投入後，T₁ 工作績效是否能顯著正向預測 T₂ 工作投入？（交叉路徑二：績效→投入）</div>
+<div class="rq"><div class="rl">RQ3</div>T₁-T₂ 期間的交叉延宕效果能否在 T₂-T₃ 重複出現，顯示跨時間的效果穩定性？</div>
+<div class="rq"><div class="rl">RQ4</div>在使用 RI-CLPM 控制個體間穩定差異後，工作投入與工作績效的個體內交叉延宕效果是否仍然存在？</div>
+</div>
+
+<!-- 五、AI 實驗紀錄 -->
+<div class="sec" id="s5">
+<h2>五、AI 實驗紀錄</h2>
+<p>這次備考過程設計了一個簡單的 AI 實驗：在三種資訊條件下，比較 ChatGPT 與 Gemini 的作答品質，並請 Claude 擔任評分者與綜合者。以下是完整的實驗設計與發現。</p>
+
+<div id="s5a"></div>
+<div class="phase-hdr">實驗設計</div>
+
+<div class="exp-grid">
+  <div class="exp-card">
+    <div class="ec-num">①</div>
+    <div class="ec-title">評分標準訂定</div>
+    <div class="ec-body">先請 ChatGPT、Gemini、Claude 三個 AI 各自從「教師視角」設計評分標準，再彙整出共識版 Rubric（見下方）。</div>
+    <div class="ec-foot">
+      <span class="ai-badge">ChatGPT</span>
+      <span class="ai-badge">Gemini</span>
+      <span class="ai-badge">Claude</span>
+    </div>
+  </div>
+  <div class="exp-card">
+    <div class="ec-num">②</div>
+    <div class="ec-title">三種條件 × 兩個 AI</div>
+    <div class="ec-body">分三種資訊條件讓 ChatGPT 和 Gemini 作答，產出 A–F 六份答案，請 Claude 評分與分析。</div>
+    <div class="ec-foot">
+      <span class="ai-badge">ChatGPT</span>
+      <span class="ai-badge">Gemini</span>
+    </div>
+  </div>
+  <div class="exp-card">
+    <div class="ec-num">③</div>
+    <div class="ec-title">Claude 寫綜合版</div>
+    <div class="ec-body">Claude 讀完六份評分分析後，寫出它認為的最佳版本 <span class="ans-badge">G</span>，研究者微調後產出 <span class="ans-badge">H</span>。</div>
+  </div>
+  <div class="exp-card">
+    <div class="ec-num">④</div>
+    <div class="ec-title">三 AI 交叉盲評</div>
+    <div class="ec-body">將 A–H 八份答案送三個 AI 進行盲評辯論，H 獲最高分 <strong>97 分</strong>，G 次之 <strong>94 分</strong>。</div>
+    <div class="ec-foot">
+      <span class="ai-badge">ChatGPT</span>
+      <span class="ai-badge">Gemini</span>
+      <span class="ai-badge">Claude</span>
+    </div>
+  </div>
+</div>
+
+<!-- Screenshot gallery -->
+<div class="phase-hdr">實驗過程截圖（影片 12 分鐘）</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 24px;">
+  <div style="border:1px solid var(--bdr);border-radius:6px;overflow:hidden;">
+    <img src="screen_01_gemini_rubric.jpg" style="width:100%;display:block;" alt="Gemini 設計評分標準">
+    <div style="padding:7px 10px;font-size:12px;background:var(--gray);color:#444;">
+      <strong style="color:var(--navy)">①</strong> Gemini 從教師視角產出評分標準 Rubric
+    </div>
+  </div>
+  <div style="border:1px solid var(--bdr);border-radius:6px;overflow:hidden;">
+    <img src="screen_02_claude_reviewing.jpg" style="width:100%;display:block;" alt="Claude 閱讀多份 AI 回應">
+    <div style="padding:7px 10px;font-size:12px;background:var(--gray);color:#444;">
+      <strong style="color:var(--navy)">②</strong> Claude 在 Chrome 中同時閱讀 ChatGPT 與 Gemini 的評分標準（Reviewing multiple AI model responses）
+    </div>
+  </div>
+  <div style="border:1px solid var(--bdr);border-radius:6px;overflow:hidden;">
+    <img src="screen_03_merged_rubric.jpg" style="width:100%;display:block;" alt="融合版評分標準">
+    <div style="padding:7px 10px;font-size:12px;background:var(--gray);color:#444;">
+      <strong style="color:var(--navy)">③</strong> Claude 整合兩份標準，產出「融合版配分建議」表格，再請它輸出成 Excel
+    </div>
+  </div>
+  <div style="border:1px solid var(--bdr);border-radius:6px;overflow:hidden;">
+    <img src="screen_04_generating_csv.jpg" style="width:100%;display:block;" alt="Claude 產生評分 Excel">
+    <div style="padding:7px 10px;font-size:12px;background:var(--gray);color:#444;">
+      <strong style="color:var(--navy)">④</strong> Claude 自動產生 Python 腳本並輸出可下載的 Excel 評分檔
+    </div>
+  </div>
+</div>
+
+<!-- Answer matrix -->
+<div class="phase-hdr">八份答案一覽</div>
+<div class="ans-matrix">
+  <div class="ans-cell">
+    <div class="al">A <span style="font-size:12px;color:#888">86</span></div>
+    <div class="as">ChatGPT<br>（無教材）</div>
+  </div>
+  <div class="ans-cell">
+    <div class="al">B <span style="font-size:12px;color:#888">89</span></div>
+    <div class="as">Gemini<br>（無教材）</div>
+  </div>
+  <div class="ans-cell">
+    <div class="al">C <span style="font-size:12px;color:#888">90</span></div>
+    <div class="as">ChatGPT<br>（有教材）</div>
+  </div>
+  <div class="ans-cell" style="border-color:#F9A825;background:#FFFDE7;">
+    <div class="al">D <span style="font-size:12px;color:#888">79</span></div>
+    <div class="as">Gemini<br>（有教材）</div>
+  </div>
+  <div class="ans-cell">
+    <div class="al">E <span style="font-size:12px;color:#888">93</span></div>
+    <div class="as">ChatGPT<br>（教材＋標準）</div>
+  </div>
+  <div class="ans-cell">
+    <div class="al">F <span style="font-size:12px;color:#888">90</span></div>
+    <div class="as">Gemini<br>（教材＋標準）</div>
+  </div>
+  <div class="ans-cell hi">
+    <div class="al">G <span style="font-size:12px;color:var(--blue)">94</span></div>
+    <div class="as">Claude 綜合版</div>
+  </div>
+  <div class="ans-cell hi" style="border-color:#1F3864;background:#D9E4F0;">
+    <div class="al">H <span style="font-size:13px;color:var(--navy);font-weight:900">97🥇</span></div>
+    <div class="as">研究者微調版</div>
+  </div>
+  <div class="ans-cell hi">
+    <div class="al" style="font-size:12px;">我的版</div>
+    <div class="as">最終完整版<br>（本網頁）</div>
+  </div>
+</div>
+<p style="font-size:11.5px;color:#888;margin-top:4px;">※ 分數為三位 AI 盲評辯論後之共識分數。D 版因混入 AI 思考過程而得分偏低。</p>
+
+<!-- Rubric -->
+<div class="phase-hdr">評分構面 Rubric（共識版，總分 100）</div>
+<div class="tw">
+<table>
+<thead><tr>
+  <th style="width:20%">構面</th>
+  <th style="width:7%">分</th>
+  <th style="width:38%">優（滿分標準）</th>
+  <th style="width:35%">常見扣分原因</th>
+</tr></thead>
+<tbody>
+<tr>
+  <td class="rubric-dim">一、概念定義與核心邏輯</td>
+  <td class="rubric-pts">15</td>
+  <td>清楚說明至少兩個時間點追蹤兩個以上變項；區分自我迴歸效果與交叉延宕效果；指出時間先後與方向性的推論依據。</td>
+  <td>未區分 autoregressive paths 與 cross-lagged paths；誤解為一般前後測設計。</td>
+</tr>
+<tr>
+  <td class="rubric-dim">二、適用時機與研究情境</td>
+  <td class="rubric-pts">15</td>
+  <td>指出適用於探討跨時間方向性與動態關係；舉具體 HR 情境；說明何時不適用（如回溯性資料、高穩定特質）。</td>
+  <td>未說明不適用情境；未說明為何不能用橫斷資料替代。</td>
+</tr>
+<tr>
+  <td class="rubric-dim">三、統計方法（至少兩種）</td>
+  <td class="rubric-pts">20</td>
+  <td>至少列出兩種合適方法（CLPC、CLPA、SEM-CLPM、RI-CLPM 等），說明用途，方法與資料型態對應。</td>
+  <td>只寫一種方法；或方法選擇與題目無關（如只寫 t 檢定）。</td>
+</tr>
+<tr>
+  <td class="rubric-dim">四、統計結果判讀</td>
+  <td class="rubric-pts">20</td>
+  <td>說明如何判讀自我迴歸與交叉延宕係數、顯著性、方向與效果量；比較兩條交叉路徑；若用 SEM 說明適配度指標。</td>
+  <td>將同期相關直接解釋為因果；未說明控制前期水準的重要性；過度宣稱因果。</td>
+</tr>
+<tr>
+  <td class="rubric-dim">五、研究主題、目的、問題</td>
+  <td class="rubric-pts">20</td>
+  <td>研究主題符合交叉延宕邏輯；研究問題至少包含兩條方向相反的交叉路徑（X(T1)→Y(T2) 與 Y(T1)→X(T2)）。</td>
+  <td>研究問題像橫斷相關設計；缺少雙向路徑；時間點標示不清。</td>
+</tr>
+<tr>
+  <td class="rubric-dim">六、整體邏輯與博士生層次</td>
+  <td class="rubric-pts">10</td>
+  <td>結構完整，概念方法彼此連貫；學術語言精準；展現對縱貫資料與因果推論邊界的理解。</td>
+  <td>作答零散；術語不精確；缺乏整合性討論。</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- 版本比較 -->
+<div id="s5b"></div>
+<div class="phase-hdr" style="margin-top:28px;">我的版本 vs. 答案 H：關鍵差異</div>
+<p style="font-size:13px;color:#555;margin-bottom:10px;">H 版是 Claude G 版經研究者第一次微調的版本（三 AI 盲評 97 分）。以下列出主要差異。</p>
+<div class="tw">
+<table>
+<thead><tr>
+  <th style="width:16%">面向</th>
+  <th style="width:42%">我的最終版</th>
+  <th style="width:42%">答案 H（97 分）</th>
+</tr></thead>
+<tbody>
+<tr class="diff-more">
+  <td class="rubric-dim">文獻廣度</td>
+  <td>14 篇，含 Campbell &amp; Stanley (1963)、Rogosa (1980)、Podsakoff et al. (2003)、Mitchell &amp; James (2001)、Cole &amp; Maxwell (2003)、Luthans et al. (2007)、Mulder &amp; Hamaker (2021) 等。</td>
+  <td>9 篇，以核心方法論文獻為主，較精簡但足夠。</td>
+</tr>
+<tr class="diff-more">
+  <td class="rubric-dim">不適用情境</td>
+  <td>列出 <strong>5 種</strong>，每項有具體文獻佐證（Rogosa 1980 討論穩定性問題、Podsakoff 2003 討論回溯偏誤等）。</td>
+  <td>列出 <strong>2 種</strong>，描述精簡。</td>
+</tr>
+<tr class="diff-more">
+  <td class="rubric-dim">時間間隔</td>
+  <td>有<strong>三欄表格</strong>，依構念類型（慢速狀態／資源耗損／高頻動態）列出建議間隔與理論依據。</td>
+  <td>文字說明「三至六個月」（Dormann &amp; Griffin, 2015），較簡要。</td>
+</tr>
+<tr>
+  <td class="rubric-dim">方法二</td>
+  <td><strong>CLPA（AMOS 路徑分析）</strong>，引用李茂能（2024），觀察變項、標準化迴歸係數，與 CLPC 形成升級邏輯。</td>
+  <td><strong>階層迴歸（Hierarchical Regression）</strong>，邏輯直觀但未與 AMOS 路徑分析做區分。</td>
+</tr>
+<tr class="diff-more">
+  <td class="rubric-dim">CLPC 前提</td>
+  <td>以<strong>四欄表格</strong>列出使用前提（Kenny 1975、Rogosa 1980、Cook &amp; Campbell 1979）。</td>
+  <td>未列出前提，直接說明比較 r(X₁,Y₂) 與 r(Y₁,X₂)。</td>
+</tr>
+<tr class="diff-only-h">
+  <td class="rubric-dim">六、結論</td>
+  <td>無獨立結論節。</td>
+  <td>有獨立<strong>六、結論</strong>，統整三個核心論點，結構更完整。</td>
+</tr>
+<tr class="diff-neutral">
+  <td class="rubric-dim">研究設計</td>
+  <td colspan="2" style="text-align:center;color:#555;">兩版研究主題、目的、研究問題幾乎完全一致。</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
+<!-- 參考文獻 -->
+<div class="sec" id="refs">
+<h2>參考文獻</h2>
+<p style="font-size:13px;color:#555;margin-bottom:16px;">依 APA 第七版格式排列，英文文獻按姓氏字母順序，中文文獻置後。</p>
+
+<p><a href="https://doi.org/10.1108/02683940710733115" target="_blank" rel="noopener">Bakker, A. B., &amp; Demerouti, E. (2007). The job demands-resources model: State of the art. <em>Journal of Managerial Psychology, 22</em>(3), 309–328.</a></p>
+
+<p><a href="https://www.semanticscholar.org/paper/Social-Foundations-of-Thought-and-Action-Bandura/78c6775fccdbbed66f823dae2cfa01570ecb3c05" target="_blank" rel="noopener">Bandura, A. (1986). <em>Social foundations of thought and action: A social cognitive theory.</em> Prentice-Hall.</a></p>
+
+<p><a href="https://www.sfu.ca/~palys/Campbell&Stanley-1959-Exptl&QuasiExptlDesignsForResearch.pdf" target="_blank" rel="noopener">Campbell, D. T., &amp; Stanley, J. C. (1963). <em>Experimental and quasi-experimental designs for research.</em> Rand McNally.</a></p>
+
+<p><a href="https://doi.org/10.1037/0021-843X.112.4.558" target="_blank" rel="noopener">Cole, D. A., &amp; Maxwell, S. E. (2003). Testing mediational models with longitudinal data: Questions and tips in the use of structural equation modeling. <em>Journal of Abnormal Psychology, 112</em>(4), 558–577.</a></p>
+
+<p><a href="https://archive.org/details/quasiexperimenta00cook" target="_blank" rel="noopener">Cook, T. D., &amp; Campbell, D. T. (1979). <em>Quasi-experimentation: Design &amp; analysis issues for field settings.</em> Houghton Mifflin.</a></p>
+
+<p><a href="https://doi.org/10.1037/met0000041" target="_blank" rel="noopener">Dormann, C., &amp; Griffin, M. A. (2015). Optimal time lags in panel studies. <em>Psychological Methods, 20</em>(4), 489–505.</a></p>
+
+<p><a href="https://doi.org/10.1037/a0038889" target="_blank" rel="noopener">Hamaker, E. L., Kuiper, R. M., &amp; Grasman, R. P. P. P. (2015). A critique of the cross-lagged panel model. <em>Psychological Methods, 20</em>(1), 102–116.</a></p>
+
+<p><a href="https://doi.org/10.1037/0003-066X.44.3.513" target="_blank" rel="noopener">Hobfoll, S. E. (1989). Conservation of resources: A new attempt at conceptualizing stress. <em>American Psychologist, 44</em>(3), 513–524.</a></p>
+
+<p><a href="https://doi.org/10.1037/0033-2909.82.6.887" target="_blank" rel="noopener">Kenny, D. A. (1975). Cross-lagged panel correlation: A test for spuriousness. <em>Psychological Bulletin, 82</em>(6), 887–903.</a></p>
+
+<p><a href="https://academic.oup.com/book/26255" target="_blank" rel="noopener">Luthans, F., Youssef, C. M., &amp; Avolio, B. J. (2007). <em>Psychological capital: Developing the human competitive edge.</em> Oxford University Press.</a></p>
+
+<p><a href="https://doi.org/10.5465/amr.2001.5393889" target="_blank" rel="noopener">Mitchell, T. R., &amp; James, L. R. (2001). Building better theory: Time and the specification of when things happen. <em>Academy of Management Review, 26</em>(4), 530–547.</a></p>
+
+<p><a href="https://doi.org/10.1080/10705511.2020.1784738" target="_blank" rel="noopener">Mulder, J. D., &amp; Hamaker, E. L. (2021). Three extensions of the random intercept cross-lagged panel model. <em>Structural Equation Modeling: A Multidisciplinary Journal, 28</em>(4), 638–648.</a></p>
+
+<p><a href="https://doi.org/10.1037/0021-9010.88.5.879" target="_blank" rel="noopener">Podsakoff, P. M., MacKenzie, S. B., Lee, J.-Y., &amp; Podsakoff, N. P. (2003). Common method biases in behavioral research: A critical review of the literature and recommended remedies. <em>Journal of Applied Psychology, 88</em>(5), 879–903.</a></p>
+
+<p><a href="https://doi.org/10.1037/0033-2909.88.2.245" target="_blank" rel="noopener">Rogosa, D. (1980). A critique of cross-lagged correlation. <em>Psychological Bulletin, 88</em>(2), 245–258.</a></p>
+
+<p><a href="https://web.mit.edu/curhan/www/docs/Articles/15341_Readings/Affect/AffectiveEventsTheory_WeissCropanzano.pdf" target="_blank" rel="noopener">Weiss, H. M., &amp; Cropanzano, R. (1996). Affective events theory: A theoretical discussion of the structure, causes and consequences of affective experiences at work. <em>Research in Organizational Behavior, 18</em>, 1–74.</a></p>
+
+<p><a href="https://0-hunteq-com.opac.lib.ntnu.edu.tw/mandukmc/mandu?!!NX1H2A02%20AND%20DD=wunan" target="_blank" rel="noopener">李茂能（2024）。<em>圖解 AMOS 結構方程模式分析（第三版）</em>。五南圖書。</a></p>
+</div>
+
+</div><!-- /main -->
+<script>
+const anchorToTab={'s3a':'m1','s3b':'m2','s3c':'m3','s3d':'m4'};
+function tg(id,el,anchor){
+  var s=document.getElementById(id);
+  var arr=el.querySelector('.nav-arr');
+  s.classList.toggle('open');
+  if(arr)arr.classList.toggle('open');
+  if(anchor){var t=document.querySelector(anchor);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}
+}
+function toggleSB(){
+  document.getElementById('sb').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open');
+}
+function sw(id,btn){
+  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+const ids=['s0','s1','s1a','s1b','s2','s2a','s2b','s2c','s3','s3a','s3b','s3c','s3d','s3e','s4','s4a','s4b','s5','s5a','s5b','refs'];
+const links=document.querySelectorAll('#nav a');
+function onScroll(){
+  const st=window.scrollY;
+  document.getElementById('pbar').style.width=(st/(document.body.scrollHeight-window.innerHeight)*100)+'%';
+  let cur='s0';
+  ids.forEach(id=>{const el=document.getElementById(id);if(el&&st>=el.offsetTop-100)cur=id;});
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+}
+window.addEventListener('scroll',onScroll,{passive:true});
+document.querySelectorAll('#nav a').forEach(a=>a.addEventListener('click',e=>{
+  if(window.innerWidth<=800){document.getElementById('sb').classList.remove('open');document.getElementById('overlay').classList.remove('open');}
+  e.preventDefault();
+  const hash=a.getAttribute('href').replace('#','');
+  if(anchorToTab[hash]){
+    const tabId=anchorToTab[hash];
+    document.querySelectorAll('.tc').forEach(t=>t.classList.remove('on'));
+    document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+    document.getElementById(tabId).classList.add('on');
+    const btns=document.querySelectorAll('.tb');
+    const idx={'m1':0,'m2':1,'m3':2,'m4':3}[tabId];
+    if(btns[idx])btns[idx].classList.add('on');
+  }
+  const t=document.querySelector(a.getAttribute('href'));
+  if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+}));
+</script>
+</body>
+</html>
