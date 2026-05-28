@@ -136,6 +136,24 @@ tr:nth-child(even) td{background:var(--gray);}
 .nav-arr.open{transform:rotate(90deg);}
 .nav-subs{max-height:0;overflow:hidden;transition:max-height .22s ease;}
 .nav-subs.open{max-height:300px;}
+
+/* ── Answer preview modal ── */
+#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;
+  align-items:center;justify-content:center;}
+#modal-overlay.open{display:flex;}
+#modal-box{background:#fff;border-radius:8px;width:min(820px,92vw);max-height:88vh;
+  display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,.3);overflow:hidden;}
+#modal-head{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;background:var(--navy);color:#fff;flex-shrink:0;}
+#modal-head .mh-title{font-size:15px;font-weight:700;}
+#modal-head .mh-sub{font-size:12px;opacity:.7;margin-top:2px;}
+#modal-close{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;
+  line-height:1;padding:0 4px;opacity:.8;}
+#modal-close:hover{opacity:1;}
+#modal-body{overflow-y:auto;padding:24px 28px;font-size:13.5px;line-height:1.9;
+  white-space:pre-wrap;font-family:"Noto Serif TC",serif;color:#222;}
+.ans-cell{cursor:pointer;}
+.ans-cell:hover{border-color:var(--blue);box-shadow:0 2px 8px rgba(46,117,182,.18);transform:translateY(-1px);transition:.15s;}
 </style>
 </head>
 <body>
@@ -865,35 +883,35 @@ tr:nth-child(even) td{background:var(--gray);}
 <div class="phase-hdr">八份答案一覽</div>
 <div class="ans-matrix">
   <div class="ans-cell">
-    <div class="al">A <span style="font-size:12px;color:#888">86</span></div>
+    <div class="al" onclick="openModal('A')" style="cursor:pointer">A <span style="font-size:12px;color:#888">86</span></div>
     <div class="as">ChatGPT<br>（無教材）</div>
   </div>
   <div class="ans-cell">
-    <div class="al">B <span style="font-size:12px;color:#888">89</span></div>
+    <div class="al" onclick="openModal('B')" style="cursor:pointer">B <span style="font-size:12px;color:#888">89</span></div>
     <div class="as">Gemini<br>（無教材）</div>
   </div>
   <div class="ans-cell">
-    <div class="al">C <span style="font-size:12px;color:#888">90</span></div>
+    <div class="al" onclick="openModal('C')" style="cursor:pointer">C <span style="font-size:12px;color:#888">90</span></div>
     <div class="as">ChatGPT<br>（有教材）</div>
   </div>
   <div class="ans-cell" style="border-color:#F9A825;background:#FFFDE7;">
-    <div class="al">D <span style="font-size:12px;color:#888">79</span></div>
+    <div class="al" onclick="openModal('D')" style="cursor:pointer">D <span style="font-size:12px;color:#888">79</span></div>
     <div class="as">Gemini<br>（有教材）</div>
   </div>
   <div class="ans-cell">
-    <div class="al">E <span style="font-size:12px;color:#888">93</span></div>
+    <div class="al" onclick="openModal('E')" style="cursor:pointer">E <span style="font-size:12px;color:#888">93</span></div>
     <div class="as">ChatGPT<br>（教材＋標準）</div>
   </div>
   <div class="ans-cell">
-    <div class="al">F <span style="font-size:12px;color:#888">90</span></div>
+    <div class="al" onclick="openModal('F')" style="cursor:pointer">F <span style="font-size:12px;color:#888">90</span></div>
     <div class="as">Gemini<br>（教材＋標準）</div>
   </div>
   <div class="ans-cell hi">
-    <div class="al">G <span style="font-size:12px;color:var(--blue)">94</span></div>
+    <div class="al" onclick="openModal('G')" style="cursor:pointer">G <span style="font-size:12px;color:var(--blue)">94</span></div>
     <div class="as">Claude 綜合版</div>
   </div>
   <div class="ans-cell hi" style="border-color:#1F3864;background:#D9E4F0;">
-    <div class="al">H <span style="font-size:13px;color:var(--navy);font-weight:900">97🥇</span></div>
+    <div class="al" onclick="openModal('H')" style="cursor:pointer">H <span style="font-size:13px;color:var(--navy);font-weight:900">97🥇</span></div>
     <div class="as">研究者微調版</div>
   </div>
   <div class="ans-cell hi">
@@ -1090,6 +1108,2011 @@ document.querySelectorAll('#nav a').forEach(a=>a.addEventListener('click',e=>{
   const t=document.querySelector(a.getAttribute('href'));
   if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
 }));
+
+const ansData={
+  'A':{title:"\u7b54\u6848 A",sub:"ChatGPT \u30fb \u7121\u6559\u6750",score:"86",text:`答案 A
+一、何謂交叉延宕設計（Cross-Lagged Design）
+交叉延宕設計（cross-lagged design）是一種縱貫性研究設計（longitudinal
+design），主要用來探討兩個或以上變項之間的因果方向與時間序列關係。研究
+者通常會在至少兩個時間點（Time 1、Time 2）測量相同變項，再透過「自我延
+續效果（autoregressive effect）」與「交叉延宕效果（cross-lagged effect）」來分
+析變項彼此之間的影響方向。
+其核心概念在於：
+1. 同時考量變項的穩定性
+o
+
+即某一變項在不同時間點之間的延續程度。
+
+o
+
+例如：T1 的工作滿意度是否能預測 T2 的工作滿意度。
+
+2. 檢驗跨時間的相互影響
+o
+
+即 T1 的變項 A 是否能預測 T2 的變項 B。
+
+o
+
+同時也檢驗 T1 的變項 B 是否能預測 T2 的變項 A。
+
+因此，交叉延宕設計比橫斷式研究（cross-sectional study）更能接近因果推論，
+因為它具有「時間先後順序（temporal precedence）」的特性。
+
+二、交叉延宕設計的基本架構
+假設研究兩個變項：
+•
+
+X：數位學習自我效能
+
+•
+
+Y：線上學習投入
+
+在兩個時間點進行測量：
+時間點 變項
+T1
+
+X1、Y1
+
+T2
+
+X2、Y2
+
+則會形成四類關係：
+（一）同步相關（Synchronous Correlation）
+同一時間點變項間的相關：
+•
+
+X1 ↔ Y1
+
+•
+
+X2 ↔ Y2
+
+（二）自我延宕效果（Autoregressive Effect）
+同一變項跨時間的穩定性：
+•
+
+X1 → X2
+
+•
+
+Y1 → Y2
+
+（三）交叉延宕效果（Cross-Lagged Effect）
+不同變項跨時間的影響：
+•
+
+X1 → Y2
+
+•
+
+Y1 → X2
+
+（四）誤差相關（Residual Correlation）
+控制未觀察因素造成的共同變異。
+
+三、適用的時機與研究情境
+交叉延宕設計特別適合以下情境：
+（一）欲探討變項間的因果方向時
+例如：
+•
+
+工作壓力是否導致離職傾向？
+
+•
+
+或離職傾向反過來提高工作壓力？
+
+傳統相關研究只能知道兩者有關，但無法判斷方向。
+
+（二）變項可能具有雙向影響時
+例如：
+•
+
+教師科技素養 ↔ 教學創新
+
+•
+
+學習動機 ↔ 學業成就
+
+•
+
+工作滿意度 ↔ 組織承諾
+
+交叉延宕設計可以同時檢驗雙向因果。
+
+（三）研究具有時間累積或發展特性時
+例如：
+•
+
+員工訓練成效
+
+•
+
+學生自主學習能力
+
+•
+
+AI 工具使用習慣
+
+•
+
+數位疲勞形成歷程
+
+（四）倫理或實務上不易進行實驗操弄時
+例如：
+•
+
+無法隨機分派員工壓力
+
+•
+
+無法控制學生家庭背景
+
+因此以縱貫追蹤方式替代實驗法。
+
+四、可使用的統計檢驗方法（至少兩種）
+
+方法一：結構方程模式（SEM）
+SEM 是最常見且最完整的交叉延宕分析方法。
+
+（一）分析方式
+建立包含：
+•
+
+自我延宕路徑
+
+•
+
+交叉延宕路徑
+
+•
+
+同步相關
+
+的模型，再估計各路徑係數。
+
+（二）常見統計指標
+1. 路徑係數（Path Coefficient）
+例如：
+•
+
+β = .35，p < .001
+
+代表：
+T1 的 X 對 T2 的 Y 有顯著正向預測效果。
+
+2. 模型適配度（Model Fit）
+常見指標包括：
+指標
+
+判準
+
+χ²/df
+
+<3
+
+CFI
+
+> .90
+
+TLI
+
+> .90
+
+RMSEA < .08
+SRMR < .08
+
+（三）如何判讀結果
+情境一：X→Y 顯著，但 Y→X 不顯著
+表示：
+X 可能是 Y 的前因變項。
+例如：
+科技自我效能會影響後續學習投入，但反向效果不存在。
+
+情境二：雙向皆顯著
+表示：
+兩變項存在 reciprocal relationship（互惠關係）
+。
+例如：
+工作投入與工作績效互相增強。
+
+情境三：皆不顯著
+表示：
+兩者雖可能同時相關，但缺乏跨時間預測力。
+
+方法二：交叉延宕迴歸分析（Cross-Lagged Regression Analysis）
+此方法以多元迴歸為基礎。
+
+（一）分析方式
+例如：
+以 Y2 為依變項：
+[
+
+Y_2 = \\beta_0 + \\beta_1 Y_1 + \\beta_2 X_1 + \\varepsilon
+]
+其中：
+•
+
+(Y_1)：控制原本狀態
+
+•
+
+(X_1)：檢驗跨時間影響
+
+（二）如何判讀
+若 β2 顯著
+表示：
+在控制 Y 的原有穩定性後，
+X1 仍能預測 Y2。
+即：
+X 對 Y 具有跨時間影響。
+
+若效果不顯著
+表示：
+X 與 Y 的關係可能只是同步相關，
+而非真正的時間性預測。
+
+方法三（延伸）：隨機截距交叉延宕模式（RI-CLPM）
+此為近年常見進階方法。
+其特色在於：
+•
+
+區分「個體間差異」與「個體內變化」
+
+•
+
+避免傳統 CLPM 高估因果效果
+
+適合：
+
+•
+
+教育追蹤資料
+
+•
+
+員工長期行為研究
+
+•
+
+高頻重複測量資料
+
+五、交叉延宕設計的優點與限制
+（一）優點
+1. 可推論時間先後順序
+2. 能檢驗雙向因果
+3. 比橫斷研究更具解釋力
+4. 適合自然情境研究
+
+（二）限制
+1. 仍非真正實驗設計
+2. 可能有潛在干擾變項
+3. 需要多波次資料蒐集
+4. 樣本流失（attrition）可能影響結果
+5. 時間間隔設定不當會影響推論
+
+六、研究主題示例
+研究主題
+「大學生生成式 AI 使用頻率與自主學習能力之交叉延宕關係研究」
+
+研究背景簡述
+生成式 AI（如 ChatGPT）已廣泛應用於高等教育。然而，目前研究多屬橫斷性
+
+調查，尚難確認：
+•
+
+AI 使用是否提升自主學習能力？
+
+•
+
+或原本具高自主學習能力者更傾向使用 AI？
+
+因此適合採交叉延宕設計進行因果方向探討。
+
+七、研究目的
+1. 探討大學生生成式 AI 使用頻率與自主學習能力之時間性關係。
+2. 分析兩變項是否具有雙向影響效果。
+3. 檢驗生成式 AI 使用是否能預測後續自主學習能力變化。
+
+八、研究問題
+研究問題一
+大學生生成式 AI 使用頻率在不同時間點是否具有穩定性？
+
+研究問題二
+大學生自主學習能力在不同時間點是否具有穩定性？
+
+研究問題三
+第一時間點之生成式 AI 使用頻率，是否能顯著預測第二時間點之自主學習能
+力？
+
+研究問題四
+第一時間點之自主學習能力，是否能顯著預測第二時間點之生成式 AI 使用頻
+率？
+
+九、結論
+交叉延宕設計是一種重要的縱貫研究方法，能透過時間序列分析變項間的方向
+性與因果可能性。其核心價值在於：
+•
+
+控制變項原有穩定性
+
+•
+
+檢驗跨時間預測效果
+
+•
+
+分析雙向影響關係
+
+因此在人力資源管理、教育科技、組織行為與心理學研究中皆具有高度應用價
+值。尤其在 AI、數位學習與工作行為等動態議題上，交叉延宕設計能提供比傳
+統相關研究更具說服力的理論與實證基礎。`},
+  'B':{title:"\u7b54\u6848 B",sub:"Gemini \u30fb \u7121\u6559\u6750",score:"89",text:`這是一個在人力資源發展（HRD）與科技教育研究中非常強大且經典的研究設
+計。當我們不滿足於僅僅知道兩個變項「有關聯」，而是想進一步探討「誰影響
+誰」（因果時序）時，交叉延宕設計（Cross-Lagged Panel Design, CLPD）就是最
+常登場的縱貫面（Longitudinal）研究利器。
+以下以人力資源與科技教育學術研究的視角，為您詳細解析：
+
+一、 交叉延宕設計（Cross-Lagged Design）的定義
+交叉延宕設計是一種縱貫面研究設計，通常在至少兩個不同的時間點（\$T_1\$
+與 \$T_2\$），對相同的研究對象重複測量至少兩個變項（假設為變項 \$A\$ 與變
+項 \$B\$）。
+其核心邏輯在於利用「時間的前後因果關係」（Cause precedes effect）來推論變
+項間的關係。在模型中會同時估計三種效果：
+1. 同步相關（Synchronous Correlations）： 同一時間點內 \$A_1\$ 與 \$B_1\$
+（或 \$A_2\$ 與 \$B_2\$）的相關。
+2. 自我相關／自迴歸效果（Autoregressive Effects）： 變項自身的跨時間穩
+定性（如 \$A_1 \\rightarrow A_2\$ ）。
+3. 交叉延宕效果（Cross-Lagged Effects）： 探討 \$A_1 \\rightarrow B_2\$ 與
+\$B_1 \\rightarrow A_2\$ 的影響。這正是判斷因果方向的關鍵。
+
+二、 適用時機與情境
+在人力資源或科技教育領域中，適用此設計的時機主要有以下三種：
+•
+
+欲釐清「互為因果」或「雞生蛋、蛋生雞」的互惠關係（Reciprocal
+Relationships）：
+o
+
+HR 情境： 員工的「工作滿意度」與「工作績效」，究竟是滿意度
+高導致績效好，還是績效好帶來成就感進而提升滿意度？
+
+o
+
+科技教育情境： 學習者的「科技焦慮」與「數位學習成效」，是
+焦慮導致成效差，還是成效差導致更焦慮？
+
+•
+
+無法進行嚴格實驗操弄的自然情境：
+
+在真實組織或教學現場，我們無法隨機將員工或學生分組並強加長期壓力或動
+機，此時透過追蹤調查，能提供比橫斷面（Cross-sectional）數據更強的因果證
+據。
+•
+
+評估科技介入或管理政策的長期遞延效果：
+
+探討某項變革（如導入 AI 輔助教學或彈性工時政策）對個體心理特質或行為的
+結構性影響是否具備時間滯後性（Time-lagged effects）。
+
+三、 可使用的統計檢驗方法與判讀方式
+隨著統計學的發展，處理交叉延宕傳統方法有些侷限，現代研究多採用結構方
+程模型。以下列出兩種最主要的檢驗方法：
+方法 1：傳統的結構方程模型交叉延宕路徑分析（Standard CLPM via SEM）
+這是最經典的方法，將所有變項視為顯在變項（Manifest variables）或潛在變項
+（Latent variables），在 SEM 軟體（如 AMOS, Mplus, R 的 lavaan 包）中建立
+路徑模型。
+•
+
+如何判讀其統計結果：
+1. 比較標準化路徑係數（\$\\beta\$ 值）： 檢視 \$A_1 \\rightarrow B_2\$
+（路徑 \$\\beta_1\$）與 \$B_1 \\rightarrow A_2\$（路徑 \$\\beta_2\$）
+的顯著性 (\$p < .05\$)。
+2. 因果方向判斷：
+▪
+
+若 \$\\beta_1\$ 顯著且 \$\\beta_2\$ 不顯著：代表 \$A\$ 是
+\$B\$ 的先行驅動因素（\$A \\rightarrow B\$）。
+
+▪
+
+若 \$\\beta_2\$ 顯著且 \$\\beta_1\$ 不顯著：代表 \$B\$ 是
+\$A\$ 的先行驅動因素（\$B \\rightarrow A\$）。
+
+▪
+
+若兩者皆顯著：代表 \$A\$ 與 \$B\$ 存在雙向互惠因果關
+係。
+
+▪
+
+若兩者皆不顯著：代表兩者雖有時間同步相關，但無跨時
+
+因果關係。
+方法 2：隨機截距交叉延宕模型（Random Intercepts Cross-Lagged Panel Model,
+RI-CLPM）
+近年來（自 Hamaker 等人於 2015 年提出後），學術界發現傳統 CLPM 混淆了
+「人與人之間（Between-person）」的穩定差異與「人本身之內（Withinperson）」的跨時變化。RI-CLPM 是目前頂刊（如 Journal of Applied Psychology
+或 Computers & Education）更推薦的方法。 它透過加入隨機截距（Random
+Intercepts）來控制特質層面的個體間差異，純化出個體內的動態變化。
+•
+
+如何判讀其統計結果：
+1. 判讀個體內路徑（Within-person level）： 同樣檢視純化後的跨時
+交叉延宕路徑 \$\\beta\$ 值。
+2. 解讀含義： 若此時的 \$A_1 \\rightarrow B_2\$ 顯著，其含義應讀
+解為：「當個體在 \$T_1\$ 的 \$A\$ 變項高於他平常的平均水準時，
+會預測他在 \$T_2\$ 的 \$B\$ 變項高於他平常的平均水準。」這比
+傳統方法更能精準推論心理或行為的動態改變。
+
+四、 研究設計實例（科技教育/HRD 交叉領域）
+以下結合「企業生成式 AI 教育訓練」與「員工心理資本」擬定一個研究架構：
+1. 研究主題
+生成式 AI 工具應用熟練度與員工創新工作行為之雙向動態關係：一項兩波段交
+叉延宕研究
+2. 研究目的
+本研究旨在探討在企業數位轉型的情境下，員工生成式 AI 工具應用熟練度
+（Generative AI Proficiency）與其創新工作行為（Innovative Work Behavior）之
+間的縱貫面因果關係。過去研究多視 AI 技能為創新行為的前因，然而根據資源
+保存理論（COR）與自我效能感理論，頻繁的創新嘗試亦可能反向驅使員工深
+化其科技技能。本研究欲釐清究竟是「科技技能賦能創新」，或是「創新需要驅
+動科技學習」，抑或兩者呈現雙向互惠的螺旋上升關係，以期為企業科技教育訓
+
+練與人才發展政策提供實證建議。
+3. 研究問題
+•
+
+研究問題一（科技驅動觀點）： 員工在時間點一（\$T_1\$）的生成式 AI
+工具應用熟練度，是否能顯著正向預測其在時間點二（\$T_2\$，如六個月
+後）的創新工作行為？
+
+•
+
+研究問題二（需求拉動觀點）： 員工在時間點一（\$T_1\$）的創新工作行
+為，是否能顯著正向預測其在時間點二（\$T_2\$）的生成式 AI 工具應用
+熟練度？
+
+•
+
+研究問題三（互惠關係觀點）： 控制了變項自身的跨時穩定性（自迴歸
+效果）後，生成式 AI 工具應用熟練度與創新工作行為之間，是否存在雙
+向互惠的縱貫面因果關係？`},
+  'C':{title:"\u7b54\u6848 C",sub:"ChatGPT \u30fb \u6709\u6559\u6750",score:"90",text:`以下是一份可作為博士資格考擬答的版本，偏向「人力資源／科技教育領域」
+的回答深度。
+一、何謂交叉延宕設計？
+交叉延宕設計（cross-lagged design）是一種縱貫研究設計，主要用來探討兩個
+或多個變項之間在時間上的相互影響方向。它的核心問題是：究竟是 X 先影響
+Y，還是 Y 先影響 X？例如在人力資源領域，可探討「員工工作投入是否影響
+後續工作績效，或工作績效是否反過來影響後續工作投入」；在科技教育領域，
+可探討「學生自我效能是否影響後續學習成就，或學習成就是否反過來影響後
+續自我效能」。
+基本設計上，研究者至少需在兩個時間點重複測量同一批受試者的兩個變項，
+例如在 T1 測量 X1、Y1，在 T2 測量 X2、Y2。分析時通常會同時估計三類關
+係：第一是同一變項跨時間的自迴歸效果，例如 X1 → X2、Y1 → Y2；第二是同
+一時間點不同變項的同步相關，例如 X1 與 Y1、X2 與 Y2；第三是不同變項跨
+時間的交叉延宕效果，例如 X1 → Y2、Y1 → X2。這三類關係也是 CLPM 的基本
+組成。
+交叉延宕設計的重點不只是看兩個變項有沒有相關，而是在控制前一時間點的
+穩定性後，檢驗某變項是否仍能預測另一變項的後續變化。例如在控制 Y1
+後，若 X1 仍能顯著預測 Y2，表示 X 對 Y 可能具有延遲影響。相對地，若在
+控制 X1 後，Y1 也能顯著預測 X2，則可能存在雙向或互惠關係。相關教材也
+提醒，交叉延宕設計無法像實驗設計一樣直接證明因果關係，但可作為推論因
+果方向的重要線索，尤其適合缺乏實驗操弄可能性的社會科學研究。
+二、適用的時機或情境
+交叉延宕設計適合用於研究者關心「變項之間的時間順序、影響方向或互惠關
+係」，但又無法進行實驗操弄的情境。人力資源與科技教育研究常常面對這類問
+題，因為許多重要變項，例如工作投入、離職傾向、組織承諾、教師自我效
+能、學生學習動機、數位學習自我效能等，通常不能被研究者任意操弄。
+第一，當研究者想檢驗兩個變項的因果主導方向時，適合使用交叉延宕設計。
+例如，組織支持感與員工敬業度之間可能互相影響，若僅使用橫斷面資料，只
+能知道兩者相關，無法判斷是組織支持感先提升敬業度，還是敬業度較高的員
+工更容易感受到組織支持。
+
+第二，當理論上存在互惠或交易性關係時，交叉延宕設計尤其重要。Zee 等人
+的教育研究即使用三波縱貫資料，探討學生動機、學業成就與師生關係如何在
+幼兒園到六年級之間彼此影響；其研究並非只假設「師生關係影響學生」，也檢
+驗學生的動機與成就是否反過來影響後續師生關係，屬於典型的互惠或交易性
+模型。
+第三，當研究者有縱貫資料，並希望控制變項本身的穩定性時，也適合使用交
+叉延宕設計。例如陳俊瑋等人使用臺灣教育長期追蹤資料庫，透過結構方程模
+式中的交叉延宕模式與潛在成長曲線模式，探討學生自我效能感與學習成就的
+相互影響效果。該研究發現，自我效能感與學習成就存在相互影響，顯示兩者
+並非單向關係。
+不過，交叉延宕設計不適合用在只有單一時間點資料、資料時間順序不清楚，
+或完全依賴事後回溯記憶的研究。因為交叉延宕設計的基本邏輯建立在「同一
+批受試者於不同時間點被重複測量」，若時間點不明確，就難以合理判斷延遲效
+果。
+三、可使用的統計檢驗方法與判讀
+方法一：傳統交叉延宕相關分析（Cross-lagged Panel Correlation, CLPC）
+傳統交叉延宕相關分析是較早期的方法，主要比較兩個交叉延宕相關係數的大
+小，例如 r(X1, Y2) 與 r(Y1, X2)。若 r(X1, Y2) 明顯大於 r(Y1, X2)，可初步推論
+X 對 Y 的影響方向較強；若 r(Y1, X2) 較大，則推論 Y 對 X 的影響方向較
+強；若兩者相近，可能表示雙向影響或方向不明確。
+這種方法的優點是簡單、直觀，適合初步探索因果方向；但限制也很明顯。它
+主要依賴相關係數比較，無法充分控制測量誤差、第三變項，也不如迴歸或結
+構方程模式能同時估計多條路徑。補充資料中也提到，CLPC 通常需滿足若干前
+提，例如同時相關需足夠、重測信度相近、變項需同步測量，以及因果結構需
+具穩定性，否則交叉相關的比較容易失真。
+判讀方式如下：
+結果型態
+r(X1, Y2) > r(Y1, X2) 且差異具實
+質意義
+
+判讀
+
+X 可能較能預測後續 Y
+
+結果型態
+
+判讀
+
+r(Y1, X2) > r(X1, Y2) 且差異具實
+質意義
+兩者皆高且相近
+
+兩者皆低
+
+Y 可能較能預測後續 X
+可能為雙向關係，或需進一步用 SEM 檢驗
+延遲關係不明顯，可能時間間隔不合適或理論
+關係薄弱
+
+方法二：交叉延宕迴歸分析（Cross-lagged Regression Analysis, CLPA）
+交叉延宕迴歸分析比單純相關分析更進一步。它會將前一時間點的同一變項納
+入控制，例如以 X1 與 Y1 同時預測 Y2，並以 X1 與 Y1 同時預測 X2。換言
+之，它關心的是：在控制 Y 本身的穩定性後，X1 是否仍能預測 Y2？以及在控
+制 X 本身的穩定性後，Y1 是否仍能預測 X2？
+其基本模型可寫成：
+Y2 = β1Y1 + β2X1 + eY
+X2 = γ1X1 + γ2Y1 + eX
+其中 β1、γ1 是自迴歸效果，代表變項自身跨時間的穩定性；β2、γ2 是交叉延
+宕效果，代表一個變項對另一個變項後續變化的預測力。補充資料指出，CLPA
+會同時估計穩定性路徑與交叉延宕路徑，並依標準化迴歸係數與 p 值判斷方向
+與顯著性。
+判讀方式如下：
+結果型態
+
+判讀
+
+β2 顯著、γ2 不顯著
+
+X 對後續 Y 有延遲預測效果，初步支持 X → Y
+
+γ2 顯著、β2 不顯著
+
+Y 對後續 X 有延遲預測效果，初步支持 Y → X
+
+β2 與 γ2 皆顯著
+
+可能存在雙向影響或互惠關係
+
+β2 與 γ2 皆不顯著，但自
+迴歸效果顯著
+
+兩變項本身穩定，但彼此未呈現明確延遲影響
+
+結果型態
+
+交叉路徑顯著但方向為負
+
+判讀
+表示前期 X 越高，後期 Y 在控制自身穩定後反
+而越低，需依理論解釋
+
+在人力資源研究中，例如若「T1 工作投入 → T2 工作績效」顯著，而「T1 工
+作績效 → T2 工作投入」不顯著，可初步支持工作投入是後續績效的前因；若
+兩者皆顯著，則較可能是互惠循環，即投入促進績效，績效也強化後續投入。
+方法三：交叉延宕結構方程模型（Cross-lagged Panel Model, CLPM / Crosslagged SEM）
+CLPM 是目前更常見、也更符合博士層次研究的分析方法。它通常以結構方程
+模式估計，可以同時納入自迴歸路徑、同步相關、交叉延宕路徑、控制變項，
+甚至可進一步使用潛在變項處理測量誤差。SEM 版本的交叉延宕模型優點在於
+能同時估計多條路徑，並可檢驗整體模型適配度，例如 χ²、CFI、TLI、RMSEA、
+SRMR 等。
+在兩波資料且只有觀察變項時，模型常常是剛好識別，因此整體適配度資訊有
+限；若有三波以上資料或使用潛在變項，則較能進行模型比較與整體適配度判
+斷。教材指出，SEM 交叉延宕模型相較於橫斷面相關或單純交叉相關分析，優
+點是能估計控制前期分數後的部分效果；但若使用觀察變項，仍可能受到測量
+誤差與信度不等的影響，因此多指標潛在變項模型可更好地處理測量誤差與縱
+貫測量不變性問題。
+判讀時至少包含四個層次：
+第一，看模型適配度。若 CFI、TLI 達可接受標準，RMSEA、SRMR 較低，表示
+整體模型與資料相容。若比較多個理論模型，例如「X 影響 Y 的單向模型」、
+「Y 影響 X 的單向模型」、「雙向模型」，可透過 χ² 差異檢定、CFI 差異、
+AIC、BIC 等判斷哪個模型較佳。Zee 等人的研究即比較多種模型，最後發現交
+易性模型比其他模型更能符合資料，表示師生關係、學生動機與學業成就之間
+較可能是相互影響，而非單向影響。
+第二，看自迴歸路徑。若 X1 → X2 或 Y1 → Y2 顯著，表示該變項具有跨時間
+穩定性。穩定性越高，代表個體在該構念上的相對位置越穩定，例如高工作投
+入者在下一時間點仍傾向維持較高工作投入。
+
+第三，看交叉延宕路徑。若 X1 → Y2 顯著，表示在控制 Y1 後，X1 仍能預測
+Y2；若 Y1 → X2 也顯著，表示雙向影響。若只有其中一條顯著，則可初步支持
+單向主導關係。
+第四，看路徑大小與方向。標準化係數越大，代表延遲預測效果越強；正向係
+數表示前期 X 越高，後期 Y 越高；負向係數則表示前期 X 越高，後期 Y 越
+低。若兩條交叉路徑皆顯著，也可進一步設定等值限制，檢驗兩條路徑是否顯
+著不同，以判斷是否存在較強的主導方向。
+方法四：隨機截距交叉延宕模型（Random Intercept Cross-lagged Panel Model,
+RI-CLPM）
+若研究者有三波以上資料，且關心的是「個體內變化」而不是「個體間差異」，
+可以使用 RI-CLPM。傳統 CLPM 的一大限制是，可能混合了 between-person
+effect 與 within-person effect。例如長期來看，某些員工本來就比較投入，也本
+來就績效較高；這種穩定的個體差異可能讓研究者誤以為「投入變化導致績效
+變化」。RI-CLPM 透過隨機截距將穩定的個體間差異分離出來，再檢驗個體內偏
+離自身平均水準時，是否會影響下一時間點另一變項的偏離。
+判讀 RI-CLPM 時，重點是：當某人在某時間點的 X 高於自己平常水準時，是
+否會導致下一時間點的 Y 也高於自己平常水準。這比傳統 CLPM 更適合回答
+動態變化問題。例如「某位員工本月工作投入高於自己平常水準，是否會使下
+個月創新行為也高於自己的平常水準？」這種問題就比「工作投入高的人是否
+創新行為也高」更接近個體內歷程。
+四、研究主題示例
+研究主題
+AI 輔助學習自我效能與學習投入之交叉延宕研究：以科技教育領域博士生為例
+研究背景簡述
+隨著生成式 AI 工具被廣泛導入高等教育與成人學習場域，學生是否相信自己
+能有效使用 AI 進行學習，可能影響其後續學習投入；然而，也可能是高度投
+入學習的學生，在持續使用 AI 工具後逐漸累積成功經驗，進而提升其 AI 輔
+助學習自我效能。因此，兩者之間可能不是單向關係，而是互惠循環關係。此
+問題適合使用交叉延宕設計進行分析。
+
+研究目的
+本研究旨在探討科技教育領域博士生的 AI 輔助學習自我效能與學習投入之間
+是否存在跨時間的相互影響關係。具體而言，本研究將透過三波縱貫資料，檢
+驗 AI 輔助學習自我效能是否能預測後續學習投入，以及學習投入是否能反向
+預測後續 AI 輔助學習自我效能，藉此釐清兩者之間的因果主導方向與互惠動
+態。
+研究問題
+1. 科技教育領域博士生的 AI 輔助學習自我效能是否會正向預測其後續學
+習投入？
+2. 科技教育領域博士生的學習投入是否會正向預測其後續 AI 輔助學習自
+我效能？
+3. AI 輔助學習自我效能與學習投入之間是否存在雙向交叉延宕效果？
+4. 在控制個體間穩定差異後，AI 輔助學習自我效能與學習投入之間的個體
+內交叉延宕效果是否仍然存在？
+可行研究設計
+本研究可於一學年內蒐集三波資料，例如學期初、期中、期末。每一波皆測量
+AI 輔助學習自我效能與學習投入，並可控制年級、研究進度、每週使用 AI 時
+數、先前統計或程式能力等背景變項。分析上可先使用 CLPM 檢驗整體互惠關
+係，再使用 RI-CLPM 檢驗個體內動態效果。若量表具有多題指標，建議先檢驗
+縱貫測量不變性，再建立潛在變項交叉延宕模型，以降低測量誤差對路徑估計
+的影響。
+五、總結
+交叉延宕設計是一種適合用於縱貫資料的準實驗研究設計，主要目的在於釐清
+變項之間的時間順序與可能影響方向。它特別適合人力資源與科技教育領域中
+無法進行實驗操弄、但理論上可能存在互惠關係的研究問題。統計方法上，可
+從傳統交叉延宕相關分析、交叉延宕迴歸分析，到 SEM 架構下的 CLPM 與
+RI-CLPM。博士層次作答時，除了說明 X → Y 與 Y → X 的交叉路徑是否顯著，
+更應補充自迴歸效果、同步相關、模型適配度、測量誤差、縱貫測量不變性，
+以及傳統 CLPM 可能混淆個體間與個體內效果的限制。`},
+  'D':{title:"\u7b54\u6848 D",sub:"Gemini \u30fb \u6709\u6559\u6750",score:"79 \u26a0\ufe0f \u6df7\u5165AI\u601d\u8003\u904e\u7a0b",text:`I need to carefully review the synthesized information and craft a well-structured
+response that directly addresses the prompt's six components:
+1. Definition of cross-lagged design.
+2. Timing/scenarios for its application.
+3. Statistical methods (at least 2).
+4. Interpretation of statistical results.
+5. Proposed research topic (in HR or Tech Education).
+6. Research purpose and at least 2 research questions.
+Drafting Content:
+1. Definition of cross-lagged design: From 補充資料.pdf and 交叉延宕法報告_同
+學報告.pdf, cross-lagged design (交叉延宕設計) is a quasi-experimental design used
+to examine longitudinal relationships between variables. It aims to clarify the
+direction of influence between two variables (e.g., X and Y) and determine if the
+relationship is potentially spurious (caused by a third variable). It involves repeatedly
+measuring at least two variables across two or more discrete time points (e.g., Time
+1 and Time 2) to observe their changes and interactions over time, helping to answer
+"Does X cause Y, or does Y cause X?".
+2. Timing/Scenarios for Application: From 補充資料.pdf , it is particularly suitable
+for analyzing causal relationships occurring in natural environments where
+experimental manipulation is impossible or unethical (e.g., you can't randomly assign
+students to feel anxious). It's used when researchers want to verify the direction of
+causality (e.g., does perfectionism lead to anxiety, or vice versa?), when longitudinal
+data is available, when a theoretical expectation exists but lacks temporal sequence
+verification, or when spuriousness from a third variable is suspected.
+3 & 4. Statistical Methods and Interpretation: Method 1: Cross-Lagged Panel
+Correlation (CLPC) (交叉延宕相關分析) From 補充資料.pdf and 交叉延宕(李茂
+能)_compressed.pdf , CLPC relies on comparing the cross-lagged Pearson correlation
+coefficients (e.g., \$r_{X1Y2}\$ and \$r_{Y1X2}\$). Interpretation: Before comparing
+cross-lagged correlations, one must ensure synchronous correlations (X1 with Y1) are
+
+\$\\ge .30\$, and stability (test-retest reliability) is established. If \$r_{X1Y2}\$ is
+significantly larger than \$r_{Y1X2}\$, it suggests X is the causal variable leading to Y (X
+drives Y). However, this method has low statistical power and cannot account for
+measurement error or third variables.
+Method 2: Cross-Lagged Panel Modeling via Structural Equation Modeling (SEM) /
+Cross-lagged Regression (交叉延宕迴歸分析 / 交叉延宕 SEM 分析) From 交叉延
+宕(李茂能)_compressed.pdf and 陳俊瑋(2018)...pdf : SEM allows for the inclusion
+of multiple indicators (latent variables), thereby accounting for measurement error
+and allowing for the control of auto-regressive effects (stability) and synchronous
+covariances simultaneously. Interpretation: In a CLPM under SEM or regression, if the
+standardized regression coefficient (or path coefficient) from X1 to Y2
+(\$\\beta_{Y2X1}\$) is significant and larger than Y1 to X2, it suggests a directional
+causal effect of X on Y. If both cross-lagged paths are significant, a reciprocal
+(bidirectional) causal relationship is inferred. It is interpreted by looking at the
+significance and magnitude of the cross-lagged paths after controlling for the autoregressive paths (e.g., X1 predicting X2).
+5. Proposed Research Topic:
+Given the persona of a Ph.D. student in HR or Tech Education (and strictly avoiding
+explicitly telling the user "since you are an HR at Foxconn and NTNU PhD," I'll just
+formulate a topic that fits HR/Tech Ed seamlessly).
+Topic (HR/Tech Ed context): The reciprocal relationship between employees' use of AI
+tools (e.g., Vibe Coding/ChatGPT) and their work-related self-efficacy: A cross-lagged
+panel study. (科技教育與人力資源領域:「員工生成式 AI 工具使用頻率」與「工
+作自我效能感」之交叉延宕研究)
+6. Research Purpose and Questions:
+Purpose: To investigate whether frequent use of AI tools enhances employees' work
+self-efficacy over time, or whether employees with higher initial self-efficacy are
+more likely to adopt and frequently use AI tools, or if they reciprocally influence each
+other.
+Questions:
+
+1. Does employees' AI tool usage frequency at Time 1 positively predict their
+work self-efficacy at Time 2 (controlling for Time 1 self-efficacy)?
+2. Does employees' work self-efficacy at Time 1 positively predict their AI tool
+usage frequency at Time 2 (controlling for Time 1 AI tool usage)?
+3. Is there a reciprocal causal relationship between AI tool usage frequency and
+work self-efficacy?
+Compliance Check (Mental Checklist):
+1. Did I use forbidden phrases like "Based on..."? No.
+2. Did I use user data when it added no specific value or context? The user
+explicitly asked to "以人力資源或科技教育領域的博士生程度，回答這一
+題... 最後請擬一個研究主題". I am fulfilling the persona constraint and
+embedding their HR/Tech Ed background into the proposed topic naturally. I
+am not forcing details like "Yuki Uchida" or "Foxconn" which would be overfitting. I'll use the Vibe Coding / AI tools interest to make the topic highly
+relevant to their profile.
+3. Did I include sensitive data without the user explicitly asking? No.
+4. Did I ignore a relevant directive from the User Corrections History? N/A here.
+5. Citations: I must properly cite the fetched files. Let's map the citations strictly
+to the text provided in the File Fetcher response.
+Citation mapping:
+•
+
+Definition: 補充資料.pdf
+
+•
+
+Purpose: 補充資料.pdf
+
+•
+
+Timing/Scenario: 補充資料.pdf
+
+•
+
+Statistical Methods - CLPC: 補充資料.pdf
+
+•
+
+Statistical Methods - CLPM/Regression: 交叉延宕(李茂能)_compressed.pdf
+
+•
+
+Interpretation - CLPC: 交叉延宕(李茂能)_compressed.pdf
+
+•
+
+Interpretation - CLPM: 交叉延宕(李茂能)_compressed.pdf
+
+Wait, what about diagrams? The system instructions state: "Assess if the users would
+be able to understand the response better with the use of diagrams and trigger
+them... Only trigger images if the user's explicit intent is to LEARN or UNDERSTAND a
+concept." The user's query ("何謂交叉延宕設計...") is clearly an intent to
+learn/understand.
+I should trigger an image tag like \`\`.
+Let's refine the response in Traditional Chinese.
+Drafting the text: 交叉延宕設計（Cross-lagged design）是一種用來檢驗變項間
+縱貫性關係（longitudinal relationships）的準實驗設計（quasi-experimental
+design）。其主要目的是釐清兩個變數之間的影響方向，並判斷這種關係是否可
+能是虛假相關（spurious relationship），也就是說：看似存在的關聯，實際上可
+能來自於第三變數的干擾，而非真正的因果關係 。這種設計的核心特點在於：
+在至少兩個不同時間點（例如 time 1 和 time 2）分別對兩個變數（如 X 與 Y）
+進行重複測量，藉此觀察它們在時間上的變化與互動關係 。透過這樣的設計，
+可以進一步判斷「哪個變數是原因、哪個變數是結果」，並提供建立因果假說的
+依據 。它是一種在缺乏實驗操弄時，推論時間順序的替代工具 。
+適用的時機或情境 交叉延宕設計特別適合用於分析在自然環境中發生的變數之
+間的因果關係 。尤其當研究者面對「無法進行實驗操弄」的變數時（例如無法
+隨機指定學生感到焦慮，或不能操弄員工是否投入工作），交叉延宕設計就成為
+一種重要的替代方法 。 適用的具體情境包括：
+•
+
+無法進行實驗操弄： 只能依賴觀察性資料進行推論時 。
+
+•
+
+研究者希望驗證變項的因果方向： 探索兩個變項之間的因果主導方向
+（causal predominance），例如想知道「是完美主義導致焦慮，還是焦慮
+加劇完美主義？」 。
+
+•
+
+具備縱貫性資料（Longitudinal Data）： 當研究者擁有在不同時間點重複
+測量的資料時 。
+
+•
+
+懷疑第三變項干擾造成假性相關： 若 X 和 Y 看起來有相關，但可能是未
+觀察的第三變數 Z 同時影響 X 與 Y，此設計可以協助辨識是否為假性關
+係 。
+
+統計檢驗方法與結果判讀
+
+1. 傳統交叉延宕相關分析（Cross-lagged Panel Correlation, CLPC） 傳統交叉延
+宕相關分析以 Pearson 相關係數（Pearson r）為基礎，分析交叉延遲相關（例如
+\$r_{X1Y2}\$ 與 \$r_{Y1X2}\$） 。進行分析前必須滿足四大假設，包含同時相關需
+達.30 以上、重測信度需相等、同時測量，以及因果結構具穩定性 。
+•
+
+結果判讀： 分析時，虛假相關的統計考驗通常透過時差交互相關的差異
+量來進行顯著性考驗 。當兩個交叉延宕相關係數皆達顯著，且兩者的差
+異量亦達顯著水準時，因果關係才可能存在 。例如，如果 \$r_{X1Y2}\$
+顯著大於 \$r_{Y1X2}\$，且其差異達顯著水準，即可能表示「X 是因而 Y
+是果」 。不過，此方法檢定力較低，且無法處理測量誤差 。
+
+2. 交叉延宕迴歸分析 / 結構方程模式（Cross-lagged Regression / SEM） 為改
+善傳統相關分析的缺點，研究者常改用交叉延宕迴歸分析或 SEM，將穩定效果
+（重測信度）的差異性加以控制，估計出排除了先前時間點自身影響後的交叉
+延宕效果（Cross-lagged effects） 。
+•
+
+結果判讀： 在控制了 X1 對 X2（自我迴歸）、Y1 對 Y2（自我迴歸），以
+及 X1 與 Y1 的同期相關後，檢視交叉路徑的標準化迴歸係數（例如
+\$\\beta_{Y2X1}\$ 與 \$\\beta_{X2Y1}\$） 。假如 \$\\beta_{X2Y1}\$ 的值等於或
+接近於 0，而 \$\\beta_{Y2X1}\$ 的值達到顯著且較大，即暗示 X 可能是 Y
+的因 。假如兩條交叉延宕路徑的係數都達到顯著水準且很大時，即暗示
+X 與 Y 之間具有交互因果關係（Reciprocal causal effects） 。
+
+研究主題與問題擬定（結合科技教育與人力資源領域）
+研究主題： 企業員工「生成式 AI 工具（如 Vibe Coding/ChatGPT）使用頻率」
+與「工作自我效能感」之交叉延宕研究
+研究目的： 本研究旨在透過兩波段的縱貫性調查設計，釐清員工在職場上使用
+生成式 AI 工具與其工作自我效能感之間的因果方向。探討究竟是「頻繁使用 AI
+工具提升了員工的工作自我效能感」，還是「具備較高工作自我效能感的員工，
+更傾向於頻繁採用 AI 工具」，亦或兩者存在相互強化的動態循環關係。
+研究問題：
+1. 在控制了時間點一（Time 1）的工作自我效能感後，員工在 Time 1 的 AI
+工具使用頻率，是否能顯著正向預測其在時間點二（Time 2）的工作自
+我效能感？
+
+2. 在控制了 Time 1 的 AI 工具使用頻率後，員工在 Time 1 的工作自我效能
+感，是否能顯著正向預測其在 Time 2 的 AI 工具使用頻率？
+3. 員工的「AI 工具使用頻率」與「工作自我效能感」之間，是否存在顯著
+的交互因果關係（Reciprocal causal effects）？
+*Compliance Checklist Completed. Text generation.*交叉延宕設計（Cross-lagged
+design）是一種用來檢驗變項間縱貫性關係（longitudinal relationships）的準實
+驗設計（quasi-experimental design）。其主要目的是釐清兩個變數之間的影響方
+向，並判斷這種關係是否可能是虛假相關（spurious relationship），也就是說：
+看似存在的關聯，實際上可能來自於第三變數的干擾，而非真正的因果關係 。
+這種設計的核心特點在於：在至少兩個不同時間點（例如 Time 1 和 Time 2）
+分別對兩個變數（如 X 與 Y）進行重複測量，藉此觀察它們在時間上的變化與
+互動關係 。透過這樣的設計，可以進一步判斷「哪個變數是原因、哪個變數是
+結果」，並提供建立因果假說的依據 。它是一種在缺乏實驗操弄時，推論時間
+順序的替代工具 。
+適用的時機或情境
+交叉延宕設計特別適合用於分析在自然環境中發生的變數之間的因果關係 。尤
+其當研究者面對「無法進行實驗操弄」的變數時，交叉延宕設計就成為一種重
+要的替代方法 。適用的具體情境包括：
+•
+
+無法進行實驗操弄： 例如不能隨機指定學生感到焦慮，或不能隨機操弄
+員工的工作投入度，這時只能依賴觀察資料進行推論 。
+
+•
+
+研究者希望驗證變項的因果方向： 探索兩個變項之間的因果主導方向，
+例如想知道「是完美主義導致焦慮，還是焦慮加劇完美主義？」 。
+
+•
+
+具備縱貫性資料（Longitudinal Data）： 當研究者擁有在不同時間點重複
+測量的資料時（例如學期初與學期末、或連續幾個月的調查） 。
+
+•
+
+懷疑第三變項干擾造成假性相關： 若 X 和 Y 看起來有相關，但可能是未
+觀察的第三變數 Z 同時影響 X 與 Y，此設計可以協助辨識是否為假性關
+係 。
+
+統計檢驗方法與結果判讀
+1. 傳統交叉延宕相關分析（Cross-lagged Panel Correlation, CLPC） 傳統交叉延
+
+宕相關分析以 Pearson 相關係數為基礎，分析交叉延遲相關（例如 \$r_{X1Y2}\$
+與 \$r_{Y1X2}\$） 。進行分析前必須滿足四大假設，包含同時相關需達 .30 以
+上、重測信度需相等、同時測量，以及因果結構具穩定性 。
+•
+
+結果判讀： 虛假相關的統計考驗通常透過「時差交互相關的差異量」來
+進行顯著性考驗 。當兩個交叉延宕相關係數皆達顯著，且兩者的差異量
+亦達顯著水準時，因果關係才可能存在 。例如，如果 \$r_{X1Y2}\$ 顯著
+大於 \$r_{Y1X2}\$，且其差異達顯著水準，即可能表示「X 是因，而 Y 是
+果」 。不過，此方法無法處理測量誤差，且統計檢定力較低 。
+
+2. 交叉延宕迴歸分析 / 結構方程模式（Cross-lagged Regression / SEM） 為改
+善傳統相關分析的缺點，研究者常改用交叉延宕迴歸分析或 SEM，將穩定效果
+（重測信度/自迴歸效應）的差異性加以統計控制，估計出排除了先前時間點自
+身影響後的「交叉延宕效果」 。
+•
+
+結果判讀： 在控制了 X1 對 X2 的自身影響、Y1 對 Y2 的自身影響，
+以及 X1 與 Y1 的同期相關後，檢視交叉路徑的標準化迴歸係數（例如
+\$\\beta_{Y2X1}\$ 與 \$\\beta_{X2Y1}\$） 。假如 \$\\beta_{X2Y1}\$ 的值等於或
+接近於 0，而 \$\\beta_{Y2X1}\$ 的值達到顯著且數值較大，即暗示 X 可
+能是 Y 的因 。假如兩條交叉延宕路徑的係數都達到顯著水準且數值很
+大時，即暗示 X 與 Y 之間具有交互因果關係（Reciprocal causal
+effects） 。
+
+研究主題與問題擬定
+身為人力資源與科技教育領域的博士生，您可以將關注點放在「新興教育科技
+導入」與「人力資本心理特質」的縱貫性互動上。
+•
+
+研究主題： 企業員工「生成式 AI 工具（如 Vibe Coding / LLMs）使用
+頻率」與「工作自我效能感」之交叉延宕研究
+
+•
+
+研究目的： 本研究旨在透過兩波段的縱貫性調查設計，釐清員工在職場
+上使用生成式 AI 工具與其工作自我效能感之間的因果方向。探討究竟
+是「頻繁使用 AI 工具提升了員工的工作自我效能感」，還是「具備較高
+工作自我效能感的員工，更傾向於頻繁採用 AI 工具」，亦或兩者存在相
+互強化的動態循環關係。
+
+•
+
+研究問題：
+
+1. 在控制了時間點一（Time 1）的工作自我效能感後，員工在 Time
+1 的 AI 工具使用頻率，是否能顯著正向預測其在時間點二
+（Time 2）的工作自我效能感？
+2. 在控制了 Time 1 的 AI 工具使用頻率後，員工在 Time 1 的工作
+自我效能感，是否能顯著正向預測其在 Time 2 的 AI 工具使用頻
+率？
+3. 員工的「AI 工具使用頻率」與「工作自我效能感」之間，是否存
+在顯著的交互因果關係（Reciprocal causal effects）？`},
+  'E':{title:"\u7b54\u6848 E",sub:"ChatGPT \u30fb \u6559\u6750\uff0b\u8a55\u5206\u6a19\u6e96",score:"93",text:`交叉延宕設計之說明與應用
+一、交叉延宕設計的意義與核心邏輯
+交叉延宕設計（cross-lagged design）是一種縱貫研究設計，主要用於探討兩個
+或多個變項在不同時間點之間的相互預測關係，藉此推論變項間的時間先後順
+序與可能的影響方向。其核心問題在於：究竟是 X 影響後續的 Y，還是 Y 影
+響後續的 X，抑或兩者之間存在雙向影響關係。
+以最基本的兩變項、兩時間點設計為例，研究者會在第一時間點測量 X1 與
+Y1，並在第二時間點測量 X2 與 Y2。此時模型中通常包含三類關係：
+第一是自我迴歸效果（autoregressive effects），例如 X1 → X2、Y1 → Y2，代表
+同一變項跨時間的穩定性。若 X1 能顯著預測 X2，表示個體在 X 變項上的相
+對位置具有一定程度的延續性。
+第二是同步相關（synchronous correlations），例如 X1 與 Y1 的相關、X2 與
+Y2 的相關，代表同一時間點兩個變項之間的關聯。
+第三是交叉延宕效果（cross-lagged effects），例如 X1 → Y2、Y1 → X2，代表前
+一時間點某一變項是否能預測另一變項在後一時間點的水準。這也是交叉延宕
+設計最關鍵的部分。
+因此，交叉延宕設計並不是單純比較兩個變項是否相關，而是在控制變項自身
+前期水準後，檢驗另一個變項是否仍能預測其後續變化。例如，在控制 T1 工
+作績效後，若 T1 工作投入仍能顯著預測 T2 工作績效，則可初步支持「工作
+投入可能影響後續績效」的方向性推論。
+不過，交叉延宕設計雖可提供時間先後與方向性證據，但仍屬於觀察性或準實
+驗研究設計，不能像隨機實驗一樣直接證明因果關係。因此，較精確的說法應
+是：交叉延宕設計可提供「可能因果方向」或「時間順序關係」的證據，而不
+宜過度宣稱已證明因果關係。
+
+二、適用的時機與研究情境
+交叉延宕設計適用於研究者關心兩個或多個變項之間是否存在跨時間的相互影
+響、動態關係或可能因果順序，但又無法進行實驗操弄的研究情境。
+
+在人力資源、科技教育與成人學習領域中，許多重要變項無法被研究者隨機分
+派或操弄，例如工作投入、組織承諾、離職傾向、工作績效、學習動機、自我
+效能、訓練遷移、數位學習投入等。這些變項常常只能透過縱貫追蹤資料進行
+觀察，因此適合使用交叉延宕設計。
+具體而言，交叉延宕設計適合以下幾類情境：
+第一，當研究者想釐清兩個變項的方向性時。例如在人力資源研究中，研究者
+可能想知道「是工作投入促進後續工作績效，還是高績效員工因獲得更多正向
+回饋而提升後續工作投入」。
+第二，當理論上預期兩個變項可能存在雙向或互惠關係時。例如科技教育研究
+中，學生的學習動機可能提升後續學習成就，但良好的學習成就也可能反過來
+增強學生的後續學習動機。
+第三，當研究者希望檢驗某種動態循環機制時。例如成人教育中，自我效能可
+能促進訓練遷移，而成功的訓練遷移經驗也可能反過來提升成人學習者的自我
+效能。
+第四，當研究者已有兩波以上，最好是三波以上的縱貫資料時，交叉延宕設計
+可用來檢驗不同變項之間的跨時間預測關係。若只有單一時間點資料，或只是
+事後回溯填答，通常不適合進行嚴格的交叉延宕分析，因為其核心邏輯仰賴真
+實的時間順序與重複測量。
+
+三、可使用的統計檢驗方法與結果判讀
+交叉延宕設計可使用多種統計方法分析。以下列出四種，其中前兩種即可符合
+「至少兩種」的要求，但若在博士生作答中能進一步提及 SEM 與 RI-CLPM，
+會更能展現方法深度。
+
+方法一：交叉延宕面板模型／結構方程模式
+Cross-Lagged Panel Model, CLPM / SEM
+交叉延宕面板模型是最常見的分析方法，通常以結構方程模式（SEM）進行估
+計。此模型可同時估計自我迴歸路徑、同步相關與交叉延宕路徑，並可進一步
+
+納入控制變項或潛在變項。
+若以 X 與 Y 兩個變項為例，模型會同時估計：
+X1 → X2
+Y1 → Y2
+X1 → Y2
+Y1 → X2
+X1 ↔ Y1
+X2 ↔ Y2
+其中，X1 → X2 與 Y1 → Y2 是自我迴歸效果；X1 → Y2 與 Y1 → X2 是交叉延宕
+效果。
+判讀時應包含三個層次。
+第一，先看模型適配度。若使用 SEM，應檢視 χ²、CFI、TLI、RMSEA、SRMR
+等指標。一般而言，CFI 與 TLI 越接近 .90 或 .95 以上越佳，RMSEA 與
+SRMR 越低越佳。若模型適配度不佳，代表研究者所設定的理論模型與資料結
+構不相符，後續路徑係數的解釋也需謹慎。
+第二，判讀自我迴歸係數。若 X1 → X2 顯著，表示 X 具有跨時間穩定性；若
+Y1 → Y2 顯著，表示 Y 也具有跨時間穩定性。自我迴歸係數越大，代表該變項
+越穩定，個體在此變項上的相對位置較不易改變。
+第三，判讀交叉延宕係數。若 X1 → Y2 顯著，而 Y1 → X2 不顯著，表示 X 對
+後續 Y 的預測較強，可初步支持 X 影響 Y 的方向性。若 Y1 → X2 顯著，而
+X1 → Y2 不顯著，則可初步支持 Y 影響 X。若兩條交叉延宕路徑皆顯著，則表
+示兩者可能存在雙向或互惠關係。若兩條皆不顯著，則表示在控制前期水準
+後，兩者之間沒有明確的跨時間預測效果。
+例如，若 T1 學習動機 → T2 學習成就的標準化係數 β = .25，p < .01，而 T1
+學習成就 → T2 學習動機的標準化係數 β = .08，p > .05，則可解釋為：在控制
+學習成就自身穩定性後，前期學習動機能顯著正向預測後期學習成就，但反向
+路徑未達顯著，因此研究結果較支持「學習動機影響後續學習成就」的方向
+性。
+
+方法二：階層迴歸或多元迴歸的跨時預測分析
+若研究者沒有使用 SEM，也可使用階層迴歸或多元迴歸分析交叉延宕關係。其
+基本精神是，在預測後期 Y 時，先控制前期 Y，再加入前期 X；同樣地，在預
+測後期 X 時，先控制前期 X，再加入前期 Y。
+例如：
+Y2 = β0 + β1Y1 + β2X1 + e
+X2 = γ0 + γ1X1 + γ2Y1 + e
+其中，β1 與 γ1 是自我迴歸效果，β2 與 γ2 是交叉延宕效果。
+判讀時，研究者應檢視前期 X 是否能在控制前期 Y 後，顯著解釋後期 Y 的變
+異。如果 β2 顯著，表示 X1 對 Y2 具有跨時間預測力。相反地，如果 γ2 顯
+著，則表示 Y1 對 X2 具有跨時間預測力。
+階層迴歸也可檢視 ΔR²。若在控制 Y1 後，加入 X1 能顯著增加對 Y2 的解釋
+力，表示 X1 對 Y2 具有額外預測效果。例如，在第一步放入 T1 工作績效，
+第二步放入 T1 工作投入，若第二步的 ΔR² 顯著，且工作投入的迴歸係數為正
+且達顯著，則可解釋為：在控制員工原有績效後，前期工作投入仍能顯著預測
+後續工作績效。
+此方法的優點是操作較簡單，適合樣本數有限或研究者希望先進行基本檢驗的
+情境；限制是較難同時處理測量誤差、模型適配度與複雜的潛在變項結構。
+
+方法三：隨機截距交叉延宕模型
+Random Intercept Cross-Lagged Panel Model, RI-CLPM
+若資料具有三個以上時間點，且研究者希望區分「個體間差異」與「個體內變
+化」，可使用隨機截距交叉延宕模型。傳統 CLPM 的限制在於，它可能混合了
+個體間效果與個體內效果。例如，工作投入高的人通常績效也高，這可能只是
+穩定的個體差異，而不一定代表某位員工在某一時間點工作投入提升後，其下
+一時間點績效也會跟著提升。
+RI-CLPM 透過隨機截距分離個體長期穩定差異，再檢驗個體在某一時間點偏離
+自身平均水準時，是否能預測下一時間點另一變項的偏離。
+
+其判讀重點是：當個體的 X 在某時間點高於自己的平常水準時，是否會使其下
+一時間點的 Y 也高於自己的平常水準。
+例如，在人力資源研究中，若某位員工本月的工作投入高於自己平常水準，且
+能顯著預測下個月工作績效也高於自己平常水準，則可支持工作投入對績效的
+個體內動態影響。這種解釋比傳統 CLPM 更接近「變化造成變化」的邏輯。
+
+方法四：潛在成長模型與交叉延宕模型結合
+若研究者除了關心變項間的方向性，也關心變項本身的成長軌跡，可結合潛在
+成長曲線模型與交叉延宕模型。例如，研究者可同時分析學生自我效能與學習
+成就的初始水準、成長速率，以及兩者之間是否存在跨時間相互預測關係。
+判讀時可分為兩部分。第一，檢視截距與斜率，了解變項的初始狀態與變化趨
+勢。第二，檢視交叉延宕路徑，判斷某一變項在前期是否能預測另一變項的後
+期變化。此方法適合用於長期追蹤資料，例如三波、四波或更多時間點的教育
+資料庫或員工追蹤資料。
+
+四、統計結果的整體判讀原則
+無論使用哪一種統計方法，交叉延宕結果的判讀都應注意以下幾點。
+第一，不能只看同期相關。X1 與 Y1 相關，或 X2 與 Y2 相關，只能表示兩者
+在同一時間點有關聯，不能直接推論跨時間影響。
+第二，必須控制前期水準。若要說明 X 對 Y 的延遲影響，必須在控制 Y1
+後，檢驗 X1 是否仍能預測 Y2。否則可能只是因為 Y 本身穩定，而非 X 真的
+影響了 Y。
+第三，應同時比較兩條交叉路徑。若 X1 → Y2 顯著，而 Y1 → X2 不顯著，可
+支持單向關係；若兩者皆顯著，則支持雙向關係；若兩者皆不顯著，則不支持
+明確的跨時間預測。
+第四，應判斷係數方向與大小。正向係數表示前期 X 越高，後期 Y 越高；負
+向係數表示前期 X 越高，後期 Y 越低。標準化係數越大，代表預測效果越
+強。
+
+第五，若使用 SEM，需同時檢視模型適配度與路徑係數。即使某條路徑達顯
+著，若整體模型適配不佳，解釋仍需保留。
+第六，應避免過度宣稱因果。交叉延宕設計可提供時間先後與方向性證據，但
+若未進行隨機分派，仍可能受到未測量第三變項、測量誤差、時間間隔設定不
+當等因素影響，因此較適合使用「預測」、「方向性關係」、「可能影響」等語
+彙。
+
+五、研究主題、研究目的與研究問題設計
+以下以科技教育與成人學習脈絡為例，提出一個符合交叉延宕設計的研究主
+題。
+研究主題
+AI 輔助學習自我效能與學習投入之交叉延宕研究：以科技教育領域博士生為例
+研究目的
+本研究旨在探討科技教育領域博士生之 AI 輔助學習自我效能與學習投入在不
+同時間點之間是否存在相互預測關係。具體而言，本研究將透過三波縱貫資
+料，檢驗前期 AI 輔助學習自我效能是否能預測後期學習投入，以及前期學習
+投入是否能反向預測後期 AI 輔助學習自我效能，藉此釐清兩者之間的時間順
+序、方向性與可能的互惠動態。
+本研究可於一學期或一學年中蒐集三波資料，例如學期初、期中與期末，並於
+每一時間點測量 AI 輔助學習自我效能與學習投入。分析上可先使用 CLPM 檢
+驗整體交叉延宕關係，若樣本數與時間點足夠，則可進一步使用 RI-CLPM 區分
+個體間差異與個體內變化。
+研究問題
+RQ1：在控制前期學習投入後，T1 AI 輔助學習自我效能是否能正向預測 T2 學
+習投入？
+RQ2：在控制前期 AI 輔助學習自我效能後，T1 學習投入是否能正向預測 T2 AI
+輔助學習自我效能？
+RQ3：AI 輔助學習自我效能與學習投入之間是否存在雙向交叉延宕效果？
+
+RQ4：若使用三波資料，T1 至 T2 的交叉延宕效果是否能延續至 T2 至 T3？
+RQ5：在控制個體間穩定差異後，AI 輔助學習自我效能與學習投入之間的個體
+內交叉延宕效果是否仍然存在？
+
+六、結論
+綜合而言，交叉延宕設計是一種適用於縱貫資料的研究設計，主要目的在於檢
+驗兩個或多個變項之間的跨時間相互預測關係。其核心在於同時估計自我迴歸
+效果與交叉延宕效果，並藉由比較 X(T1) → Y(T2) 與 Y(T1) → X(T2) 的顯著性、
+方向與效果大小，推論變項之間可能的時間先後與方向性。
+在人力資源與科技教育研究中，交叉延宕設計特別適合用於無法進行實驗操
+弄，但又需要釐清動態關係的議題，例如工作投入與績效、組織承諾與離職傾
+向、學習動機與學習成就、自我效能與訓練遷移等。
+統計方法上，研究者可使用交叉延宕面板模型、結構方程模式、階層迴歸、多
+元迴歸、RI-CLPM 或潛在成長模型結合交叉延宕分析。判讀時不僅要看路徑係
+數是否顯著，也需注意自我迴歸效果、模型適配度、效果方向、效果大小，以
+及是否過度推論因果。對博士生而言，完整作答應能展現對縱貫資料、方向性
+推論、模型限制與研究設計嚴謹性的理解。`},
+  'F':{title:"\u7b54\u6848 F",sub:"Gemini \u30fb \u6559\u6750\uff0b\u8a55\u5206\u6a19\u6e96",score:"90",text:`交叉延宕設計（Cross-Lagged Design）完整學術擬答
+一、 概念定義與核心邏輯
+交叉延宕設計（Cross-Lagged Design）是一種針對面板資料（Panel Data）進行
+的縱貫性研究設計（Longitudinal Design）。其核心邏輯是在至少兩個不同的時
+間點（如 Time 1 與 Time 2），對兩個或以上的變項進行重複測量，藉以檢驗這
+些變項間跨時間的相互預測關係。
+在統計模型架構中，主要包含以下兩種核心路徑：
+1. 自我迴歸效果（Autoregressive Paths）： 指同一個變項在先前時間點對
+後續時間點的預測路徑（例如 \$X_{T1} \\rightarrow X_{T2}\$ 或 \$Y_{T1}
+\\rightarrow Y_{T2}\$）。這條路徑代表了該構念在時間演進下的穩定性
+（Stability），即控制了變項前期的基線水準。
+2. 交叉延宕效果（Cross-Lagged Paths）： 指不同變項間跨時間的預測路徑
+（例如 \$X_{T1} \\rightarrow Y_{T2}\$ 與 \$Y_{T1} \\rightarrow X_{T2}\$）。這
+是檢驗核心研究假說的關鍵路徑。
+方法論的重要釐清： 必須強調的是，交叉延宕設計在實證科學中應被精確地視
+為提供「時間先後與方向性證據」（Temporal precedence and directionality）的工
+具，而非絕對的因果宣稱。因為它是透過時間的先後順序（前期預測後期）來
+排除部分虛假相關（Spurious relationship），但在缺乏實驗隨機分派的情境下，
+仍可能受到未觀測的第三變項干擾。
+二、 適用時機與研究情境
+交叉延宕設計適用於探討兩個或多個變項在時間序列上的相互影響、發展方向
+性、動態變化關係以及可能的因果順序。
+在人力資源管理（HRM）與科技教育（Tech-Ed）領域中，此設計能解決許多傳
+統橫斷面（Cross-sectional）研究無法釐清的「雞生蛋、蛋生雞」問題。典型的
+情境包括：
+•
+
+人力資源與組織行為情境： 探討員工的「工作投入（Work
+Engagement）」與「工作績效（Job Performance）」之間的動態關係。究
+竟是高工作投入能有效提升後續的績效表現（投入先導），還是優異的績
+效回饋能激發更高的工作投入（績效回饋），亦或兩者互為因果？
+
+•
+
+科技教育與數位學習情境： 探討學習者的「數位自我效能感（Digital
+Self-Efficacy）」與「線上學習成就（Learning Achievement）」在學期中的
+互動。釐清是自信心帶動了學習表現，還是成功的學習經驗累積了自信
+心。
+
+三、 統計檢驗方法
+進行交叉延宕分析，目前學術界公認至少有以下兩種主流統計檢驗方法：
+1. 傳統交叉延宕相關分析（Cross-Lagged Panel Correlation, CLPC）：
+以 Pearson 相關係數（Pearson \$r\$）為基礎，透過比較兩條交叉延遲相關係數
+（如 \$r_{X1Y2}\$ 與 \$r_{Y1X2}\$）的差異顯著性。此方法多用於早期研究或初步
+因果方向的探索。
+2. 結構方程模式取向之交叉延宕面板模型（Cross-Lagged Panel Modeling via
+SEM, CLPM）：
+這是目前最精緻且主流的方法。它同時將自我迴歸路徑、交叉延宕路徑、以及
+同時間點的同期共變（Synchronous Covariance）納入單一飽和或限制模型中。
+若構念包含多個題目，更可建立「潛在交叉延宕面板模型（Latent CLPM）」，將
+測量誤差納入模型控制。
+四、 統計結果判讀
+在結構方程模式（SEM）的架構下，統計結果的判讀包含三個層次：模型適配
+度、路徑係數檢視、以及雙向路徑比較。
+1. 整體模型適配度指標（Model Fit Indices）
+在詮釋路徑之前，必須確認整體理論模型與實證資料的契合度，優秀的模型應
+符合以下學術標準：
+•
+
+卡方值比值（\$\\chi^2/df\$）： 通常期望值 \$< 3\$（若樣本數極大時容許
+\$< 5\$）。
+
+•
+
+CFI（比較適配指數）與 TLI（非規範適配指數）： 數值應 \$\\ge .90\$，達
+到 \$\\ge .95\$ 最佳。
+
+•
+
+RMSEA（漸進均方根誤差）： 數值應 \$\\le .08\$，達到 \$\\le .05\$ 最佳。
+
+•
+
+SRMR（標準化殘差均方根）： 數值應 \$\\le .08\$（\$\\le .05\$ 最佳）。
+
+2. 自我迴歸與交叉延宕路徑判讀
+•
+
+自我迴歸係數： 檢視其顯著性（\$p < .05\$）與大小。若係數顯著且高
+（如 \$.60\$ 以上），表示該變項跨時間具有高度穩定性，個體在該特質
+上的相對排序不易改變。
+
+•
+
+交叉延宕路徑之顯著性、方向與效果量： 在控制了前期水準與同期相關
+後，檢視標準化路徑係數（\$\\beta\$）。係數的正負號代表預測的方向
+（正向或負向預測），而\$\\beta\$ 值大小則代表跨時間預測的效果量。
+
+3. 雙向關係的比較（判斷單向、雙向或無關係）
+透過比較 \$A_{T1} \\rightarrow B_{T2}\$ 與 \$B_{T1} \\rightarrow A_{T2}\$ 兩條路徑
+的顯著性與強度：
+•
+
+單向關係（Unidirectional）： 若路徑 \$A_{T1} \\rightarrow B_{T2}\$ 顯著，
+但 \$B_{T1} \\rightarrow A_{T2}\$ 不顯著（或反之），代表 A 在時間先後上
+具有因果主導性（Causal predominance），即 A 預測 B。
+
+•
+
+雙向關係 / 交互因果關係（Reciprocal）： 若兩條路徑皆達到統計顯著
+水準（\$p < .05\$），代表兩變項跨時間存在雙向交互影響，屬於動態的動
+能循環。
+
+•
+
+無顯著關係： 若兩條路徑皆未達顯著，說明在控制前期基線後，兩變項
+間並無跨時間的預測效果。
+
+五、 研究主題、目的與研究問題設計
+以下結合科技教育與人力資源領域，提出一個符合高階學術規範的研究設計：
+•
+
+研究主題： 數位轉型下企業員工「生成式 AI 工具使用自我效能感」與
+「數位敏捷度」之雙波段交叉延宕研究
+
+•
+
+研究目的： 本研究旨在透過兩波段（Time 1：數位工具培訓初期；Time
+2：培訓結束六個月後）的縱貫性追蹤調查設計，探討企業員工在面對生
+成式 AI（如 LLMs/Vibe Coding）導入職場時，其「生成式 AI 使用自我
+效能感（心理層面）」與「數位敏捷度（行為適應層面）」跨時間的相互
+預測關係。本研究在統計上將嚴謹控制員工前期的基線水準，用以釐清
+兩者之間究竟存在單向因果主導性、亦或是雙向相互強化的動態發展規
+律，為企業未來推動科技教育與人才發展策略提供方向性證據。
+
+•
+
+研究問題：
+1. 在控制了時間點一（Time 1）的數位敏捷度以及人口統計變項
+（如年資、部門）後，員工在 Time 1 的「生成式 AI 使用自我效
+能感」，是否能顯著正向預測其在時間點二（Time 2）的「數位敏
+捷度」（交叉路徑一）？
+2. 在控制了 Time 1 的生成式 AI 使用自我效能感以及人口統計變項
+後，員工在 Time 1 的「數位敏捷度」，是否能顯著正向預測其在
+Time 2 的「生成式 AI 使用自我效能感」（交叉路徑二）？
+3. 員工的「生成式 AI 使用自我效能感」與「數位敏捷度」之間，
+是否存在顯著的雙向交互預測關係（Reciprocal relationship）？`},
+  'G':{title:"\u7b54\u6848 G",sub:"Claude \u7d9c\u5408\u7248",score:"94",text:`交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+交叉延宕設計（Cross-Lagged Panel Design）
+概念、方法與人力資源研究應用
+博士資格考擬答
+
+1
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+2
+
+一、概念定義與核心邏輯
+交叉延宕設計（cross-lagged panel design, CLPD）是一種縱貫研究設計，其核心邏
+輯在於：在至少兩個不同的時間點，對同一批研究對象重複測量兩個或以上的變項，
+藉此同時估計三類關係，以推論變項之間的時間先後順序與可能的方向性影響。
+
+（一）模型的三類核心路徑
+以最基本的兩變項（X 與 Y）、兩時間點（T1 與 T2）設計為例，交叉延宕模型包含以
+下三類路徑：
+第一，自我迴歸效果（autoregressive effect）：即 X₁ → X₂ 與 Y₁ → Y₂，反
+映同一變項在時間上的穩定性，也是控制個體原有基線水準的必要路徑。自我迴歸
+係數越高，表示個體在該構念上的相對位置越穩定，跨時間的可解釋變異空間也相
+對縮小。
+第二，同步相關（synchronous correlation）：即同一時間點 X₁ 與 Y₁（及 X₂ 與
+Y₂）之間的共變，反映兩變項在時間截面上的關聯。
+第三，交叉延宕效果（cross-lagged effect）：即 X₁ → Y₂ 與 Y₁ → X₂，這是
+交叉延宕設計最關鍵的路徑。它回答的問題是：在控制了前期 Y 本身的穩定性之
+後，前期 X 是否仍能對後期 Y 產生額外的預測效果？
+
+（二）方法論定位與因果推論的邊界
+交叉延宕設計能提供「時間先後與方向性」的推論依據（temporal precedence and
+directionality），但不等同於強因果宣稱。在缺乏實驗隨機分派的前提下，仍可能
+存在未觀測的第三變項干擾，或測量時間點設定不當造成的效果低估。因此，較為精
+確的表述應為「X₁ 能顯著正向預測 Y₂，在控制了 Y 的前期水準後」，而非「X 導致
+Y」。
+
+文獻脈絡
+
+Kenny (1975) 最早系統化提出交叉延宕相關分析；Hamaker 等人 (2015) 指出傳統 CLPM
+可能混淆個體間（between-person）穩定差異與個體內（within-person）動態變化，並
+提出隨機截距交叉延宕模型（RI-CLPM）作為改良。此一方法論討論已成為 Journal of
+Applied Psychology 等頂期刊的審查焦點。
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+3
+
+二、適用時機與研究情境
+（一）適合使用的情境
+交叉延宕設計在人力資源研究中，主要適合以下四種情境：
+‧ 研究者希望釐清兩個 HR 構念的因果主導方向（causal predominance）。例如，
+工作投入與工作績效理論上可能互為因果；橫斷研究只能確認相關，無法判斷
+方向。
+‧ 理論上存在雙向或螺旋關係（reciprocal/spiral relationship）。工作要求資源模型（JD-R model, Bakker & Demerouti, 2007）預測資源促進投入，而高
+投入者又更能創造資源，形成增益螺旋（gain spiral），需以縱貫資料驗證此
+循環。
+‧ 研究者擁有至少兩波、對同一批受測者在明確時間點的重複測量資料，且研究
+變項具有理論上可改變的狀態特性（state-like），如工作投入、組織承諾、
+心理資本等。高度穩定的特質性構念（trait-like）通常不適合此設計。
+‧ 倫理或實務上無法進行隨機實驗操弄，例如無法隨機指派員工承受特定壓力水
+準，此時縱貫追蹤資料能提供比橫斷研究更強的方向性推論。
+
+（二）不適合使用的情境
+以下情況不適合使用：只有單一橫斷面資料；資料來自事後回溯記憶（retrospective
+recall），無真實時間先後；兩變項均屬高度穩定特質（自我迴歸係數 > .90），交
+叉延宕效果空間極小；以及完全依賴次級資料而無重複測量設計者。
+
+（三）時間間隔的理論考量
+研 究 者 應 事 先 根 據 理 論 或 先 行 研 究 指 定 適 當 的 測 量 時 間 間 隔 （ time lag
+specification）。間隔過短，效果尚未顯現；間隔過長，效果可能已衰退。在人力資
+源 領 域 ，工作態度相關構念的測量間隔通常建議在三至六個月之間（ Dormann &
+Griffin, 2015）。這一決策應在研究設計階段即明確說明，而非事後補充。
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+4
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+5
+
+三、統計檢驗方法
+依據資料結構與研究問題的複雜程度，可採用以下四種統計方法，研究者應根據資料
+波次、樣本量、量表設計與研究問題加以選擇。
+
+方法一：傳統交叉延宕相關分析（CLPC）
+Kenny（1975）提出的傳統方法，透過比較兩條交叉延宕相關係數——r(X₁, Y₂) 與
+r(Y₁, X₂)——的大小，初步推論因果主導方向。此方法適合初探性分析，操作簡便；
+但限制明顯：未能控制測量誤差、對重測信度差異敏感，且不等同於控制前期水準後
+的條件預測。在當代頂期刊中已鮮少單獨採用，但仍可作為輔助性描述統計。
+
+方法二：階層迴歸交叉延宕分析（Hierarchical Cross-Lagged Regression）
+以階層迴歸為基礎，分別以後期 Y 和後期 X 為依變項：
+Y₂ = β₀ + β₁Y₁ + β₂X₁ + ε
+
+X₂ = γ₀ + γ₁X₁ + γ₂Y₁ + ε
+
+其中 β₁、γ₁ 為自我迴歸效果，β₂、γ₂ 為交叉延宕效果。此方法統計邏輯直觀，
+適合觀察變項且樣本量相對有限的情境；限制在於較難同時呈現整體模型適配度，且
+無法處理測量誤差。
+
+方法三：結構方程模式下的交叉延宕面板模型（CLPM via SEM）
+CLPM 是目前最主流的分析方法，可在 SEM 架構下（Mplus、R lavaan、AMOS）同時估
+計所有路徑並評估整體模型適配度。若量表具多個題項，可建立潛在變項交叉延宕模
+型（latent CLPM），將測量誤差納入控制，提供更精確的路徑估計。
+使 用 潛 在 變 項 時 ， 應 先 進 行 縱 貫 測 量 不 變 性 檢 驗 （ longitudinal measurement
+invariance testing），依序確認形態不變性（configural）、因素負荷量不變性
+（metric）與截距不變性（scalar），方能合理比較跨時間的潛在均值與路徑係數。
+若截距不變性未成立，研究者應在論文中明確討論此一限制。
+
+方法四：隨機截距交叉延宕模型（RI-CLPM）
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+6
+
+Hamaker 等人（2015）指出，傳統 CLPM 的路徑係數混合了個體間差異（betweenperson effect）與個體內動態（within-person effect）：某些員工長期高投入且績
+效一貫良好，這是穩定的個體差異；而「某員工本月比平時更投入，其下月績效是否
+也高於自己平時」才是個體內的動態因果邏輯。RI-CLPM 透過加入隨機截距將個體的
+長期穩定特質分離，再估計個體內層次的動態交叉路徑。此模型需要至少三個時間波
+次。在 HR 縱貫研究中，若關心的是員工動態變化歷程，RI-CLPM 應優先考慮。
+
+7
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+四、統計結果判讀
+以 SEM 架構下的 CLPM 為例，結果判讀應依序包含四個層次：
+
+層次一：整體模型適配度
+在解讀任何路徑係數之前，必須先確認整體模型與資料的契合程度：
+指標
+
+可接受標準
+
+佳
+
+說明
+
+χ²/df
+
+< 3（大樣本 < 5）
+
+< 2
+
+樣本大時幾乎必然顯著，
+應搭配其他指標
+
+CFI
+
+≥ .90
+
+≥ .95
+
+比較適配指數，越高越好
+
+TLI
+
+≥ .90
+
+≥ .95
+
+非規範適配指數
+
+RMSEA
+
+≤ .08（95% CI 上界
+< .10）
+
+≤ .05
+
+漸進均方根誤差
+
+SRMR
+
+≤ .08
+
+≤ .05
+
+標準化殘差均方根
+
+若比較巢套模型（如單向模型 vs. 雙向模型），可使用 Δχ²、ΔCFI（> .01 視為顯
+著差異）或 AIC／BIC 進行模型選擇。
+
+層次二：自我迴歸路徑
+自我迴歸係數反映各構念跨時間的穩定性。係數越高（如 ≥ .70），表示員工在此特
+質上的相對位置不易改變，殘差變異空間縮小，交叉延宕效果的偵測難度也提高。在
+人力資源研究中，若自我迴歸係數過高（接近 .90），研究者應評估是否有足夠的統
+計力偵測交叉路徑，並在設計階段進行樣本量估算。
+
+層次三：交叉延宕路徑的判讀與比較
+這是交叉延宕設計的核心詮釋。四種結果情境如下：
+情境
+
+路徑顯著性
+
+推論方向
+
+X₁ → Y₂ 顯著 Y₁ → X₂ 不
+顯著
+
+β(X→Y) 顯著, p < .05
+β(Y→X) 不顯著
+
+X 單向主導影響 Y；X 為 Y 的前
+因
+
+X₁ → Y₂ 不顯著 Y₁ → X₂
+顯著
+
+β(X→Y) 不顯著 β(Y→X) 顯
+著, p < .05
+
+Y 單向主導影響 X；Y 為 X 的前
+因
+
+兩條路徑皆顯著
+
+兩個 β 均顯著, p < .05
+
+雙向互惠；可設定等值限制比較相
+對強度
+
+8
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+情境
+
+路徑顯著性
+
+兩條路徑皆不顯著
+
+兩個 β 均不顯著
+
+推論方向
+此時間間隔下，兩變項無明確跨時
+間預測關係
+
+層次四：效果大小、方向與因果宣稱的邊界
+標準化路徑係數的正負號代表影響方向，大小代表效果量。參考 Cohen（1988）：.10
+屬小效果，.30 屬中效果，.50 以上屬大效果。人力資源縱貫研究的交叉延宕效果通
+常落在 .10 至 .25 之間，仍具有理論與實務意義。必要時可設定兩條交叉路徑等值，
+並以 χ² 差異檢定比較兩者是否存在顯著差異，以判斷因果主導方向的相對強度。
+最後應謹記：交叉延宕效果是在控制前期水準後的增量預測力，其語意是「已知員工
+原本的工作投入，前期績效是否能進一步預測後期投入的改變」。這比橫斷相關更嚴
+格，也更接近因果邏輯，但仍應以「方向性預測」而非「實驗因果」的語彙表述，以
+避免過度宣稱。
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+9
+
+五、研究主題、研究目的與研究問題設計
+（一）研究主題
+
+工作投入與工作績效的雙向動態關係：以三波縱貫資料驗證增益
+螺旋效應
+（二）研究背景與動機
+工作投入（work engagement）與工作績效（job performance）之間的關係是人力資源
+管理研究的核心議題。過去多數研究採橫斷面設計，雖一致發現兩者具有正相關，卻
+無法釐清因果方向。從工作要求-資源模型（JD-R model, Bakker & Demerouti, 2007）
+的角度，高工作投入者因具備充沛的個人資源，應表現出更高的工作績效；然而，從
+社會認知理論（Bandura, 1986）觀點，工作成功經驗（高績效）能強化員工的自我效
+能感，進而提升後續工作投入。若兩個理論方向均成立，則兩者可能形成互相強化的
+增益螺旋（gain spiral）。
+本研究擬採三波縱貫追蹤設計（間隔各六個月，共十二個月），以 CLPM 與 RI-CLPM
+系統性地檢驗此雙向動態關係。採用三波資料有兩個優點：（1）可檢驗 T1-T2 的交
+叉路徑能否在 T2-T3 重複出現，提升結論的時間穩定性；（2）提供足夠資訊估計 RICLPM，將個體間穩定差異與個體內動態分離。
+
+（三）研究目的
+本研究旨在達成以下四項目的：
+‧ 在控制前期工作績效後，檢驗前期工作投入是否能顯著正向預測後期工作績效
+（投入 → 績效方向）。
+‧ 在控制前期工作投入後，檢驗前期工作績效是否能顯著正向預測後期工作投入
+（績效 → 投入方向）。
+‧ 判斷兩者之間是否存在雙向互惠的增益螺旋動態，並比較兩條交叉路徑的相對
+強度。
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+10
+
+‧ 以 RI-CLPM 控制個體間穩定差異，檢驗個體內層次的動態交叉效果，以回答
+「員工自身的投入波動是否影響其自身的後續績效波動」這一更精確的理論問
+題。
+
+（四）研究問題
+RQ1：在控制 T1 工作績效後，T1 工作投入是否能顯著正向預測 T2 工作績效？（交叉
+路徑一：投入 → 績效）
+RQ2：在控制 T1 工作投入後，T1 工作績效是否能顯著正向預測 T2 工作投入？（交叉
+路徑二：績效 → 投入）
+RQ3：T1-T2 期間的交叉延宕效果能否在 T2-T3 重複出現，顯示跨時間的效果穩定性？
+RQ4：在使用 RI-CLPM 控制個體間穩定差異後，工作投入與工作績效的個體內交叉延
+宕效果是否仍然存在？
+
+設計補充
+
+測量工具：工作投入採 UWES-9（Schaufeli et al., 2006），工作績效採直屬主管評分
+（task performance + contextual performance）。分析前應先進行三波縱貫測量不變
+性檢驗（metric invariance 為 CLPM 最低要求；scalar invariance 方可比較潛在均
+值）。樣本量建議 N ≥ 200，以確保偵測中小效果（β ≈ .15）的交叉延宕路徑有足夠
+統計力（Schuurman et al., 2016）。
+
+六、結論
+交叉延宕設計是人力資源研究中最重要的縱貫方法論工具之一。其核心價值在於透過
+控制變項自身的時間穩定性，評估不同構念之間的跨時間增量預測效果，進而提供比
+橫斷相關更嚴格的方向性推論依據。
+統計方法從早期的 CLPC 到當代的 SEM-CLPM 與 RI-CLPM，反映了研究社群對於「如何
+更精確地區分個體間差異與個體內動態」的持續追求。選用 RI-CLPM 而非傳統 CLPM，
+不只是統計上的升級，更是理論精確性的提升——它讓我們得以回答「員工的狀態波
+動是否影響其後續行為」，而非僅僅描述「高投入的人是否績效也高」。
+最後，無論使用何種方法，都應謹守因果推論的邊界：交叉延宕設計提供的是時間先
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+11
+
+後與方向性的證據，而非實驗隨機化所能確立的因果關係。這一限制的誠實說明，本
+身即是博士生學術嚴謹度的體現。
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+12
+
+參考文獻
+Bakker, A. B., & Demerouti, E. (2007). The job demands-resources model: State of the art. Journal of Managerial
+Psychology, 22(3), 309–328.
+Bandura, A. (1986). Social foundations of thought and action: A social cognitive theory. Prentice-Hall.
+Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Erlbaum.
+Dormann, C., & Griffin, M. A. (2015). Optimal time lags in panel studies. Psychological Methods, 20(4), 489–
+505.
+Hamaker, E. L., Kuiper, R. M., & Grasman, R. P. P. P. (2015). A critique of the cross-lagged panel model.
+Psychological Methods, 20(1), 102–116.
+Hobfoll, S. E. (1989). Conservation of resources: A new attempt at conceptualizing stress. American Psychologist,
+44(3), 513–524.
+Kenny, D. A. (1975). Cross-lagged panel correlation: A test for spuriousness. Psychological Bulletin, 82(6), 887–
+903.
+Schaufeli, W. B., Bakker, A. B., & Salanova, M. (2006). The measurement of work engagement with a short
+questionnaire: A cross-national study. Educational and Psychological Measurement, 66(4), 701–716.
+Schuurman, N. K., Ferrer, E., de Boer-Sonnenschein, M., & Hamaker, E. L. (2016). How to compare cross-lagged
+associations in a multilevel autoregressive model. Psychological Methods, 21(2), 206–221.`},
+  'H':{title:"\u7b54\u6848 H",sub:"\u7814\u7a76\u8005\u5fae\u8abf\u7248",score:"97 \ud83e\udd47",text:`交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+交叉延宕設計（Cross-Lagged Panel Design）
+概念、方法與人力資源研究應用
+博士資格考擬答
+
+1
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+2
+
+一、概念定義與核心邏輯
+交叉延宕設計（cross-lagged panel design, CLPD）是一種縱貫研究設計，其核心邏
+輯在於：在至少兩個不同的時間點，對同一批研究對象重複測量兩個或以上的變項，
+藉此同時估計三類關係，以推論變項之間的時間先後順序與可能的方向性影響。
+
+（一）模型的三類核心路徑
+以最基本的兩變項（X 與 Y）、兩時間點（T1 與 T2）設計為例，交叉延宕模型包含以
+下三類路徑：
+第一，自我迴歸效果（autoregressive effect）：即 X₁ → X₂ 與 Y₁ → Y₂，反
+映同一變項在時間上的穩定性，也是控制個體原有基線水準的必要路徑。自我迴歸
+係數越高，表示個體在該構念上的相對位置越穩定，跨時間的可解釋變異空間也相
+對縮小。
+第二，同步相關（synchronous correlation）：即同一時間點 X₁ 與 Y₁（及 X₂ 與
+Y₂）之間的共變，反映兩變項在時間截面上的關聯。
+第三，交叉延宕效果（cross-lagged effect）：即 X₁ → Y₂ 與 Y₁ → X₂，這是
+交叉延宕設計最關鍵的路徑。它回答的問題是：在控制了前期 Y 本身的穩定性之
+後，前期 X 是否仍能對後期 Y 產生額外的預測效果？
+
+（二）方法論定位與因果推論的邊界
+交叉延宕設計能提供「時間先後與方向性」的推論依據（temporal precedence and
+directionality），但不等同於強因果宣稱。在缺乏實驗隨機分派的前提下，仍可能
+存在未觀測的第三變項干擾，或測量時間點設定不當造成的效果低估。因此，較為精
+確的表述應為「X₁ 能顯著正向預測 Y₂，在控制了 Y 的前期水準後」，而非「X 導致
+Y」。
+
+文獻脈絡
+
+Kenny (1975) 最早系統化提出交叉延宕相關分析；Hamaker 等人 (2015) 指出傳統 CLPM
+可能混淆個體間（between-person）穩定差異與個體內（within-person）動態變化，並
+提出隨機截距交叉延宕模型（RI-CLPM）作為改良。此一方法論討論已成為 Journal of
+Applied Psychology 等頂期刊的審查焦點。
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+3
+
+二、適用時機與研究情境
+（一）適合使用的情境
+交叉延宕設計在人力資源研究中，主要適合以下四種情境：
+‧ 研究者希望釐清兩個 HR 構念在時間上的先導性與方向性預測優勢（causal
+predominance）。例如，工作投入與工作績效理論上可能互為因果；橫斷研究
+只能確認相關，無法判斷方向。
+‧ 理論上存在雙向或螺旋關係（reciprocal/spiral relationship）。工作要求資源模型（JD-R model, Bakker & Demerouti, 2007）預測資源促進投入，而高
+投入者又更能創造資源，形成增益螺旋（gain spiral），需以縱貫資料驗證此
+循環。
+‧ 研究者擁有至少兩波、對同一批受測者在明確時間點的重複測量資料，且研究
+變項具有理論上可改變的狀態特性（state-like），如工作投入、組織承諾、
+心理資本等。高度穩定的特質性構念（trait-like）通常不適合此設計。
+‧ 倫理或實務上無法進行隨機實驗操弄，例如無法隨機指派員工承受特定壓力水
+準，此時縱貫追蹤資料能提供比橫斷研究更強的方向性推論。
+
+（二）不適合使用的情境
+以下情況不適合使用：只有單一橫斷面資料；資料來自事後回溯記憶（retrospective
+recall），無真實時間先後；兩變項均屬高度穩定特質（自我迴歸係數 > .90），交
+叉延宕效果空間極小；以及完全依賴次級資料而無重複測量設計者。
+
+（三）時間間隔的理論考量
+研 究 者 應 事 先 根 據 理 論 或 先 行 研 究 指 定 適 當 的 測 量 時 間 間 隔 （ time lag
+specification）。間隔過短，效果尚未顯現；間隔過長，效果可能已衰退。在人力資
+源 領 域 ，工作態度相關構念的測量間隔通常建議在三至六個月之間（ Dormann &
+Griffin, 2015）。這一決策應在研究設計階段即明確說明，而非事後補充。
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+4
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+5
+
+三、統計檢驗方法
+依據資料結構與研究問題的複雜程度，可採用以下四種統計方法，研究者應根據資料
+波次、樣本量、量表設計與研究問題加以選擇。
+
+方法一：傳統交叉延宕相關分析（CLPC）
+Kenny（1975）提出的傳統方法，透過比較兩條交叉延宕相關係數——r(X₁, Y₂) 與
+r(Y₁, X₂)——的大小，初步推論哪個變項較具時間先導性。此方法適合初探性分析，
+操作簡便；但限制明顯：未能控制測量誤差、對重測信度差異敏感，且不等同於控制
+前期水準後的條件預測。在當代頂期刊中已鮮少單獨採用，但仍可作為輔助性描述統
+計。
+
+方法二：階層迴歸交叉延宕分析（Hierarchical Cross-Lagged Regression）
+以階層迴歸為基礎，分別以後期 Y 和後期 X 為依變項：
+Y₂ = β₀ + β₁Y₁ + β₂X₁ + ε
+
+X₂ = γ₀ + γ₁X₁ + γ₂Y₁ + ε
+
+其中 β₁、γ₁ 為自我迴歸效果，β₂、γ₂ 為交叉延宕效果。此方法統計邏輯直觀，
+適合觀察變項且樣本量相對有限的情境；限制在於較難同時呈現整體模型適配度，且
+無法處理測量誤差。
+
+方法三：結構方程模式下的交叉延宕面板模型（CLPM via SEM）
+CLPM 是目前最主流的分析方法，可在 SEM 架構下（Mplus、R lavaan、AMOS）同時估
+計所有路徑並評估整體模型適配度。若量表具多個題項，可建立潛在變項交叉延宕模
+型（latent CLPM），將測量誤差納入控制，提供更精確的路徑估計。
+使 用 潛 在 變 項 時 ， 應 先 進 行 縱 貫 測 量 不 變 性 檢 驗 （ longitudinal measurement
+invariance testing），依序確認形態不變性（configural）、因素負荷量不變性
+（metric）與截距不變性（scalar），方能合理比較跨時間的潛在均值與路徑係數。
+若截距不變性未成立，研究者應在論文中明確討論此一限制。
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+6
+
+方法四：隨機截距交叉延宕模型（RI-CLPM）
+Hamaker 等人（2015）指出，傳統 CLPM 的路徑係數混合了個體間差異（betweenperson effect）與個體內動態（within-person effect）：某些員工長期高投入且績
+效一貫良好，這是穩定的個體差異；而「某員工本月比平時更投入，其下月績效是否
+也高於自己平時」才是個體內的動態因果邏輯。RI-CLPM 透過加入隨機截距將個體的
+長期穩定特質分離，再估計個體內層次的動態交叉路徑。此模型需要至少三個時間波
+次。在 HR 縱貫研究中，若關心的是員工動態變化歷程，RI-CLPM 應優先考慮。
+
+7
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+四、統計結果判讀
+以 SEM 架構下的 CLPM 為例，結果判讀應依序包含四個層次：
+
+層次一：整體模型適配度
+在解讀任何路徑係數之前，必須先確認整體模型與資料的契合程度：
+指標
+
+可接受標準
+
+佳
+
+說明
+
+χ²/df
+
+< 3（大樣本 < 5）
+
+< 2
+
+樣本大時幾乎必然顯著，
+應搭配其他指標
+
+CFI
+
+≥ .90
+
+≥ .95
+
+比較適配指數，越高越好
+
+TLI
+
+≥ .90
+
+≥ .95
+
+非規範適配指數
+
+RMSEA
+
+≤ .08（95% CI 上界
+< .10）
+
+≤ .05
+
+漸進均方根誤差
+
+SRMR
+
+≤ .08
+
+≤ .05
+
+標準化殘差均方根
+
+若比較巢套模型（如單向模型 vs. 雙向模型），可使用 Δχ²、ΔCFI（> .01 視為顯
+著差異）或 AIC／BIC 進行模型選擇。
+
+層次二：自我迴歸路徑
+自我迴歸係數反映各構念跨時間的穩定性。係數越高（如 ≥ .70），表示員工在此特
+質上的相對位置不易改變，殘差變異空間縮小，交叉延宕效果的偵測難度也提高。在
+人力資源研究中，若自我迴歸係數過高（接近 .90），研究者應評估是否有足夠的統
+計力偵測交叉路徑，並在設計階段進行樣本量估算。
+
+層次三：交叉延宕路徑的判讀與比較
+這是交叉延宕設計的核心詮釋。四種結果情境如下：
+情境
+
+路徑顯著性
+
+推論方向
+
+X₁ → Y₂ 顯著 Y₁ → X₂ 不
+顯著
+
+β(X→Y) 顯著, p < .05
+β(Y→X) 不顯著
+
+X 相較於 Y 較具時間先導性與方
+向性預測優勢；仍不宜直接宣稱實
+驗意義上的因果
+
+X₁ → Y₂ 不顯著 Y₁ → X₂
+顯著
+
+β(X→Y) 不顯著 β(Y→X) 顯
+著, p < .05
+
+Y 相較於 X 較具時間先導性與方
+向性預測優勢；仍不宜直接宣稱實
+驗意義上的因果
+
+8
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+情境
+
+路徑顯著性
+
+推論方向
+
+兩條路徑皆顯著
+
+兩個 β 均顯著, p < .05
+
+雙向互惠；可設定等值限制比較相
+對強度
+
+兩條路徑皆不顯著
+
+兩個 β 均不顯著
+
+此時間間隔下，兩變項無明確跨時
+間預測關係
+
+層次四：效果大小、方向與因果宣稱的邊界
+標準化路徑係數的正負號代表影響方向，大小代表效果量。參考 Cohen（1988）：.10
+屬小效果，.30 屬中效果，.50 以上屬大效果。人力資源縱貫研究的交叉延宕效果通
+常落在 .10 至 .25 之間，仍具有理論與實務意義。必要時可設定兩條交叉路徑等值，
+並以 χ² 差異檢定比較兩者是否存在顯著差異，以判斷兩者時間先導性的相對強度—
+—但結論仍應以方向性預測優勢表述，而非實驗因果。
+最後應謹記：交叉延宕效果是在控制前期水準後的增量預測力，其語意是「已知員工
+原本的工作投入，前期績效是否能進一步預測後期投入的改變」。這比橫斷相關更嚴
+格，也更接近因果邏輯，但仍應以「方向性預測」而非「實驗因果」的語彙表述，以
+避免過度宣稱。
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+9
+
+五、研究主題、研究目的與研究問題設計
+（一）研究主題
+
+工作投入與工作績效的雙向動態關係：以三波縱貫資料驗證增益
+螺旋效應
+（二）研究背景與動機
+工作投入（work engagement）與工作績效（job performance）之間的關係是人力資源
+管理研究的核心議題。過去多數研究採橫斷面設計，雖一致發現兩者具有正相關，卻
+無法釐清因果方向。從工作要求-資源模型（JD-R model, Bakker & Demerouti, 2007）
+的角度，高工作投入者因具備充沛的個人資源，應表現出更高的工作績效；然而，從
+社會認知理論（Bandura, 1986）觀點，工作成功經驗（高績效）能強化員工的自我效
+能感，進而提升後續工作投入。若兩個理論方向均成立，則兩者可能形成互相強化的
+增益螺旋（gain spiral）。
+本研究擬採三波縱貫追蹤設計（間隔各六個月，共十二個月），以 CLPM 與 RI-CLPM
+系統性地檢驗此雙向動態關係。採用三波資料有兩個優點：（1）可檢驗 T1-T2 的交
+叉路徑能否在 T2-T3 重複出現，提升結論的時間穩定性；（2）提供足夠資訊估計 RICLPM，將個體間穩定差異與個體內動態分離。
+
+（三）研究目的
+本研究旨在達成以下四項目的：
+‧ 在控制前期工作績效後，檢驗前期工作投入是否能顯著正向預測後期工作績效
+（投入 → 績效方向）。
+‧ 在控制前期工作投入後，檢驗前期工作績效是否能顯著正向預測後期工作投入
+（績效 → 投入方向）。
+‧ 判斷兩者之間是否存在雙向互惠的增益螺旋動態，並比較兩條交叉路徑的相對
+強度。
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+10
+
+‧ 以 RI-CLPM 控制個體間穩定差異，檢驗個體內層次的動態交叉效果，以回答
+「員工自身的投入波動是否影響其自身的後續績效波動」這一更精確的理論問
+題。
+
+（四）研究問題
+RQ1：在控制 T1 工作績效後，T1 工作投入是否能顯著正向預測 T2 工作績效？（交叉
+路徑一：投入 → 績效）
+RQ2：在控制 T1 工作投入後，T1 工作績效是否能顯著正向預測 T2 工作投入？（交叉
+路徑二：績效 → 投入）
+RQ3：T1-T2 期間的交叉延宕效果能否在 T2-T3 重複出現，顯示跨時間的效果穩定性？
+RQ4：在使用 RI-CLPM 控制個體間穩定差異後，工作投入與工作績效的個體內交叉延
+宕效果是否仍然存在？
+
+設計補充
+
+測量工具：工作投入採 UWES-9（Schaufeli et al., 2006），工作績效採直屬主管評分
+（task performance + contextual performance）。分析前應先進行三波縱貫測量不變
+性檢驗（metric invariance 為 CLPM 最低要求；scalar invariance 方可比較潛在均
+值）。樣本量建議 N ≥ 200，以確保偵測中小效果（β ≈ .15）的交叉延宕路徑有足夠
+統計力（Schuurman et al., 2016）。
+
+六、結論
+交叉延宕設計是人力資源研究中最重要的縱貫方法論工具之一。其核心價值在於透過
+控制變項自身的時間穩定性，評估不同構念之間的跨時間增量預測效果，進而提供比
+橫斷相關更嚴格的方向性推論依據。
+統計方法從早期的 CLPC 到當代的 SEM-CLPM 與 RI-CLPM，反映了研究社群對於「如何
+更精確地區分個體間差異與個體內動態」的持續追求。選用 RI-CLPM 而非傳統 CLPM，
+不只是統計上的升級，更是理論精確性的提升——它讓我們得以回答「員工的狀態波
+動是否影響其後續行為」，而非僅僅描述「高投入的人是否績效也高」。
+最後，無論使用何種方法，都應謹守因果推論的邊界：交叉延宕設計提供的是時間先
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+11
+
+後與方向性的證據，而非實驗隨機化所能確立的因果關係。這一限制的誠實說明，本
+身即是博士生學術嚴謹度的體現。
+
+交叉延宕設計（Cross-Lagged Panel Design）—— 博士資格考擬答
+
+12
+
+參考文獻
+Bakker, A. B., & Demerouti, E. (2007). The job demands-resources model: State of the art. Journal of Managerial
+Psychology, 22(3), 309–328.
+Bandura, A. (1986). Social foundations of thought and action: A social cognitive theory. Prentice-Hall.
+Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Erlbaum.
+Dormann, C., & Griffin, M. A. (2015). Optimal time lags in panel studies. Psychological Methods, 20(4), 489–
+505.
+Hamaker, E. L., Kuiper, R. M., & Grasman, R. P. P. P. (2015). A critique of the cross-lagged panel model.
+Psychological Methods, 20(1), 102–116.
+Hobfoll, S. E. (1989). Conservation of resources: A new attempt at conceptualizing stress. American Psychologist,
+44(3), 513–524.
+Kenny, D. A. (1975). Cross-lagged panel correlation: A test for spuriousness. Psychological Bulletin, 82(6), 887–
+903.
+Schaufeli, W. B., Bakker, A. B., & Salanova, M. (2006). The measurement of work engagement with a short
+questionnaire: A cross-national study. Educational and Psychological Measurement, 66(4), 701–716.
+Schuurman, N. K., Ferrer, E., de Boer-Sonnenschein, M., & Hamaker, E. L. (2016). How to compare cross-lagged
+associations in a multilevel autoregressive model. Psychological Methods, 21(2), 206–221.`},
+};
+
+function openModal(key){
+  const d=ansData[key];
+  document.getElementById('modal-title').textContent=d.title+' — '+d.score+' 分';
+  document.getElementById('modal-sub').textContent=d.sub;
+  document.getElementById('modal-body').textContent=d.text;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 </script>
+
+<div id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div id="modal-box">
+    <div id="modal-head">
+      <div><div class="mh-title" id="modal-title"></div><div class="mh-sub" id="modal-sub"></div></div>
+      <button id="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
 </body>
 </html>
